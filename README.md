@@ -14,24 +14,3 @@ Esimerkiksi ms word:in tekemät litteroinnit äänitiedostosta.
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät litteroinnit.
 * Käyttäjä pystyy valitsemaan litteroinnille yhden tai useamman luokittelun (litteroinnin kieli, äänitiedoston sisällön genre (esim luento).
 
-
-## Sovelluksen asennus
-
-Asenna `flask`-kirjasto:
-
-```
-$ pip install flask
-```
-
-Luo tietokannan taulut ja lisää alkutiedot:
-
-```
-$ sqlite3 database.db < schema.sql
-$ sqlite3 database.db < init.sql
-```
-
-Voit käynnistää sovelluksen näin:
-
-```
-$ flask run
-```
