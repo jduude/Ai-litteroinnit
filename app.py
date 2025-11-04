@@ -50,6 +50,23 @@ def remove_transcription(transcription_id):
         return redirect("/")
 
 
+@app.route("/edit/<int:transcription_id>", methods=["GET", "POST"])
+def edit_transcription(transcription_id):
+    transcription = transcriptions.get_transcription(transcription_id)
+
+    if request.method == "GET":
+        return render_template("edit.html", transcription=transcription)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        source_path = request.form["source_path"]
+        source = request.form["source"]
+        genre = request.form["genre"]
+        raw_content = request.form["raw_content"]
+        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre)
+        return redirect("/transcription/" + str(transcription["id"]))
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":

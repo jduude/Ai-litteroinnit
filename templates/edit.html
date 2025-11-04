@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Litteroinnin muokkaus</title>
+</head>
+
+<body>
+  <h1>Litteroinnin muokkaus</h1>
+
+  <form action="/edit/{{ transcription.id }}" method="post">
+    <p>
+      Otsikko:
+      <input type="text" name="title" value="{{transcription.title}}" />
+      <br />
+      Äänitiedoston nimi tai url:
+      <input type="text" name="source_path" value="{{transcription.source_path}}" />
+      <br />
+      Tietolähde:
+      <input type="text" name="source" value="{{transcription.source}}" />
+      <br />
+      Lajityyppi:
+      <input type="text" name="genre" value="{{transcription.genre}}" />
+    </p>
+    <p>
+      Aikaleimattu teksti<br />
+
+      <textarea name="raw_content" rows="10" cols="90">{{transcription.raw_content}}</textarea>
+    </p>
+    <input type="submit" value="Lähetä" />
+  </form>
+</body>
+
+</html>

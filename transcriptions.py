@@ -16,10 +16,15 @@ def add_transcription(title, source_path, source, genre, raw_content, user_id):
 
 
 def get_transcription(transcription_id):
-    sql = "SELECT id, title,  source_path, source, genre, raw_content FROM transcriptions WHERE id = ?"
+    sql = "SELECT id, title,  source_path, source, genre, raw_content, user_id FROM transcriptions WHERE id = ?"
     return db.query(sql, [transcription_id])[0]
 
 
 def remove_transcription(transcription_id):
     sql = "DELETE FROM transcriptions WHERE id = ?"
     db.execute(sql, [transcription_id])
+
+
+def update_transcription(transcription_id, title, source_path, source, genre):
+    sql = "UPDATE transcriptions SET title = ?, source_path = ?, source = ?, genre = ?  WHERE id = ?"
+    db.execute(sql, [title, source_path, source, genre, transcription_id])
