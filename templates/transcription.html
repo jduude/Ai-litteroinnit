@@ -7,6 +7,10 @@
 </head>
 
 <body>
+    <p>
+        <a href="/">Etusivulle</a>
+    </p>
+
     <h2>Litterointi {{ transcription.id }}</h2>
     <h2>{{ transcription.title }}</h2>
     <ul>
@@ -21,7 +25,6 @@
     <div>
         {% if text_fragments %}
         <h3>Aikakoodi tekstit:</h3>
-
 
         {% for id, start_sec, start_ms, words in text_fragments[:18] %}
         <div>

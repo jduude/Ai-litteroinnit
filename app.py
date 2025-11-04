@@ -66,7 +66,12 @@ def text_fragments(transcription_id):
     return redirect("/transcription/" + str(transcription["id"]))
 
 
+@app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
+def edit_text_fragment(text_fragment_id):
+    text_fragment = transcriptions.get_text_fragment(text_fragment_id)
 
+    if request.method == "GET":
+        return render_template("edit_text_fragment.html", text_fragment=text_fragment)
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
