@@ -10,7 +10,9 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html" )
+    transcription_array = [] #transcriptions.get_transcriptions()
+    return render_template("index.html", transcriptions=transcription_array)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
