@@ -1,10 +1,12 @@
 import db
 
+
 def get_transcriptions():
     sql = """SELECT t.id, t.title, t.genre, t.source_path
              FROM transcriptions t
              ORDER BY t.id DESC"""
     return db.query(sql)
+
 
 def add_transcription(title, source_path, source, genre, raw_content, user_id):
     sql = "INSERT INTO transcriptions (title, source_path, source, genre, raw_content, user_id) VALUES (?, ?, ?, ?, ?, ?)"

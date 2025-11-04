@@ -1,9 +1,8 @@
 import sqlite3
-from flask import Flask,redirect,  render_template, request, session
+from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 import db
 import users, config, transcriptions
-
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -12,11 +11,11 @@ MEGABYTE = (2 ** 10) ** 2
 app.config['MAX_CONTENT_LENGTH'] = None
 app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
 
+
 @app.route("/")
 def index():
-    transcription_array =  transcriptions.get_transcriptions()
+    transcription_array = transcriptions.get_transcriptions()
     return render_template("index.html", transcriptions=transcription_array)
-
 
 
 @app.route("/new_transcription", methods=["POST"])
@@ -35,7 +34,7 @@ def new_transcription():
 @app.route("/transcription/<int:transcription_id>")
 def show_transcription(transcription_id):
     transcription = transcriptions.get_transcription(transcription_id)
-    return render_template("transcription.html", transcription=transcription )
+    return render_template("transcription.html", transcription=transcription)
 
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
@@ -49,8 +48,6 @@ def remove_transcription(transcription_id):
         if "continue" in request.form:
             transcriptions.remove_transcription(transcription["id"])
         return redirect("/")
-
-
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -88,7 +85,6 @@ def register():
             return "Tunnus luotu"
         except sqlite3.IntegrityError:
             return "VIRHE: tunnus on jo varattu"
-
 
 
 @app.route("/create", methods=["POST"])
