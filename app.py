@@ -2,7 +2,7 @@ import sqlite3
 from flask import Flask,redirect,  render_template, request, session
 from werkzeug.security import generate_password_hash
 import db
-import users, config
+import users, config, transcriptions
 
 
 app = Flask(__name__)
@@ -12,6 +12,27 @@ app.secret_key = config.secret_key
 def index():
     transcription_array = [] #transcriptions.get_transcriptions()
     return render_template("index.html", transcriptions=transcription_array)
+
+
+
+@app.route("/new_transcription", methods=["POST"])
+def new_transcription():
+    title = request.form["title"]
+    source_path = request.form["source_path"]
+    source = request.form["source"]
+    genre = request.form["genre"]
+    raw_content = request.form["raw_content"]
+    user_id = session["user_id"]
+
+    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id)
+    return redirect("/transcription/" + str(transcription_id))
+
+
+@app.route("/transcription/<int:transcription_id>")
+def show_transcription(transcription_id):
+    transcription = transcriptions.get_transcription(transcription_id)
+    return render_template("transcription.html", transcription=transcription )
+
 
 
 @app.route("/login", methods=["GET", "POST"])

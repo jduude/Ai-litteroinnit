@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ transcription.title }}</title>
+</head>
+
+<body>
+    <h2>Litterointi {{ transcription.id }}</h2>
+    <h2>{{ transcription.title }}</h2>
+    <ul>
+
+        <li>Id: {{ transcription.id }}</li>
+        <li>Tiedosto tai url: <a href="{{ transcription.source_path }}">{{ transcription.source_path }}</a></li>
+        <li>Lähde: {{ transcription.source }}</li>
+
+        <li>Lajityyppi: {{ transcription.genre }}</li>
+        <li>Raaka sisältö: {{ transcription.raw_content[:50] }}</li>
+    </ul>
+    {% if transcription.user_id == session.user_id %}
+    <p>
+        <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
+        <a href="/remove/{{ transcription.id }}">Poista</a>
+    </p>
+    {% endif %}
+    <hr />
+
+    {% if session.user_id %}
+    <hr />
+    {% endif %}
+
+    <p>
+        <a href="/">Etusivulle</a>
+    </p>
+</body>
+
+</html>
