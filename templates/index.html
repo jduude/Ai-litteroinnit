@@ -10,6 +10,14 @@
   <div>
     <h1>Litteroinnit</h1>
     <div>
+      {% if session.user_id %}
+      <h2>Tervetuloa!</h2>
+      <p>Olet kirjautunut sisään käyttäjänä {{ session.user_id}}</p>
+      <hr>
+      <h2>Tallennetut litteroinnit</h2>
+      {% endif %}
+    </div>
+    <div>
       <p>
         <a href="/register">Luo tunnus</a> |
         {% if session.user_id %}
@@ -19,6 +27,7 @@
         {% endif %}
       </p>
     </div>
+
   </div>
 </body>
 

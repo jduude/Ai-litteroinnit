@@ -13,3 +13,10 @@ def execute(sql, params=[]):
     con.commit()
     g.last_insert_id = result.lastrowid
     con.close()
+
+
+def query(sql, params=[]):
+    con = get_connection()
+    result = con.execute(sql, params).fetchall()
+    con.close()
+    return result
