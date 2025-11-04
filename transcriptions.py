@@ -16,3 +16,8 @@ def add_transcription(title, source_path, source, genre, raw_content, user_id):
 def get_transcription(transcription_id):
     sql = "SELECT id, title,  source_path, source, genre, raw_content FROM transcriptions WHERE id = ?"
     return db.query(sql, [transcription_id])[0]
+
+
+def remove_transcription(transcription_id):
+    sql = "DELETE FROM transcriptions WHERE id = ?"
+    db.execute(sql, [transcription_id])

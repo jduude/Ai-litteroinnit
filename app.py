@@ -38,6 +38,20 @@ def show_transcription(transcription_id):
     return render_template("transcription.html", transcription=transcription )
 
 
+@app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
+def remove_transcription(transcription_id):
+    transcription = transcriptions.get_transcription(transcription_id)
+
+    if request.method == "GET":
+        return render_template("remove.html", transcription=transcription)
+
+    if request.method == "POST":
+        if "continue" in request.form:
+            transcriptions.remove_transcription(transcription["id"])
+        return redirect("/")
+
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

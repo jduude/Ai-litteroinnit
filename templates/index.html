@@ -19,9 +19,15 @@
       {% for transcription in transcriptions %}
       <div>
         <p>
+        <h3>
           <a href="/transcription/{{ transcription.id }}">{{ transcription.title }}</a>
+        </h3>
         </p>
         <p>{{ transcription.genre }} </p>
+        <p>
+          <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
+          <a href="/remove/{{ transcription.id }}">Poista</a>
+        </p>
         <hr />
       </div>
       {% endfor %}
