@@ -8,9 +8,13 @@ import users, config, transcriptions
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+MEGABYTE = (2 ** 10) ** 2
+app.config['MAX_CONTENT_LENGTH'] = None
+app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
+
 @app.route("/")
 def index():
-    transcription_array = [] #transcriptions.get_transcriptions()
+    transcription_array =  transcriptions.get_transcriptions()
     return render_template("index.html", transcriptions=transcription_array)
 
 
