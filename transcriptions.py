@@ -28,3 +28,14 @@ def remove_transcription(transcription_id):
 def update_transcription(transcription_id, title, source_path, source, genre):
     sql = "UPDATE transcriptions SET title = ?, source_path = ?, source = ?, genre = ?  WHERE id = ?"
     db.execute(sql, [title, source_path, source, genre, transcription_id])
+
+
+def get_text_fragments(transcription_id):
+    sql = "SELECT id, start_ms, words FROM text_fragments WHERE transcription_id = ?"
+    return db.query(sql, [transcription_id])
+
+
+def add_text_fragment(start_ms, words, transcription_id):
+    sql = """INSERT INTO text_fragments (start_ms, words, transcription_id) VALUES
+             (?, ?, ?)"""
+    db.execute(sql, [start_ms, words, transcription_id])

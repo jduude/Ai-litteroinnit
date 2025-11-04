@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 import db
@@ -33,8 +34,38 @@ def new_transcription():
 
 @app.route("/transcription/<int:transcription_id>")
 def show_transcription(transcription_id):
+    text_fragments = transcriptions.get_text_fragments(transcription_id)
+    text_fragments_with_secs= [ ( id, int(start_ms/1000), start_ms, words) for id, start_ms, words in text_fragments]
+
     transcription = transcriptions.get_transcription(transcription_id)
-    return render_template("transcription.html", transcription=transcription)
+    return render_template("transcription.html", transcription=transcription,  text_fragments=text_fragments_with_secs)
+
+@app.route("/text_fragments/<int:transcription_id>")
+def text_fragments(transcription_id):
+    text_fragments = transcriptions.get_text_fragments(transcription_id)
+    text_fragments_with_secs= [ ( id, int(start_ms/1000), start_ms, words) for id, start_ms, words in text_fragments]
+    transcription = transcriptions.get_transcription(transcription_id)
+    print(len(text_fragments))
+    if len(text_fragments) > 0:
+        return render_template("transcription.html", transcription=transcription,
+                               text_fragments=text_fragments_with_secs)
+
+    raw_content = transcription['raw_content']
+    if transcription['source'] == 'youtube':
+        timed_text_dict = json.loads(raw_content)
+        events = timed_text_dict['events']
+        test_fragments_with_timestamps = [(e['tStartMs'], "".join([s['utf8'] for s in e['segs']])) for e in events if
+                                          'segs' in e]
+        test_fragments_with_timestamps = [(tStartMsm, text) for tStartMsm, text in test_fragments_with_timestamps if
+                                          text.strip() != '']
+
+        transcription_id = transcription['id']
+        for start_ms, words in test_fragments_with_timestamps:
+            transcriptions.add_text_fragment( start_ms, words, transcription_id )
+
+    return redirect("/transcription/" + str(transcription["id"]))
+
+
 
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])

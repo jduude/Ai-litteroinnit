@@ -18,17 +18,37 @@
         <li>Lajityyppi: {{ transcription.genre }}</li>
         <li>Raaka sisältö: {{ transcription.raw_content[:50] }}</li>
     </ul>
+    <div>
+        {% if text_fragments %}
+        <h3>Aikakoodi tekstit:</h3>
+
+
+        {% for id, start_sec, start_ms, words in text_fragments[:18] %}
+        <div>
+            <p><span> <a rel="noreferrer noopener" target="_blank"
+                        href="{{transcription.source_path }}&t={{start_sec}}"> {{start_sec}}</a>:</span>
+                <span>{{words}}</span> | <a href="/edit_text_fragment/{{ id }}">Muokkaa</a>
+            </p>
+        </div>
+
+
+        {% endfor %}
+
+        {% else %}
+        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragementit</a> <br>
+
+        {% endif %}
+    </div>
     {% if transcription.user_id == session.user_id %}
-    <p>
+    <div>
+
         <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
         <a href="/remove/{{ transcription.id }}">Poista</a>
-    </p>
-    {% endif %}
-    <hr />
+        </p>
+        {% endif %}
+        <hr />
 
-    {% if session.user_id %}
-    <hr />
-    {% endif %}
+    </div>
 
     <p>
         <a href="/">Etusivulle</a>
