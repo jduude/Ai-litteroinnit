@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+        .highlight {
+            font-weight: 800;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>Hakutulos konteksti</h2>
+
+        <div>
+            <h3><a href="/transcription/{{ transcription_id }}">{{title}}</a></h3>
+            <ul>
+                {% for result in text_context %}
+                <li>
+                    {% if result.id == id %}
+                    <span class="highlight">
+                        {% else %}
+                        <span>
+                            {% endif %}
+                            <a href="/show_search_result_context/{{ result.start_ms }}">{{ result.start_ms / 1000 | int
+                                }}</a>
+                            <span class="result_text"> {{ result.words }} </span>
+                        </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

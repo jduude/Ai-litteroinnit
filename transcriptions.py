@@ -51,3 +51,14 @@ def search(query):
              WHERE  tr.id= t.transcription_id AND t.words LIKE ?
             """
     return db.query(sql, ["%" + query + "%"])
+    
+def get_text_fragment_context(id):
+    start = id- 5
+    end = id + 5
+    if start < 0:
+        start = 0
+    sql = """SELECT t.id, t.start_ms, t.words, t.transcription_id, tr.title
+             FROM text_fragments t, transcriptions tr
+             WHERE  tr.id= t.transcription_id AND t.id >= ? and   t.id <= ?
+            """
+    return db.query(sql, [start, end])

@@ -73,6 +73,18 @@ def search():
     results = transcriptions.search(query) if query else []
     return render_template("search.html", query=query, results=results)
 
+@app.route("/show_search_result_context/<int:id>")
+def show_search_result_context(id):
+
+    text_context=transcriptions.get_text_fragment_context(id)
+    title= ""
+    transcription_id = None
+    if len(text_context) > 0:
+        title= text_context[0]['title']
+        transcription_id= text_context[0]['transcription_id']
+   
+    return render_template("show_search_result_context.html", text_context=text_context, title=title, transcription_id=transcription_id, id=id)
+
 @app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
