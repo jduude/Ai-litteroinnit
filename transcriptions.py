@@ -43,3 +43,11 @@ def add_text_fragment(start_ms, words, transcription_id):
     sql = """INSERT INTO text_fragments (start_ms, words, transcription_id) VALUES
              (?, ?, ?)"""
     db.execute(sql, [start_ms, words, transcription_id])
+    
+    
+def search(query):
+    sql = """SELECT t.id, t.start_ms, t.words, t.transcription_id, tr.title
+             FROM text_fragments t, transcriptions tr
+             WHERE  tr.id= t.transcription_id AND t.words LIKE ?
+            """
+    return db.query(sql, ["%" + query + "%"])

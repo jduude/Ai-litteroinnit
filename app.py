@@ -65,6 +65,13 @@ def text_fragments(transcription_id):
 
     return redirect("/transcription/" + str(transcription["id"]))
 
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    if not query:
+        query = ""
+    results = transcriptions.search(query) if query else []
+    return render_template("search.html", query=query, results=results)
 
 @app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
