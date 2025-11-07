@@ -36,6 +36,9 @@ $ sqlite3 database.db < schema.sql
 $ sqlite3 database.db < init.sql
 ```
 
+seed.sql sisältää kaksi litterointia. Yksi youtubesta ja yksi word transcribesta.
+Seed lisää myös testikäyttäjän: tunnus on testi-user salasana on testi-user.
+
 Voit käynnistää sovelluksen näin:
 
 ```
@@ -77,3 +80,5 @@ Jonka jälkeen jokaista aikaleimattua tekstikokonaisuutta voi muokata erikseen.
 
 ![Transcription texts](readme-images/2025-11-07_23-29-51-994_Dimmer.png)
 
+
+## 
