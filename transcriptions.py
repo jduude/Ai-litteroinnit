@@ -31,7 +31,7 @@ def update_transcription(transcription_id, title, source_path, source, genre):
 
 
 def get_text_fragments(transcription_id):
-    sql = "SELECT id, start_ms, words FROM text_fragments WHERE transcription_id = ?"
+    sql = "SELECT id, start_ms, words FROM text_fragments WHERE transcription_id = ?  AND trashed is NULL"
     return db.query(sql, [transcription_id])
 
 def get_text_fragment(text_fragment_id):
@@ -45,7 +45,7 @@ def add_text_fragment(start_ms, words, transcription_id):
     db.execute(sql, [start_ms, words, transcription_id])
 
 def remove_text_fragment(text_fragment_id):
-    sql = "DELETE FROM text_fragments WHERE id = ?"
+    sql = "UPDATE text_fragments SET trashed = 1 WHERE id = ?"
     db.execute(sql, [text_fragment_id])
 
 def update_text(id, words):
@@ -67,6 +67,6 @@ def get_text_fragment_context(id):
         start = 0
     sql = """SELECT t.id, t.start_ms, t.words, t.transcription_id, tr.title
              FROM text_fragments t, transcriptions tr
-             WHERE  tr.id= t.transcription_id AND t.id >= ? and   t.id <= ?
+             WHERE tr.id= t.transcription_id AND t.trashed is NULL AND t.id >= ? and   t.id <= ?
             """
     return db.query(sql, [start, end])

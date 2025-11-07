@@ -19,6 +19,7 @@ CREATE TABLE transcriptions (
 CREATE TABLE text_fragments (
     id INTEGER PRIMARY KEY,
     start_ms INTEGER,
-    words TEXT,    
-    transcription_id INTEGER REFERENCES transcriptions
+    words TEXT,
+    transcription_id INTEGER REFERENCES transcriptions,
+    trashed BOOLEAN 
 );
