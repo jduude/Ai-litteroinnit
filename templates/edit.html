@@ -14,10 +14,16 @@
       <input type="text" name="title" value="{{transcription.title}}" />
       <br />
       Äänitiedoston nimi tai url:
-      <input type="text" name="source_path" value="{{transcription.source_path}}" />
+      <input type="text" size="60" name="source_path" value="{{transcription.source_path}}" />
       <br />
-      Tietolähde:
-      <input type="text" name="source" value="{{transcription.source}}" />
+
+      Tekstityksen lähde:
+      <select name="source" id="source" value="{{transcription.source}}">
+        <option value="youtube" {% if transcription.source=='youtube' %} selected {% endif %}>Youtube auto captions
+        </option>
+        <option value="word" {% if transcription.source=='word' %} selected {% endif %}>Word transcribe</option>
+      </select>
+
       <br />
       Lajityyppi:
       <input type="text" name="genre" value="{{transcription.genre}}" />
