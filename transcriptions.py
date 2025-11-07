@@ -35,7 +35,7 @@ def get_text_fragments(transcription_id):
     return db.query(sql, [transcription_id])
 
 def get_text_fragment(text_fragment_id):
-    sql = "SELECT id, start_ms, words FROM text_fragments WHERE id = ?"
+    sql = "SELECT id, start_ms, words, transcription_id FROM text_fragments WHERE id = ?"
     return db.query(sql, [text_fragment_id])[0]
 
 
@@ -48,6 +48,9 @@ def remove_text_fragment(text_fragment_id):
     sql = "DELETE FROM text_fragments WHERE id = ?"
     db.execute(sql, [text_fragment_id])
 
+def update_text(id, words):
+    sql = "UPDATE text_fragments SET words = ? WHERE id = ?"
+    db.execute(sql, [words, id])
 
     
 def search(query):

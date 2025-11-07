@@ -98,17 +98,24 @@ def edit_text_fragment(text_fragment_id):
     if request.method == "GET":
         return render_template("edit_text_fragment.html", text_fragment=text_fragment)
 
+    if request.method == "POST":
+        words = request.form["words"]
+        transcriptions.update_text(text_fragment["id"],  words)
+        return redirect("/transcription/" + str(text_fragment["transcription_id"]))
+
+
+
 @app.route("/remove_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def remove_text_fragment(text_fragment_id):
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
-
+    transcription_id=text_fragment["transcription_id"]
     if request.method == "GET":
         return render_template("remove_text.html", text_fragment=text_fragment)
 
     if request.method == "POST":
         if "continue" in request.form:
             transcriptions.remove_text_fragment(text_fragment["id"])
-    return redirect("/transcription/"  + str(text_fragment["transcription_id"]))
+    return redirect("/transcription/"  + str(transcription_id))
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
