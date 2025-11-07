@@ -139,7 +139,7 @@ def remove_transcription_split_text(transcription_id):
     if request.method == "POST":
         if "continue" in request.form:
             transcriptions.remove_transcription_split_text(transcription["id"])
-    return redirect("/transcriptions" + str(transcription["id"]))
+    return redirect("/transcription/" + str(transcription["id"]))
 
 
 @app.route("/edit/<int:transcription_id>", methods=["GET", "POST"])
