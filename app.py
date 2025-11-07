@@ -229,3 +229,14 @@ def create():
 
     return render_template("registered.html")
     
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
+@app.route("/logout")
+def logout():
+    require_login()
+
+    del session["user_id"]
+    return redirect("/")
