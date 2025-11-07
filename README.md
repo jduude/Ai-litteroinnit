@@ -68,3 +68,12 @@ readme-images/2025-11-07_22-58-13-275_Dimmer.png)
 ja liitä Aikaleimattu teksti tekstikenttään.
 
 ![Word transcribe](readme-images/2025-11-07_23-05-18-775_Dimmer.png)
+
+
+## Aikaleimatut tekstit
+
+Kun tekstityksen raakadata on kopioitu sovellukseen aja "Luo teksti fragmentit" joka pilkkoo tekstipätkät aikakoodatuksi riveiksi.
+Jonka jälkeen jokaista aikaleimattua tekstikokonaisuutta voi muokata erikseen.
+
+![Transcription texts](readme-images/2025-11-07_23-29-51-994_Dimmer.png)
+
