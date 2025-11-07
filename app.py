@@ -3,7 +3,7 @@ import json
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 import db
-import users, config, transcriptions
+import users, config, transcriptions, text_splitter_help_functions
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -20,6 +20,10 @@ def index():
     transcription_array = transcriptions.get_transcriptions()
     return render_template("index.html", transcriptions=transcription_array, user= user)
 
+
+@app.route("/create_transcription", methods=["GET"])
+def create_transcription():
+    return render_template("create.html")
 
 @app.route("/new_transcription", methods=["POST"])
 def new_transcription():
@@ -53,17 +57,17 @@ def text_fragments(transcription_id):
                                text_fragments=text_fragments_with_secs)
 
     raw_content = transcription['raw_content']
+    test_fragments_with_timestamps= []
     if transcription['source'] == 'youtube':
-        timed_text_dict = json.loads(raw_content)
-        events = timed_text_dict['events']
-        test_fragments_with_timestamps = [(e['tStartMs'], "".join([s['utf8'] for s in e['segs']])) for e in events if
-                                          'segs' in e]
-        test_fragments_with_timestamps = [(tStartMsm, text) for tStartMsm, text in test_fragments_with_timestamps if
-                                          text.strip() != '']
+        test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(raw_content)
+    elif transcription['source'] == 'word':
+        test_fragments_with_timestamps = text_splitter_help_functions.split_word_transcription(raw_content)
+    else:
+        print(  transcription['source'],  " text source not supported")
 
-        transcription_id = transcription['id']
-        for start_ms, words in test_fragments_with_timestamps:
-            transcriptions.add_text_fragment( start_ms, words, transcription_id )
+    transcription_id = transcription['id']
+    for start_ms, words in test_fragments_with_timestamps:
+        transcriptions.add_text_fragment( start_ms, words, transcription_id )
 
     return redirect("/transcription/" + str(transcription["id"]))
 

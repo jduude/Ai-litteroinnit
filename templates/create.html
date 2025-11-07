@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Luo litterointi</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <div>
+        <a href="/">Palaa etusivulle</a>
+        {% if session.user_id %}
+        <div>
+
+
+
+            <h2>Luo uusi litterointi</h2>
+
+            <form action="/new_transcription" method="post">
+                <p>
+                    Otsikko:
+                    <input type="text" name="title" />
+                    <br />
+                    Äänitiedoston nimi tai url:
+                    <input type="text" name="source_path" />
+                    <br />
+                    Tekstityksen lähde:
+                    <select name="source" id="source">
+                        <option value="youtube">Youtube auto captions</option>
+                        <option value="word">Word transcribe</option>
+                    </select>
+
+                    <br />
+                    Lajityyppi:
+                    <input type="text" name="genre" />
+                </p>
+                <p>
+                    Aikaleimattu teksti (kopioi Word transcribe toiminnon tulos tai youtube tekstitys tähän):<br />
+                    <textarea name="raw_content" rows="20" cols="80"></textarea>
+                </p>
+                <input type="submit" value="Lähetä" />
+            </form>
+        </div>
+
+        {% else %}
+        <a href="/login">Kirjaudu luodaksesi uuden litteroinnin</a>
+
+        {% endif %}
+    </div>
+</body>
+
+</html>

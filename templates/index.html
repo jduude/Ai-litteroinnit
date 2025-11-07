@@ -18,6 +18,11 @@
 
       {% endif %}
       <hr>
+      <div>
+        <p><a href="/create_transcription">Luo uusi litterointi</a></p>
+      </div>
+
+      <hr>
       <h2>Tallennetut litteroinnit</h2>
 
       {% for transcription in transcriptions %}
@@ -35,30 +40,6 @@
         <hr />
       </div>
       {% endfor %}
-
-      <hr />
-      <h2>Luo uusi litterointi</h2>
-
-      <form action="/new_transcription" method="post">
-        <p>
-          Otsikko:
-          <input type="text" name="title" />
-          <br />
-          Äänitiedoston nimi tai url:
-          <input type="text" name="source_path" />
-          <br />
-          Tietolähde:
-          <input type="text" name="source" />
-          <br />
-          Lajityyppi:
-          <input type="text" name="genre" />
-        </p>
-        <p>
-          Aikaleimattu teksti (kopioi Word transcribe toiminnon tulos tai youtube tekstitys tähän):<br />
-          <textarea name="raw_content" rows="20" cols="80"></textarea>
-        </p>
-        <input type="submit" value="Lähetä" />
-      </form>
 
 
       {% endif %}
