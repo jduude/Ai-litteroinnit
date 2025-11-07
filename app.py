@@ -15,8 +15,10 @@ app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
 
 @app.route("/")
 def index():
-    user_id = session["user_id"]
-    user = users.get_user(user_id)
+    user = None
+    if "user_id" in session:
+        user_id = session["user_id"]
+        user = users.get_user(user_id)
     transcription_array = transcriptions.get_transcriptions()
     return render_template("index.html", transcriptions=transcription_array, user= user)
 
