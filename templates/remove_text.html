@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tekstin poisto</title>
+</head>
+
+<body>
+    <h1>Tekstin poisto</h1>
+
+    <form action="/remove_text_fragment/{{ text_fragment.id }}" method="post">
+        <p>
+            Haluatko varmasti poistaa tekstin id: {{ text_fragment.id }} <br>
+            kohdassa
+            {{ text_fragment.start_ms }} ms ?
+            <br>
+            poistettava teksti: "{{ text_fragment.words }}"
+        </p>
+        <input type="submit" name="continue" value="Jatka" />
+        <input type="submit" name="cancel" value="Peruuta" />
+    </form>
+</body>
+
+</html>

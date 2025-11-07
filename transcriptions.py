@@ -43,7 +43,12 @@ def add_text_fragment(start_ms, words, transcription_id):
     sql = """INSERT INTO text_fragments (start_ms, words, transcription_id) VALUES
              (?, ?, ?)"""
     db.execute(sql, [start_ms, words, transcription_id])
-    
+
+def remove_text_fragment(text_fragment_id):
+    sql = "DELETE FROM text_fragments WHERE id = ?"
+    db.execute(sql, [text_fragment_id])
+
+
     
 def search(query):
     sql = """SELECT t.id, t.start_ms, t.words, t.transcription_id, tr.title
