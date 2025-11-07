@@ -227,4 +227,5 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return "Tunnus luotu"
+    return render_template("registered.html")
+    
