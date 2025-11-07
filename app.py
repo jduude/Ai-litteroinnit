@@ -129,6 +129,18 @@ def remove_transcription(transcription_id):
             transcriptions.remove_transcription(transcription["id"])
     return redirect("/")
 
+@app.route("/remove_transcription_split_text/<int:transcription_id>", methods=["GET", "POST"])
+def remove_transcription_split_text(transcription_id):
+    transcription = transcriptions.get_transcription(transcription_id)
+
+    if request.method == "GET":
+        return render_template("remove_transcription_split_text.html", transcription=transcription)
+
+    if request.method == "POST":
+        if "continue" in request.form:
+            transcriptions.remove_transcription_split_text(transcription["id"])
+    return redirect("/transcriptions" + str(transcription["id"]))
+
 
 @app.route("/edit/<int:transcription_id>", methods=["GET", "POST"])
 def edit_transcription(transcription_id):

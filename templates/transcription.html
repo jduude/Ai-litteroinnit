@@ -40,16 +40,21 @@
         {% endfor %}
 
         {% else %}
-        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragementit</a> <br>
+        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a> <br>
 
         {% endif %}
     </div>
     {% if transcription.user_id == session.user_id %}
     <div>
 
-        <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
-        <a href="/remove/{{ transcription.id }}">Poista</a>
-        </p>
+        <a href="/edit/{{ transcription.id }}">Muokkaa litterointia</a> |
+        <a href="/remove/{{ transcription.id }}">Poista koko litterointi</a>
+        <br>
+        <br>
+        <a href="/remove_transcription_split_text/{{ transcription.id }}">Poista vain aikakoodi rivitetyt
+            tekstit</a>
+
+
         {% endif %}
         <hr />
 

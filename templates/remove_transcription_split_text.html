@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Litteroinnin rivitettyjen tekstien poisto</title>
+</head>
+
+<body>
+    <h1>Litteroinnin rivitettyjen tekstien poisto</h1>
+
+    <form action="/remove_transcription_split_text/{{ transcription.id }}" method="post">
+        <p>
+            Oletko varma, että haluat poistaa kaikki litteroinnin "{{ transcription.title }}" teksti fragmentit?
+        </p>
+        <input type="submit" name="continue" value="Jatka" />
+        <input type="submit" name="cancel" value="Peruuta" />
+    </form>
+</body>
+
+</html>

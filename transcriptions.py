@@ -48,6 +48,11 @@ def remove_text_fragment(text_fragment_id):
     sql = "UPDATE text_fragments SET trashed = 1 WHERE id = ?"
     db.execute(sql, [text_fragment_id])
 
+
+def remove_transcription_split_text(transcription_id):
+    sql = "DELETE FROM text_fragments WHERE transcription_id = ?"
+    db.execute(sql, [transcription_id])
+
 def update_text(id, words):
     sql = "UPDATE text_fragments SET words = ? WHERE id = ?"
     db.execute(sql, [words, id])
