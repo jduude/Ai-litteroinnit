@@ -34,6 +34,16 @@ def get_text_fragments(transcription_id):
     sql = "SELECT id, start_ms, words FROM text_fragments WHERE transcription_id = ?  AND trashed is NULL"
     return db.query(sql, [transcription_id])
 
+def get_text_fragments_paginated( transcription_id, page, page_size):
+    sql = "SELECT id, start_ms, words FROM text_fragments WHERE transcription_id = ?  AND trashed is NULL LIMIT ? OFFSET ?"
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [transcription_id, limit, offset])
+
+def get_text_fragments_count(transcription_id):
+    sql = "SELECT count(id) as count FROM text_fragments WHERE transcription_id = ?  AND trashed is NULL"
+    return db.query(sql, [transcription_id])[0]
+
 def get_text_fragment(text_fragment_id):
     sql = "SELECT id, start_ms, words, transcription_id FROM text_fragments WHERE id = ?"
     return db.query(sql, [text_fragment_id])[0]

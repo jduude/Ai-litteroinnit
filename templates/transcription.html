@@ -30,10 +30,15 @@
     </ul>
     <div>
         {% if text_fragments %}
-        <h3>Aikakoodi tekstit:</h3>
+        <h3>Aikakoodi tekstit sivu {{page}}:</h3>
 
-        <!-- todo pagination -->
-        {% for id, start_sec, start_ms, words in text_fragments[:18] %}
+        <p>
+            <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
+            Sivu {{ page }} / {{ page_count }}
+            <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+        </p>
+
+        {% for id, start_sec, start_ms, words in text_fragments %}
         <div>
             <p><span> <a rel="noreferrer noopener" target="_blank"
                         href="{{transcription.source_path }}&t={{start_sec}}"> {{start_sec}}</a>:</span>
@@ -44,6 +49,13 @@
 
 
         {% endfor %}
+
+
+        <p>
+            <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
+            Sivu {{ page }} / {{ page_count }}
+            <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+        </p>
 
         {% else %}
         <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a> <br>
