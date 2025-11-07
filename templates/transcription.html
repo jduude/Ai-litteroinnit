@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ transcription.title }}</title>
+    <style>
+        .text_id {
+            font-size: 60%;
+            color: rgb(99, 91, 80);
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +38,7 @@
             <p><span> <a rel="noreferrer noopener" target="_blank"
                         href="{{transcription.source_path }}&t={{start_sec}}"> {{start_sec}}</a>:</span>
                 <span>{{words}}</span> | <a href="/edit_text_fragment/{{ id }}">Muokkaa</a>
-                | <a href="/remove_text_fragment/{{ id }}">Poista</a>
+                | <a href="/remove_text_fragment/{{ id }}">Poista</a> | <span class="text_id">{{id}}</span>
             </p>
         </div>
 
