@@ -13,7 +13,10 @@
     <div>
       {% if session.user_id %}
       <h2>Tervetuloa!</h2>
-      <p>Olet kirjautunut sisään käyttäjänä {{ session.user_id}}</p>
+      {% if user.username %}
+      <p>Olet kirjautunut sisään käyttäjänä {{ user.username}}</p>
+
+      {% endif %}
       <hr>
       <h2>Tallennetut litteroinnit</h2>
 
