@@ -13,7 +13,10 @@ CREATE TABLE transcriptions (
     source TEXT,
     genre TEXT,
     raw_content TEXT,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
+    created DATETIME DEFAULT NULL, 
+    last_modified DATETIME DEFAULT NULL
+
 );
 
 CREATE TABLE text_fragments (
