@@ -15,7 +15,8 @@ CREATE TABLE transcriptions (
     raw_content TEXT,
     user_id INTEGER REFERENCES users,
     created DATETIME DEFAULT NULL, 
-    last_modified DATETIME DEFAULT NULL
+    last_modified DATETIME DEFAULT NULL,
+    license TEXT
 
 );
 

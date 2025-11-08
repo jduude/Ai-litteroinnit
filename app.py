@@ -35,8 +35,9 @@ def new_transcription():
     genre = request.form["genre"]
     raw_content = request.form["raw_content"]
     user_id = session["user_id"]
+    license = request.form["license"]
 
-    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id)
+    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id, license)
     return redirect("/transcription/" + str(transcription_id))
 
 
@@ -171,7 +172,8 @@ def edit_transcription(transcription_id):
         source = request.form["source"]
         genre = request.form["genre"]
         raw_content = request.form["raw_content"]
-        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre)
+        license = request.form["license"]
+        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre, license)
         return redirect("/transcription/" + str(transcription["id"]))
 
 

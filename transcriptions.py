@@ -2,24 +2,24 @@ import db
 
 
 def get_transcriptions():
-    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, t.license
              FROM transcriptions t
              ORDER BY t.id DESC"""
     return db.query(sql)
 
 
-def add_transcription(title, source_path, source, genre, raw_content, user_id):
+def add_transcription(title, source_path, source, genre, raw_content, user_id, license):
     sql = """INSERT INTO transcriptions 
-    (title, source_path, source, genre, raw_content, user_id, created, last_modified) 
-    VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
-    db.execute(sql, [title, source_path, source, genre, raw_content, user_id])
+    (title, source_path, source, genre, raw_content, user_id, license, created, last_modified) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
+    db.execute(sql, [title, source_path, source, genre, raw_content, user_id, license])
     transcription_id = db.last_insert_id()
     return transcription_id
 
 
 def get_transcription(transcription_id):
     sql = """SELECT id, title,  source_path, source, 
-        genre, raw_content, user_id, created, last_modified
+        genre, raw_content, user_id, created, last_modified, license
         FROM transcriptions WHERE id = ?"""
     return db.query(sql, [transcription_id])[0]
 
@@ -29,9 +29,10 @@ def remove_transcription(transcription_id):
     db.execute(sql, [transcription_id])
 
 
-def update_transcription(transcription_id, title, source_path, source, genre):
-    sql = "UPDATE transcriptions SET title = ?, source_path = ?, source = ?, genre = ?  WHERE id = ?"
-    db.execute(sql, [title, source_path, source, genre, transcription_id])
+def update_transcription(transcription_id, title, source_path, source, genre, license):
+    sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?, 
+            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?  WHERE id = ?"""
+    db.execute(sql, [title, source_path, source, genre, license, transcription_id])
 
 
 def get_text_fragments(transcription_id):

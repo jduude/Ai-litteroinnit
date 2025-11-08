@@ -24,10 +24,10 @@
             <form action="/new_transcription" method="post">
                 <p>
                     Otsikko:
-                    <input type="text" name="title" />
+                    <input type="text" size="50" name="title" />
                     <br />
                     Äänitiedoston nimi tai url:
-                    <input type="text" name="source_path" />
+                    <input type="text" size="50" name="source_path" />
                     <br />
                     Tekstityksen lähde:
                     <select name="source" id="source">
@@ -38,6 +38,10 @@
                     <br />
                     Lajityyppi:
                     <input type="text" name="genre" />
+
+                    <br />
+                    Lisenssi:
+                    <input type="text" size="50" name="license" />
                 </p>
                 <p>
                     Aikaleimattu teksti (kopioi Word transcribe toiminnon tulos tai youtube tekstitys tähän):<br />
