@@ -33,7 +33,7 @@ Luo tietokannan taulut ja lisää alkutiedot:
 
 ```
 $ sqlite3 database.db < schema.sql
-$ sqlite3 database.db < init.sql
+$ sqlite3 database.db < seed.sql
 ```
 
 seed.sql sisältää kaksi litterointia. Yksi youtubesta ja yksi word transcribesta.
