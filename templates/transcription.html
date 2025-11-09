@@ -27,7 +27,9 @@
 
         <li>Lajityyppi: {{ transcription.genre }}</li>
         <li>Lisenssi: {{ transcription.license }}</li>
-        <li>Raaka sisältö: {{ transcription.raw_content[:50] }}</li>
+        <li>Luotu: {{ transcription.created }}</li>
+        <li>Muokattu: {{ transcription.last_modified }}</li>
+        <li>Raaka sisältö: {{ transcription.raw_content[:50] }} ...</li>
     </ul>
     <div>
         {% if text_fragments %}
