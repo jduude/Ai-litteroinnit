@@ -7,18 +7,17 @@ Esimerkiksi ms word:in tekemät litteroinnit äänitiedostosta.
 
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 * Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan litterointeja.
-* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen
+* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen, lajityyppi tiedosta ja tekstityksen lähteen muodosta (youtube ja ms word tuettu automaattista pilkontaa varten)
 * käyttäjä voi muokata ja korjata automaattisen litteroinnin tekstejä
 * Käyttäjä näkee sovellukseen lisätyt litteroinnit.
 * Käyttäjä pystyy etsimään litteroitujen tekstien sisältöjä
 
 ## TODO
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät litteroinnit.
-* Käyttäjä pystyy valitsemaan litteroinnille yhden tai useamman luokittelun (litteroinnin kieli, äänitiedoston sisällön genre (esim luento).
-* lisää metatietoja litterointiin: äänitiedoston pituudesta, äänitteen päivämäärästä, litteroinnin muokkauspäivämäärät
+* Käyttäjä pystyy valitsemaan litteroinnille useamman luokittelun (esim litteroinnin kieli)
+* lisää metatietoja litterointiin: äänitiedoston pituudesta, äänitteen päivämäärästä 
 * tekstin muokkaus päivämäärä
 * haku äänitiedoston nimellä ja otsikoista
-
 
 
 ## Sovelluksen asennus
