@@ -29,10 +29,10 @@ def remove_transcription(transcription_id):
     db.execute(sql, [transcription_id])
 
 
-def update_transcription(transcription_id, title, source_path, source, genre, license):
+def update_transcription(transcription_id, title, source_path, source, genre, license, raw_content):
     sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?, 
-            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?  WHERE id = ?"""
-    db.execute(sql, [title, source_path, source, genre, license, transcription_id])
+            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?  WHERE id = ?"""
+    db.execute(sql, [title, source_path, source, genre, license, raw_content, transcription_id])
 
 
 def get_text_fragments(transcription_id):

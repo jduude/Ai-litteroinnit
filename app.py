@@ -175,7 +175,7 @@ def edit_transcription(transcription_id):
         genre = request.form["genre"]
         raw_content = request.form["raw_content"]
         license = request.form["license"]
-        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre, license)
+        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre, license, raw_content)
         return redirect("/transcription/" + str(transcription["id"]))
 
 
