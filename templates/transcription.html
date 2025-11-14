@@ -9,6 +9,34 @@
             font-size: 60%;
             color: rgb(99, 91, 80);
         }
+
+        .seconds {
+            font-size: 50%;
+            color: rgb(182, 177, 169);
+            padding: 0;
+            margin: 0;
+        }
+
+        .rows-header-columns {
+            background-color: rgb(230, 223, 212);
+            padding: 0.2rem 0;
+        }
+
+        .rows-header-columns span {}
+
+        .t-row {
+            display: flex;
+            margin-top: 0.2rem;
+        }
+
+        .time-stamps-div {
+            margin-right: 0.4rem;
+            min-width: 5rem;
+        }
+
+        .transcript-row-words {
+            width: 70%;
+        }
     </style>
 </head>
 
@@ -47,38 +75,48 @@
             <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
         </p>
 
-        {% for id, start_sec, start_ms, words in text_fragments %}
-        <div id="t-id-{{id}}">
-            <p><span>
+        <div class="rows-header-columns t-row"">
+            <div class=" time-stamps-div"><span class="time-stamps">
+                <span class="time-string">Aika &nbsp;&nbsp;&nbsp;</span> | <span class="seconds">(sek)</span></span>
+        </div>
+        <div class="transcript-row-words">Sanat</div>
+        <div>|Muokkaus | Poisto | <span class=" text_id">ID</span></div>
+    </div>
 
-                    {% if transcription.source == 'youtube' %}
-                    <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
-                        {{start_sec}}</a>
-                    {% else %}
-                    <span>{{start_sec}}</span>
-                    {% endif %}
-                    :</span>
+    {% for id, start_sec, time_str, start_ms, words in text_fragments %}
+    <div class="t-row" id="t-id-{{id}}">
+        <div class="time-stamps-div"><span class="time-stamps">
 
+                {% if transcription.source == 'youtube' %}
+                <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
+                    {{start_sec}}</a>
+                {% else %}
+                <span class="time-string">{{time_str}}</span> | <span class="seconds">({{start_sec}})</span>
 
-                <span>{{words}}</span> | <a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
-                | <a href="/remove_text_fragment/{{ id }}">Poista</a> | <span class="text_id">{{id}}</span>
-            </p>
+                {% endif %}
+            </span>
         </div>
 
+        <div class="transcript-row-words">{{words}}</div> | <div><a
+                href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
+            | <a href="/remove_text_fragment/{{ id }}">Poista</a> | <span class="text_id">{{id}}</span>
+        </div>
+    </div>
 
-        {% endfor %}
+
+    {% endfor %}
 
 
-        <p>
-            <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
-            Sivu {{ page }} / {{ page_count }}
-            <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
-        </p>
+    <p>
+        <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
+        Sivu {{ page }} / {{ page_count }}
+        <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+    </p>
 
-        {% else %}
-        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a> <br>
+    {% else %}
+    <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a> <br>
 
-        {% endif %}
+    {% endif %}
     </div>
     {% if transcription.user_id == session.user_id %}
     <div>

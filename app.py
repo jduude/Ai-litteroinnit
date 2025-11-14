@@ -3,7 +3,7 @@ import math
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
 import db
-import users, config, transcriptions, text_splitter_help_functions
+import users, config, transcriptions, text_splitter_help_functions, help_functions
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -58,7 +58,7 @@ def show_transcription(transcription_id, page= 1):
         return redirect("/transcription/" + str(transcription_id)+ "/"+ str(page_count))
 
     text_fragments = transcriptions.get_text_fragments_paginated(transcription_id, page, page_size)
-    text_fragments_with_secs= [ ( id, int(start_ms/1000), start_ms, words) for id, start_ms, words in text_fragments]
+    text_fragments_with_secs= [ ( id, int(start_ms/1000), help_functions.convert_seconds_to_hms(int(start_ms/1000)), start_ms, words) for id, start_ms, words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
     return render_template("transcription.html", transcription=transcription,  text_fragments=text_fragments_with_secs, page=page, page_count=page_count )
