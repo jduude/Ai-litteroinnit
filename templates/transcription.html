@@ -48,7 +48,7 @@
         </p>
 
         {% for id, start_sec, start_ms, words in text_fragments %}
-        <div>
+        <div id="t-id-{{id}}">
             <p><span>
 
                     {% if transcription.source == 'youtube' %}
@@ -60,7 +60,7 @@
                     :</span>
 
 
-                <span>{{words}}</span> | <a href="/edit_text_fragment/{{ id }}">Muokkaa</a>
+                <span>{{words}}</span> | <a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
                 | <a href="/remove_text_fragment/{{ id }}">Poista</a> | <span class="text_id">{{id}}</span>
             </p>
         </div>

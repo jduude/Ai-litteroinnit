@@ -112,15 +112,19 @@ def show_search_result_context(id):
 
 @app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
+    return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
 
     if request.method == "GET":
-        return render_template("edit_text_fragment.html", text_fragment=text_fragment)
+        return render_template("edit_text_fragment.html", text_fragment=text_fragment, return_page=return_page)
 
     if request.method == "POST":
+        return_page = request.form["return_page"]
         words = request.form["words"]
         transcriptions.update_text(text_fragment["id"],  words)
-        return redirect("/transcription/" + str(text_fragment["transcription_id"]))
+        page= '/'+ str(return_page) if return_page else ''
+        id_anchor='#t-id-' + str(text_fragment_id)
+        return redirect("/transcription/" + str(text_fragment["transcription_id"]) +page +id_anchor)
 
 
 

@@ -13,8 +13,9 @@
     <p>
       <span> {{text_fragment.id}} </span>
       <span> {{text_fragment.start_ms}} </span>
-      <input type="text" name="words" size="120" value="{{text_fragment.words}}" />
-
+      <!-- <input type="text" name="words" size="120" value="{{text_fragment.words}}" /> -->
+      <textarea name="words" rows="4" cols="90">{{text_fragment.words}}</textarea>
+      <input hidden name="return_page" value="{{return_page}}" />
     </p>
 
     <input type="submit" value="Lähetä" />
