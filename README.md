@@ -2,6 +2,8 @@
 
 Ai avusteisten litterointien hallintasovellus.
 Esimerkiksi ms word:in tekemät litteroinnit äänitiedostosta.
+Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
+
 
 ## Sovelluksen toiminnot
 
