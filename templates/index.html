@@ -4,6 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Litteroinnit</title>
+  <style>
+    .transcription {
+      border-bottom: dashed gray 2px;
+      margin: 0 0 0 0;
+      padding: 0 0 0.4rem 0;
+    }
+
+    .transcription p {
+      margin: 0;
+    }
+
+    .transcription h3 {
+      margin: 0.5rem 0;
+    }
+
+    .transcription .operations {
+      background-color: antiquewhite;
+      width: 10rem;
+      margin: 0.4rem 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,20 +45,20 @@
 
       <hr>
       <h2>Tallennetut litteroinnit</h2>
-
+      <hr>
       {% for transcription in transcriptions %}
-      <div>
-        <p>
+      <div class="transcription">
         <h3>
           <a href="/transcription/{{ transcription.id }}">{{ transcription.title }}</a>
         </h3>
-        </p>
-        <p>{{ transcription.genre }} </p>
-        <p>
+        <p>Lajityyppi: {{ transcription.genre }} </p>
+        <p>Käyttäjä: {{ transcription.username }} </p>
+        <p>Muokattu: {{ transcription.last_modified }} </p>
+        <p class="operations">
           <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
           <a href="/remove/{{ transcription.id }}">Poista</a>
         </p>
-        <hr />
+
       </div>
       {% endfor %}
 
