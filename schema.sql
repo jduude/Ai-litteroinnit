@@ -16,8 +16,9 @@ CREATE TABLE transcriptions (
     user_id INTEGER REFERENCES users,
     created DATETIME DEFAULT NULL, 
     last_modified DATETIME DEFAULT NULL,
-    license TEXT
-
+    license TEXT,
+    record_date DATE NULL,
+    duration_sec INTEGER NULL
 );
 
 CREATE TABLE text_fragments (

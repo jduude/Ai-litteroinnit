@@ -9,4 +9,27 @@ def convert_seconds_to_hms(seconds):
     # Format as h:m:s
     return f"{hours}:{minutes:02}:{secs:02}"
 
+
+def convert_hms_to_seconds(hms):
+    # Split the input string into hours, minutes, and seconds
+    parts = hms.split(':')
+    
+    # Extract hours, minutes, and seconds from the parts
+    if len(parts) == 3:
+        hours = int(parts[0])
+        minutes = int(parts[1])
+        secs = int(parts[2])
+    elif len(parts) == 2:
+        hours = 0
+        minutes = int(parts[0])
+        secs = int(parts[1])
+    elif len(parts) == 1:
+        hours = 0
+        minutes = 0
+        secs = int(parts[0])
+    # Calculate total seconds
+    total_seconds = hours * 3600 + minutes * 60 + secs
+    
+    return total_seconds
+
  

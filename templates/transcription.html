@@ -54,8 +54,9 @@
         <li>Id: {{ transcription.id }}</li>
         <li>Tiedosto tai url: <a href="{{ transcription.source_path }}">{{ transcription.source_path }}</a></li>
         <li>Lähde: {{ transcription.source }}</li>
-
         <li>Lajityyppi: {{ transcription.genre }}</li>
+        <li>Tallenteen päivämäärä: {{ transcription.record_date }}</li>
+        <li>Pituus: {{ convert_seconds_to_hms(transcription.duration_sec) }}</li>
         <li>Lisenssi: {{ transcription.license }}</li>
         <li>Luotu: {{ transcription.created }}</li>
         <li>Muokattu: {{ transcription.last_modified }}</li>

@@ -37,9 +37,13 @@ def new_transcription():
     raw_content = request.form["raw_content"]
     user_id = session["user_id"]
     license = request.form["license"]
+    record_date = request.form["record_date"] 
+    duration_sec = request.form["duration_sec"]
+    if ':' in duration_sec:
+        duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
 
     transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id,
-                                                        license)
+                                                        license, record_date, duration_sec)
     return redirect("/transcription/" + str(transcription_id))
 
 
@@ -65,7 +69,8 @@ def show_transcription(transcription_id, page=1):
         id, start_ms, words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
-    return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs,
+    return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
+                           convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
                            page=page, page_count=page_count)
 
 
@@ -198,8 +203,12 @@ def edit_transcription(transcription_id):
         genre = request.form["genre"]
         raw_content = request.form["raw_content"]
         license = request.form["license"]
+        record_date = request.form["record_date"]
+        duration_sec = request.form["duration_sec"]
+        if ':' in duration_sec:
+            duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
         transcriptions.update_transcription(transcription["id"], title, source_path, source, genre, license,
-                                            raw_content)
+                                            raw_content, record_date, duration_sec)
         return redirect("/transcription/" + str(transcription["id"]))
 
 
