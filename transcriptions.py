@@ -3,26 +3,26 @@ import db
 
 def get_transcriptions():
     sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, 
-             t.license, t.record_date, t.duration_sec, u.id, u.username  
+             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id, u.username  
              FROM transcriptions t
              JOIN users u ON u.id =  t.user_id 
              ORDER BY t.id DESC"""
     return db.query(sql)
 
 
-def add_transcription(title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec):
+def add_transcription(title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec, extra_meta_data):
     sql = """INSERT INTO transcriptions 
     (title, source_path, source, genre, raw_content, user_id, license, 
-     record_date, duration_sec, created, last_modified) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
-    db.execute(sql, [title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec])
+     record_date, duration_sec, extra_meta_data, created, last_modified) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
+    db.execute(sql, [title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec, extra_meta_data])
     transcription_id = db.last_insert_id()
     return transcription_id
 
 
 def get_transcription(transcription_id):
     sql = """SELECT id, title,  source_path, source, 
-        genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec
+        genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec, extra_meta_data
         FROM transcriptions WHERE id = ?"""
     return db.query(sql, [transcription_id])[0]
 
@@ -32,10 +32,11 @@ def remove_transcription(transcription_id):
     db.execute(sql, [transcription_id])
 
 
-def update_transcription(transcription_id, title, source_path, source, genre, license, raw_content, record_date, duration_sec):
+def update_transcription(transcription_id, title, source_path, source, genre, license, raw_content, record_date, duration_sec, extra_meta_data):
     sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?, 
-            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?,  record_date= ?, duration_sec= ?  WHERE id = ?"""
-    db.execute(sql, [title, source_path, source, genre, license, raw_content,  record_date, duration_sec, transcription_id])
+            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?,  record_date= ?, 
+            duration_sec= ?, extra_meta_data= ?  WHERE id = ?"""
+    db.execute(sql, [title, source_path, source, genre, license, raw_content,  record_date, duration_sec, extra_meta_data, transcription_id])
 
 
 def get_text_fragments(transcription_id):

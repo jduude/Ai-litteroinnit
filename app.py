@@ -39,11 +39,12 @@ def new_transcription():
     license = request.form["license"]
     record_date = request.form["record_date"] 
     duration_sec = request.form["duration_sec"]
+    extra_meta_data = request.form["extra_meta_data"]
     if ':' in duration_sec:
         duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
 
     transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id,
-                                                        license, record_date, duration_sec)
+                                                        license, record_date, duration_sec, extra_meta_data)
     return redirect("/transcription/" + str(transcription_id))
 
 
@@ -205,10 +206,11 @@ def edit_transcription(transcription_id):
         license = request.form["license"]
         record_date = request.form["record_date"]
         duration_sec = request.form["duration_sec"]
+        extra_meta_data = request.form["extra_meta_data"]
         if ':' in duration_sec:
             duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
         transcriptions.update_transcription(transcription["id"], title, source_path, source, genre, license,
-                                            raw_content, record_date, duration_sec)
+                                            raw_content, record_date, duration_sec, extra_meta_data)
         return redirect("/transcription/" + str(transcription["id"]))
 
 

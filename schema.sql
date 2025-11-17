@@ -18,7 +18,8 @@ CREATE TABLE transcriptions (
     last_modified DATETIME DEFAULT NULL,
     license TEXT,
     record_date DATE NULL,
-    duration_sec INTEGER NULL
+    duration_sec INTEGER NULL,
+    extra_meta_data TEXT
 );
 
 CREATE TABLE text_fragments (
