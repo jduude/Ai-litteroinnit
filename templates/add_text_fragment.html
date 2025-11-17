@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Litteroinnin muokkaus</title>
+</head>
+
+<body>
+  <h2>Litteroinnin muokkaus</h2>
+  <p>Lisää uusi ajastettu tekstitys lause</p>
+
+  <form action="/add_text_fragment/{{ transcription_id }}" method="post">
+    <p>
+      <span> {{transcription_id}} </span>
+      <br>
+      Aloitusaika (h:m:sec):
+      <input name="start_time" />
+      <br>
+      Uusi teksti:<br>
+      <textarea name="words" rows="4" cols="90"> </textarea>
+      <input hidden name="return_page" value="{{return_page}}" />
+    </p>
+
+    <input type="submit" value="Lähetä" />
+  </form>
+</body>
+
+</html>

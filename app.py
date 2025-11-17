@@ -91,6 +91,25 @@ def show_transcription(transcription_id, page=1):
                            page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, audio_file_path=audio_file_path, audiotime=audiotime)
 
 
+@app.route("/add_text_fragment/<int:transcription_id>", methods=["GET", "POST"])
+def add_text_fragment(transcription_id):
+    return_page = request.args.get("return_page")
+    if request.method == "GET":
+        return render_template("add_text_fragment.html", transcription_id=transcription_id, return_page=return_page)
+    if request.method == "POST":
+        return_page = request.form["return_page"]
+        start_time = request.form["start_time"]
+        start_ms = help_functions.convert_hms_to_seconds(start_time)  * 1000
+  
+        words = request.form["words"]
+        transcriptions.add_text_fragment(start_ms, words, transcription_id)
+
+        page = '/' + str(return_page) if return_page else ''
+        #id_anchor = '#t-id-' + str(text_fragment_id)
+        return redirect("/transcription/" + str(transcription_id) + page) # + id_anchor)
+
+
+
 @app.route("/text_fragments/<int:transcription_id>")
 def text_fragments(transcription_id):
     text_fragments = transcriptions.get_text_fragments(transcription_id)
