@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import math
 from flask import Flask, redirect, render_template, request, session, abort
@@ -63,6 +64,7 @@ def show_transcription(transcription_id, page=1):
         return redirect("/transcription/" + str(transcription_id) + "/1")
     if page > page_count:
         return redirect("/transcription/" + str(transcription_id) + "/" + str(page_count))
+    
 
     text_fragments = transcriptions.get_text_fragments_paginated(transcription_id, page, page_size)
     text_fragments_with_secs = [
@@ -70,9 +72,16 @@ def show_transcription(transcription_id, page=1):
         id, start_ms, words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
+
+    source_path=transcription['source_path']
+    source_path_file_name = os.path.basename(source_path)
+    local_audio_file_copy = os.path.join('static/audio', source_path_file_name)
+    local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
+    audio_file_path = f"audio/{source_path_file_name}"
+
     return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
                            convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
-                           page=page, page_count=page_count)
+                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, audio_file_path=audio_file_path)
 
 
 @app.route("/text_fragments/<int:transcription_id>")

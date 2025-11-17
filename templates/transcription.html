@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <title>{{ transcription.title }}</title>
     <style>
+        audio {
+            width: 90%;
+        }
+
         .text_id {
             font-size: 60%;
             color: rgb(99, 91, 80);
@@ -70,6 +74,18 @@
         </li>
     </ul>
     <p><a href="/edit/{{ transcription.id }}">Muokkaa</a> </p>
+    <hr>
+    {% if local_audio_file_copy_exists %}
+
+    <div>
+        <audio controls>
+            <source src="{{url_for('static', filename=audio_file_path)}}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    {% endif %}
+    <hr>
+
     <div>
         {% if text_fragments %}
         <h3>Aikakoodi tekstit sivu {{page}}:</h3>
