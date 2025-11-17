@@ -146,6 +146,14 @@ def search():
     results = transcriptions.search(query) if query else []
     return render_template("search.html", query=query, results=results)
 
+@app.route("/search_titles")
+def search_titles():
+    query = request.args.get("query")
+    if not query:
+        query = ""
+    results = transcriptions.search_titles(query) if query else []
+    return render_template("search.html", query=query, title_search_results=results)
+
 
 @app.route("/show_search_result_context/<int:id>")
 def show_search_result_context(id):

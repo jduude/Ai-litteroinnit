@@ -27,7 +27,7 @@
         <div>
             <form action="/search" method="get">
                 <p>
-                    Hakusana:
+                    Hae litteroinneista hakusanalla:
                     {% if query %}
                     <input type="text" name="query" value="{{ query }}" />
                     {% else %}
@@ -36,11 +36,25 @@
                 </p>
                 <input type="submit" value="Hae" />
             </form>
-        </div <div>
+        </div>
+        <div>
+            <form action="/search_titles" method="get">
+                <p>
+                    Hae otsikoista:
+                    {% if query %}
+                    <input type="text" name="query" value="{{ query }}" />
+                    {% else %}
+                    <input type="text" name="query" />
+                    {% endif %}
+                </p>
+                <input type="submit" value="Hae" />
+            </form>
+        </div>
         {% if query %}
         <hr />
         <h2>Tulokset</h2>
-
+        {% if results %}
+        <h3>Hakutulokset tekteistä</h3>
         <ul>
             {% for result in results %}
             <li>
@@ -52,6 +66,22 @@
             </li>
             {% endfor %}
         </ul>
+        {% endif %}
+
+
+        {% if title_search_results %}
+        <h3>Hakutulokset otsikoista</h3>
+        <ul>
+            {% for result in title_search_results %}
+            <li>
+                <a href="/transcription/{{ result.id }}">{{ result.id }}</a>
+                <span class="result_text"> {{ result.title }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
         {% endif %}
     </div>
     </div>
