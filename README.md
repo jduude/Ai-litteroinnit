@@ -9,7 +9,7 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 * Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan litterointeja.
-* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen, lajityyppi tiedosta ja tekstityksen lähteen muodosta (youtube ja ms word tuettu automaattista pilkontaa varten)
+* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen, lajityyppi tiedosta ja tekstityksen lähteen muodosta (youtube, WebVTT ja ms word tuettu automaattista pilkontaa varten)
 * käyttäjä voi muokata ja korjata automaattisen litteroinnin tekstejä
 * Käyttäjä näkee sovellukseen lisätyt litteroinnit.
 * Käyttäjä pystyy etsimään litteroitujen tekstien sisältöjä
@@ -49,7 +49,7 @@ $ flask run
 
 ## Käyttöohjeet
 
-Toimii tällä hetkellä Youtube automaattisilla tekstityksillä ja word:in transcribe toiminnolla. 
+Toimii tällä hetkellä Youtube automaattisilla tekstityksillä, WebVTT formaatilla ja word:in transcribe toiminnolla. 
 
 ### Youtube  
 kopioi teksti esim Chrome dev toolista.
