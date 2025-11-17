@@ -43,6 +43,13 @@
             width: 70%;
             padding: 0 0.6rem;
         }
+
+        .create-timed-texts {
+            background-color: rgb(217, 198, 215);
+            width: 9rem;
+            padding: 0.3rem 1rem;
+            margin: 20px 0;
+        }
     </style>
 </head>
 
@@ -143,7 +150,9 @@
     </p>
 
     {% else %}
-    <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a> <br>
+    <div class="create-timed-texts">
+        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a>
+    </div>
 
     {% endif %}
     </div>
