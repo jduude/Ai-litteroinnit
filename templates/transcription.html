@@ -77,9 +77,9 @@
     <hr>
     {% if local_audio_file_copy_exists %}
 
-    <div>
+    <div id="audio-player">
         <audio controls>
-            <source src="{{url_for('static', filename=audio_file_path)}}" type="audio/mpeg">
+            <source src="{{url_for('static', filename=audio_file_path)}}#t={{audiotime}}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
@@ -112,7 +112,13 @@
                 <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
                     {{start_sec}}</a>
                 {% else %}
-                <span class="time-string">{{time_str}}</span> | <span class="seconds">({{start_sec}})</span>
+                {% if local_audio_file_copy_exists %}
+                <a href="/transcription/{{ transcription.id }}/{{ page }}?audiotime={{time_str}}#audio-player"> <span
+                        class="time-string">{{time_str}}</span></a>
+                {% else %}
+                <span class="time-string">{{time_str}}</span>
+                {% endif %}
+                | <span class="seconds">({{start_sec}})</span>
 
                 {% endif %}
             </span>

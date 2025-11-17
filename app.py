@@ -53,7 +53,7 @@ def new_transcription():
 @app.route("/transcription/<int:transcription_id>/<int:page>")
 def show_transcription(transcription_id, page=1):
     page_size = 20
-
+    audiotime = request.args.get('audiotime')
     text_fragments_count = transcriptions.get_text_fragments_count(transcription_id)
     # text_fragments_count = len(text_fragments)
     text_fragments_count = text_fragments_count["count"]
@@ -88,7 +88,7 @@ def show_transcription(transcription_id, page=1):
 
     return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
                            convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
-                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, audio_file_path=audio_file_path)
+                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, audio_file_path=audio_file_path, audiotime=audiotime)
 
 
 @app.route("/text_fragments/<int:transcription_id>")
