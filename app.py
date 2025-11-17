@@ -1,6 +1,6 @@
 import sqlite3
 import math
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash
 import db
 import users, config, transcriptions, text_splitter_help_functions, help_functions
@@ -149,6 +149,9 @@ def remove_text_fragment(text_fragment_id):
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
     transcription = transcriptions.get_transcription(transcription_id)
+
+    if transcription["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
         return render_template("remove.html", transcription=transcription)
