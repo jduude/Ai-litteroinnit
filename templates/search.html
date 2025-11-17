@@ -17,6 +17,11 @@
             color: #777;
             font-size: 80%;
         }
+
+        .search-section {
+            border-bottom: #777 solid 2px;
+            padding-bottom: 1rem;
+        }
     </style>
 </head>
 
@@ -24,7 +29,7 @@
     <div>
 
         <h2>Haku</h2>
-        <div>
+        <div class="search-section">
             <form action="/search" method="get">
                 <p>
                     Hae litteroinneista hakusanalla:
@@ -37,7 +42,7 @@
                 <input type="submit" value="Hae" />
             </form>
         </div>
-        <div>
+        <div class="search-section">
             <form action="/search_titles" method="get">
                 <p>
                     Hae otsikoista:
@@ -50,8 +55,21 @@
                 <input type="submit" value="Hae" />
             </form>
         </div>
+        <div class="search-section">
+            <form action="/search_file_name" method="get">
+                <p>
+                    Hae tiedostonimellä:
+                    {% if query %}
+                    <input type="text" name="query" value="{{ query }}" />
+                    {% else %}
+                    <input type="text" name="query" />
+                    {% endif %}
+                </p>
+                <input type="submit" value="Hae" />
+            </form>
+        </div>
         {% if query %}
-        <hr />
+
         <h2>Tulokset</h2>
         {% if results %}
         <h3>Hakutulokset tekteistä</h3>
@@ -70,12 +88,13 @@
 
 
         {% if title_search_results %}
-        <h3>Hakutulokset otsikoista</h3>
+        <h3>Litterointi hakutulokset </h3>
         <ul>
             {% for result in title_search_results %}
             <li>
                 <a href="/transcription/{{ result.id }}">{{ result.id }}</a>
                 <span class="result_text"> {{ result.title }} </span>
+                <span class="result_text"> {{ result.source_path }} </span>
             </li>
             {% endfor %}
         </ul>

@@ -101,6 +101,15 @@ def search_titles(query):
             """
     return db.query(sql, ["%" + query + "%"])
 
+def search_file_name(query):
+    sql = """SELECT id, title,  source_path, source, 
+                genre, raw_content, user_id, created, last_modified, license, 
+                record_date, duration_sec, extra_meta_data
+             FROM transcriptions  
+             WHERE  source_path LIKE ?
+            """
+    return db.query(sql, ["%" + query + "%"])
+
 
 def get_text_fragment_context(id):
     start = id - 5
