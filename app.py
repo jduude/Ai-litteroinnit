@@ -20,12 +20,13 @@ def index():
         user_id = session["user_id"]
         user = users.get_user(user_id)
     transcription_array = transcriptions.get_transcriptions()
-    return render_template("index.html", transcriptions=transcription_array, user= user)
+    return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
 @app.route("/create_transcription", methods=["GET"])
 def create_transcription():
     return render_template("create.html")
+
 
 @app.route("/new_transcription", methods=["POST"])
 def new_transcription():
@@ -37,36 +38,41 @@ def new_transcription():
     user_id = session["user_id"]
     license = request.form["license"]
 
-    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id, license)
+    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id,
+                                                        license)
     return redirect("/transcription/" + str(transcription_id))
 
 
 @app.route("/transcription/<int:transcription_id>")
 @app.route("/transcription/<int:transcription_id>/<int:page>")
-def show_transcription(transcription_id, page= 1):
+def show_transcription(transcription_id, page=1):
     page_size = 20
-  
+
     text_fragments_count = transcriptions.get_text_fragments_count(transcription_id)
     # text_fragments_count = len(text_fragments)
-    text_fragments_count = text_fragments_count["count"] 
-    page_count = math.ceil(text_fragments_count  / page_size)
+    text_fragments_count = text_fragments_count["count"]
+    page_count = math.ceil(text_fragments_count / page_size)
     page_count = max(page_count, 1)
     print(page_count, text_fragments_count)
     if page < 1:
-        return redirect("/transcription/" + str(transcription_id)+"/1")
+        return redirect("/transcription/" + str(transcription_id) + "/1")
     if page > page_count:
-        return redirect("/transcription/" + str(transcription_id)+ "/"+ str(page_count))
+        return redirect("/transcription/" + str(transcription_id) + "/" + str(page_count))
 
     text_fragments = transcriptions.get_text_fragments_paginated(transcription_id, page, page_size)
-    text_fragments_with_secs= [ ( id, int(start_ms/1000), help_functions.convert_seconds_to_hms(int(start_ms/1000)), start_ms, words) for id, start_ms, words in text_fragments]
+    text_fragments_with_secs = [
+        (id, int(start_ms / 1000), help_functions.convert_seconds_to_hms(int(start_ms / 1000)), start_ms, words) for
+        id, start_ms, words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
-    return render_template("transcription.html", transcription=transcription,  text_fragments=text_fragments_with_secs, page=page, page_count=page_count )
+    return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs,
+                           page=page, page_count=page_count)
+
 
 @app.route("/text_fragments/<int:transcription_id>")
 def text_fragments(transcription_id):
     text_fragments = transcriptions.get_text_fragments(transcription_id)
-    text_fragments_with_secs= [ ( id, int(start_ms/1000), start_ms, words) for id, start_ms, words in text_fragments]
+    text_fragments_with_secs = [(id, int(start_ms / 1000), start_ms, words) for id, start_ms, words in text_fragments]
     transcription = transcriptions.get_transcription(transcription_id)
     print(len(text_fragments))
     if len(text_fragments) > 0:
@@ -74,7 +80,7 @@ def text_fragments(transcription_id):
                                text_fragments=text_fragments_with_secs)
 
     raw_content = transcription['raw_content']
-    test_fragments_with_timestamps= []
+    test_fragments_with_timestamps = []
     if transcription['source'] == 'youtube':
         test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(raw_content)
     elif transcription['source'] == 'word':
@@ -82,13 +88,14 @@ def text_fragments(transcription_id):
     elif transcription['source'] == 'webvtt':
         test_fragments_with_timestamps = text_splitter_help_functions.split_web_vtt(raw_content)
     else:
-        print(  transcription['source'],  " text source not supported")
+        print(transcription['source'], " text source not supported")
 
     transcription_id = transcription['id']
     for start_ms, words in test_fragments_with_timestamps:
-        transcriptions.add_text_fragment( start_ms, words, transcription_id )
+        transcriptions.add_text_fragment(start_ms, words, transcription_id)
 
     return redirect("/transcription/" + str(transcription["id"]))
+
 
 @app.route("/search")
 def search():
@@ -98,17 +105,19 @@ def search():
     results = transcriptions.search(query) if query else []
     return render_template("search.html", query=query, results=results)
 
+
 @app.route("/show_search_result_context/<int:id>")
 def show_search_result_context(id):
-
-    text_context=transcriptions.get_text_fragment_context(id)
-    title= ""
+    text_context = transcriptions.get_text_fragment_context(id)
+    title = ""
     transcription_id = None
     if len(text_context) > 0:
-        title= text_context[0]['title']
-        transcription_id= text_context[0]['transcription_id']
-   
-    return render_template("show_search_result_context.html", text_context=text_context, title=title, transcription_id=transcription_id, id=id)
+        title = text_context[0]['title']
+        transcription_id = text_context[0]['transcription_id']
+
+    return render_template("show_search_result_context.html", text_context=text_context, title=title,
+                           transcription_id=transcription_id, id=id)
+
 
 @app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
@@ -121,30 +130,30 @@ def edit_text_fragment(text_fragment_id):
     if request.method == "POST":
         return_page = request.form["return_page"]
         words = request.form["words"]
-        transcriptions.update_text(text_fragment["id"],  words)
-        page= '/'+ str(return_page) if return_page else ''
-        id_anchor='#t-id-' + str(text_fragment_id)
-        return redirect("/transcription/" + str(text_fragment["transcription_id"]) +page +id_anchor)
-
+        transcriptions.update_text(text_fragment["id"], words)
+        page = '/' + str(return_page) if return_page else ''
+        id_anchor = '#t-id-' + str(text_fragment_id)
+        return redirect("/transcription/" + str(text_fragment["transcription_id"]) + page + id_anchor)
 
 
 @app.route("/remove_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def remove_text_fragment(text_fragment_id):
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
-    transcription_id=text_fragment["transcription_id"]
+    transcription_id = text_fragment["transcription_id"]
     if request.method == "GET":
         return render_template("remove_text.html", text_fragment=text_fragment, return_page=return_page)
 
     if request.method == "POST":
         return_page = request.form["return_page"]
-        page= '/'+ str(return_page) if return_page else ''
-        id_anchor=''
+        page = '/' + str(return_page) if return_page else ''
+        id_anchor = ''
         if "continue" in request.form:
             transcriptions.remove_text_fragment(text_fragment["id"])
         else:
-            id_anchor='#t-id-' + str(text_fragment_id)
-    return redirect("/transcription/"  + str(transcription_id)+page +id_anchor)
+            id_anchor = '#t-id-' + str(text_fragment_id)
+    return redirect("/transcription/" + str(transcription_id) + page + id_anchor)
+
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
@@ -160,6 +169,7 @@ def remove_transcription(transcription_id):
         if "continue" in request.form:
             transcriptions.remove_transcription(transcription["id"])
     return redirect("/")
+
 
 @app.route("/remove_transcription_split_text/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription_split_text(transcription_id):
@@ -188,7 +198,8 @@ def edit_transcription(transcription_id):
         genre = request.form["genre"]
         raw_content = request.form["raw_content"]
         license = request.form["license"]
-        transcriptions.update_transcription(transcription["id"],  title, source_path, source, genre, license, raw_content)
+        transcriptions.update_transcription(transcription["id"], title, source_path, source, genre, license,
+                                            raw_content)
         return redirect("/transcription/" + str(transcription["id"]))
 
 
@@ -245,11 +256,12 @@ def create():
         return "VIRHE: tunnus on jo varattu"
 
     return render_template("registered.html")
-    
+
 
 def require_login():
     if "user_id" not in session:
         abort(403)
+
 
 @app.route("/logout")
 def logout():
