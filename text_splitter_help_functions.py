@@ -58,16 +58,10 @@ def split_web_vtt(raw_contents):
 
 
 def split_word_transcription(raw_contents):
-    pattern = r'(\d{2}:\d{2}:\d{2}\r?\n.*?\n)'
-    result = re.findall(pattern, raw_contents)
-    result_array = [timed_text.split("\n") for timed_text in result]
-    result_array_fixed = [[rItem for rItem in r if rItem != ''] for r in result_array]
-
-    # fail early in development
-    assert [r for r in result_array_fixed if len(r) != 2] == []
-
-    test_fragments_with_timestamps = [(hhmmss_to_milliseconds(time_str), words.strip()) for time_str, words in
-                                      result_array_fixed]
+    pattern = r'(\d{2}:\d{2}:\d{2})\r?\n((?:.|\r?\n)*?)(?=\r?\n\d{2}:\d{2}:\d{2}\r?\n|$)'
+    matches = re.findall(pattern, raw_contents.strip())
+    result_array = [[timestamp, part.strip()] for timestamp, part in matches]
+    test_fragments_with_timestamps = [(hhmmss_to_milliseconds(time_str), words.strip()) for time_str, words in result_array ]
     return test_fragments_with_timestamps
 
 
