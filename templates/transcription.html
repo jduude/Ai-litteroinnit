@@ -85,7 +85,7 @@
     {% if local_audio_file_copy_exists %}
 
     <div id="audio-player">
-        <audio controls>
+        <audio controls autoplay>
             <source src="{{url_for('static', filename=audio_file_path)}}#t={{audiotime}}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
