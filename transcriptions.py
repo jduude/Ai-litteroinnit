@@ -3,7 +3,7 @@ import db
 
 def get_transcriptions():
     sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, 
-             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id, u.username  
+             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username  
              FROM transcriptions t
              JOIN users u ON u.id =  t.user_id 
              ORDER BY t.id DESC"""

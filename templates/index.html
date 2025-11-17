@@ -57,8 +57,10 @@
         <p>Käyttäjä: {{ transcription.username }} </p>
         <p>Muokattu: {{ transcription.last_modified }} </p>
         <p class="operations">
-          <a href="/edit/{{ transcription.id }}">Muokkaa</a> |
-          <a href="/remove/{{ transcription.id }}">Poista</a>
+          <a href="/edit/{{ transcription.id }}">Muokkaa</a>
+          {% if session.user_id == transcription.user_id %}
+          | <a href="/remove/{{ transcription.id }}">Poista</a>
+          {% endif %}
         </p>
 
       </div>
