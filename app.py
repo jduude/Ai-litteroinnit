@@ -29,6 +29,23 @@ def index():
     return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
+ 
+@app.route("/transcriptions_by_genre/<string:genre>")
+def transcriptions_by_genre(genre):
+    print(genre)
+    return redirect("/") 
+ 
+@app.route("/transcriptions_by_source/<string:source>")
+def transcriptions_by_source(source):
+    print(source)
+    return redirect("/")
+
+@app.route("/transcriptions_by_user/<int:user_id>")
+def transcriptions_by_user(user_id):
+    print(user_id)
+    return redirect("/")
+
+
 @app.route("/create_transcription", methods=["GET"])
 def create_transcription():
     return render_template("create.html")

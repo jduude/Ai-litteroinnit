@@ -22,7 +22,8 @@
 
     <ul>
       {% for genre_stat in genre_stats %}
-      <li> <a href="/transcription/">{{genre_stat.genre}} </a> : {{genre_stat.count}} </li>
+      <li> <a href="/transcriptions_by_genre/{{genre_stat.genre}}">{{genre_stat.genre}} </a> : {{genre_stat.count}}
+      </li>
       {% endfor %}
     </ul>
 
@@ -32,7 +33,8 @@
 
     <ul>
       {% for source_stat in source_stats %}
-      <li> <a href="/transcription/">{{source_stat.source}} </a> : {{source_stat.count}} </li>
+      <li> <a href="/transcriptions_by_source/{{source_stat.source}}">{{source_stat.source}} </a> :
+        {{source_stat.count}} </li>
       {% endfor %}
     </ul>
 
@@ -42,7 +44,8 @@
 
     <ul>
       {% for user_stat in user_stats %}
-      <li> <a href="/transcription/">{{user_stat.username}} </a> : {{user_stat.count}} </li>
+      <li> <a href="/transcriptions_by_user/{{user_stat.user_id}}">{{user_stat.username}} </a> : {{user_stat.count}}
+      </li>
       {% endfor %}
     </ul>
 
