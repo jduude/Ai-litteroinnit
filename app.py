@@ -152,27 +152,27 @@ def text_fragments(transcription_id):
 
 @app.route("/search")
 def search():
-    query = request.args.get("query")
-    if not query:
-        query = ""
-    results = transcriptions.search(query) if query else []
-    return render_template("search.html", query=query, results=results)
+    text_query = request.args.get("query")
+    if not text_query:
+        text_query = ""
+    results = transcriptions.search(text_query) if text_query else []
+    return render_template("search.html", text_query=text_query, results=results)
 
 @app.route("/search_titles")
 def search_titles():
-    query = request.args.get("query")
-    if not query:
-        query = ""
-    results = transcriptions.search_titles(query) if query else []
-    return render_template("search.html", query=query, title_search_results=results)
+    title_query = request.args.get("query")
+    if not title_query:
+        title_query = ""
+    results = transcriptions.search_titles(title_query) if title_query else []
+    return render_template("search.html", title_query=title_query, title_search_results=results)
 
 @app.route("/search_file_name")
 def search_file_name():
-    query = request.args.get("query")
-    if not query:
-        query = ""
-    results = transcriptions.search_file_name(query) if query else []
-    return render_template("search.html", query=query, title_search_results=results)
+    file_name_query = request.args.get("query")
+    if not file_name_query:
+        file_name_query = ""
+    results = transcriptions.search_file_name(file_name_query) if file_name_query else []
+    return render_template("search.html", file_name_query=file_name_query, title_search_results=results)
 
 
 @app.route("/show_search_result_context/<int:id>")
