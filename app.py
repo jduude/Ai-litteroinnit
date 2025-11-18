@@ -18,6 +18,11 @@ app.config['MAX_CONTENT_LENGTH'] = None
 app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     user = None
@@ -32,29 +37,34 @@ def index():
 # tobe implemented
 @app.route("/transcriptions_by_genre/<string:genre>")
 def transcriptions_by_genre(genre):
+    require_login()
     print(genre)
     return redirect("/") 
  
 # tobe implemented
 @app.route("/transcriptions_by_source/<string:source>")
 def transcriptions_by_source(source):
+    require_login()
     print(source)
     return redirect("/")
 
 # tobe implemented
 @app.route("/transcriptions_by_user/<int:user_id>")
 def transcriptions_by_user(user_id):
+    require_login()
     print(user_id)
     return redirect("/")
 
 
 @app.route("/create_transcription", methods=["GET"])
 def create_transcription():
+    require_login()
     return render_template("create.html")
 
 
 @app.route("/new_transcription", methods=["POST"])
 def new_transcription():
+    require_login()
     title = request.form["title"]
     source_path = request.form["source_path"]
     source = request.form["source"]
@@ -93,6 +103,7 @@ def new_transcription():
 @app.route("/transcription/<int:transcription_id>")
 @app.route("/transcription/<int:transcription_id>/<int:page>")
 def show_transcription(transcription_id, page=1):
+    require_login()
     page_size = 20
     audiotime = request.args.get('audiotime')
     text_fragments_count = transcriptions.get_text_fragments_count(transcription_id)
@@ -135,6 +146,7 @@ def show_transcription(transcription_id, page=1):
 
 @app.route("/add_text_fragment/<int:transcription_id>", methods=["GET", "POST"])
 def add_text_fragment(transcription_id):
+    require_login()
     return_page = request.args.get("return_page")
     if request.method == "GET":
         return render_template("add_text_fragment.html", transcription_id=transcription_id, return_page=return_page)
@@ -155,7 +167,8 @@ def add_text_fragment(transcription_id):
 
 
 @app.route("/text_fragments/<int:transcription_id>")
-def text_fragments(transcription_id):
+def generate_text_fragments(transcription_id):
+    require_login()
     text_fragments = transcriptions.get_text_fragments(transcription_id)
     text_fragments_with_secs = [(id, int(start_ms / 1000), start_ms, words) for id, start_ms, words in text_fragments]
     transcription = transcriptions.get_transcription(transcription_id)
@@ -188,6 +201,7 @@ def text_fragments(transcription_id):
 
 @app.route("/search")
 def search():
+    require_login()
     text_query = request.args.get("query")
     if not text_query:
         text_query = ""
@@ -196,6 +210,7 @@ def search():
 
 @app.route("/search_titles")
 def search_titles():
+    require_login()
     title_query = request.args.get("query")
     if not title_query:
         title_query = ""
@@ -204,6 +219,7 @@ def search_titles():
 
 @app.route("/search_file_name")
 def search_file_name():
+    require_login()
     file_name_query = request.args.get("query")
     if not file_name_query:
         file_name_query = ""
@@ -213,6 +229,7 @@ def search_file_name():
 
 @app.route("/show_search_result_context/<int:id>")
 def show_search_result_context(id):
+    require_login()
     text_context = transcriptions.get_text_fragment_context(id)
     title = ""
     transcription_id = None
@@ -226,6 +243,7 @@ def show_search_result_context(id):
 
 @app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
+    require_login()
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
  
@@ -246,6 +264,7 @@ def edit_text_fragment(text_fragment_id):
 
 @app.route("/remove_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
 def remove_text_fragment(text_fragment_id):
+    require_login()
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
     if not text_fragment:
@@ -267,6 +286,7 @@ def remove_text_fragment(text_fragment_id):
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
+    require_login()
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
@@ -284,6 +304,7 @@ def remove_transcription(transcription_id):
 
 @app.route("/remove_transcription_split_text/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription_split_text(transcription_id):
+    require_login()
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
@@ -298,6 +319,7 @@ def remove_transcription_split_text(transcription_id):
 
 @app.route("/edit/<int:transcription_id>", methods=["GET", "POST"])
 def edit_transcription(transcription_id):
+    require_login()
     transcription = transcriptions.get_transcription(transcription_id)
 
     if request.method == "GET":
@@ -392,11 +414,6 @@ def create():
     return render_template("registered.html")
 
 
-def require_login():
-    if "user_id" not in session:
-        abort(403)
-
-
 @app.route("/logout")
 def logout():
     require_login()
@@ -406,6 +423,7 @@ def logout():
 
 @app.route("/stats")
 def stats():
+    require_login()
     duplicates = transcriptions.get_duplicate_files()
     genre_stats = transcriptions.get_genre_stats()
     source_stats = transcriptions.get_source_stats()
