@@ -389,4 +389,5 @@ def logout():
 def stats():
     duplicates = transcriptions.get_duplicate_files()
     genre_stats = transcriptions.get_genre_stats()
-    return render_template("statistics.html", duplicates=duplicates, genre_stats=genre_stats)
+    source_stats = transcriptions.get_source_stats()
+    return render_template("statistics.html", duplicates=duplicates, genre_stats=genre_stats, source_stats=source_stats)
