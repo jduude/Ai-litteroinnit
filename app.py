@@ -25,7 +25,7 @@ def index():
         user_id = session["user_id"]
         user = users.get_user(user_id)
     transcription_array = transcriptions.get_transcriptions()
-    
+
     return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
@@ -125,8 +125,10 @@ def add_text_fragment(transcription_id):
         start_ms = help_functions.convert_hms_to_seconds(start_time)  * 1000
   
         words = request.form["words"]
-        transcriptions.add_text_fragment(start_ms, words, transcription_id)
-
+        try:
+            transcriptions.add_text_fragment(start_ms, words, transcription_id)
+        except sqlite3.IntegrityError:
+            abort(400)
         page = '/' + str(return_page) if return_page else ''
         #id_anchor = '#t-id-' + str(text_fragment_id)
         return redirect("/transcription/" + str(transcription_id) + page) # + id_anchor)
@@ -157,9 +159,11 @@ def text_fragments(transcription_id):
         print(transcription['source'], " text source not supported")
 
     transcription_id = transcription['id']
-    for start_ms, words in test_fragments_with_timestamps:
-        transcriptions.add_text_fragment(start_ms, words, transcription_id)
-
+    try:
+        for start_ms, words in test_fragments_with_timestamps:
+            transcriptions.add_text_fragment(start_ms, words, transcription_id)
+    except sqlite3.IntegrityError:
+            abort(400)
     return redirect("/transcription/" + str(transcription["id"]))
 
 
