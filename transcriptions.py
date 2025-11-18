@@ -141,19 +141,19 @@ def get_duplicate_files():
 def get_genre_stats():
     sql = """select count(id) as count, genre 
             from transcriptions
-            group by genre ;"""
+            group by genre order by count desc;"""
     return db.query(sql)
 
 def get_source_stats():
     sql = """select count(id) as count, source 
             from transcriptions
-            group by source ;"""
+            group by source order by count desc;"""
     return db.query(sql)
 
 def get_user_stats():
     sql = """select count(t.id) as count, t.user_id, u.username  
             from transcriptions t 
             JOIN users u ON u.id = user_id
-            group by t.user_id ;
+            group by t.user_id order by count desc;
             """
     return db.query(sql)
