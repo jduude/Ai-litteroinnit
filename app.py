@@ -29,17 +29,19 @@ def index():
     return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
- 
+# tobe implemented
 @app.route("/transcriptions_by_genre/<string:genre>")
 def transcriptions_by_genre(genre):
     print(genre)
     return redirect("/") 
  
+# tobe implemented
 @app.route("/transcriptions_by_source/<string:source>")
 def transcriptions_by_source(source):
     print(source)
     return redirect("/")
 
+# tobe implemented
 @app.route("/transcriptions_by_user/<int:user_id>")
 def transcriptions_by_user(user_id):
     print(user_id)
