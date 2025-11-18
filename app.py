@@ -388,4 +388,5 @@ def logout():
 @app.route("/stats")
 def stats():
     duplicates = transcriptions.get_duplicate_files()
-    return render_template("statistics.html", duplicates=duplicates)
+    genre_stats = transcriptions.get_genre_stats()
+    return render_template("statistics.html", duplicates=duplicates, genre_stats=genre_stats)

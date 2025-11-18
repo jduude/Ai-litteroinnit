@@ -136,3 +136,11 @@ def get_duplicate_files():
                 HAVING COUNT(id) > 1
             ) dup ON t.source_path = dup.source_path"""
     return db.query(sql)
+
+
+def get_genre_stats():
+    sql = """select count(id) as count, genre 
+            from transcriptions
+            group by genre 
+            having count > 1 ;"""
+    return db.query(sql)
