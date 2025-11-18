@@ -28,6 +28,16 @@
 
 
     <hr />
+    <h2>Lähteet:</h2>
+
+    <ul>
+      {% for source_stat in source_stats %}
+      <li> <a href="/transcription/">{{source_stat.source}} </a> : {{source_stat.count}} </li>
+      {% endfor %}
+    </ul>
+
+
+    <hr />
     <p>
       <a href="/">Etusivulle</a>
     </p>
