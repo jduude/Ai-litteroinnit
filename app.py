@@ -384,3 +384,8 @@ def logout():
 
     del session["user_id"]
     return redirect("/")
+
+@app.route("/stats")
+def stats():
+    duplicates = transcriptions.get_duplicate_files()
+    return render_template("statistics.html", duplicates=duplicates)

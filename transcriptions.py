@@ -124,3 +124,15 @@ def get_text_fragment_context(id):
              WHERE tr.id= t.transcription_id AND t.trashed is NULL AND t.id >= ? and   t.id <= ?
             """
     return db.query(sql, [start, end])
+
+
+def get_duplicate_files():
+    sql ="""SELECT t.id, t.source_path
+            FROM transcriptions t
+            JOIN (
+                SELECT source_path
+                FROM transcriptions
+                GROUP BY source_path
+                HAVING COUNT(id) > 1
+            ) dup ON t.source_path = dup.source_path"""
+    return db.query(sql)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tilastoja</title>
+</head>
+
+<body>
+
+  <div>
+    <h1>Tilastoja</h1>
+    <h2>Duplikaatit tiedoston mukaan:</h2>
+
+    <ul>
+      {% for dup in duplicates %}
+      <li> <a href="/transcription/{{ dup.id }}">{{dup.id}} </a> : {{dup.source_path}} </li>
+      {% endfor %}
+    </ul>
+    <hr />
+    <p>
+      <a href="/">Etusivulle</a>
+    </p>
+  </div>
+</body>
+
+</html>
