@@ -38,6 +38,16 @@
 
 
     <hr />
+    <h2>Käyttäjät:</h2>
+
+    <ul>
+      {% for user_stat in user_stats %}
+      <li> <a href="/transcription/">{{user_stat.username}} </a> : {{user_stat.count}} </li>
+      {% endfor %}
+    </ul>
+
+
+    <hr />
     <p>
       <a href="/">Etusivulle</a>
     </p>
