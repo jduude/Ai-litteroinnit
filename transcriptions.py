@@ -141,6 +141,11 @@ def get_duplicate_files():
 def get_genre_stats():
     sql = """select count(id) as count, genre 
             from transcriptions
-            group by genre 
-            having count > 1 ;"""
+            group by genre ;"""
+    return db.query(sql)
+
+def get_source_stats():
+    sql = """select count(id) as count, source 
+            from transcriptions
+            group by source ;"""
     return db.query(sql)
