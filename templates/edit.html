@@ -22,6 +22,8 @@
         <option value="youtube" {% if transcription.source=='youtube' %} selected {% endif %}>Youtube auto captions
         </option>
         <option value="word" {% if transcription.source=='word' %} selected {% endif %}>Word transcribe</option>
+        <option value="webvtt" {% if transcription.source=='webvtt' %} selected {% endif %}>WebVTT</option>
+
       </select>
 
       <br />
@@ -50,7 +52,8 @@
       Aikaleimattu teksti<br />
       <textarea name="raw_content" rows="10" cols="90">{{transcription.raw_content}}</textarea>
     </p>
-    <input type="submit" value="Lähetä" />
+    <input type="submit" value="Lähetä" /> <a href="/transcription/{{ transcription.id }}"> <input type="button"
+        value="Peruuta" /> </a>
   </form>
 </body>
 
