@@ -76,6 +76,22 @@ def new_transcription():
     duration_sec = request.form["duration_sec"]
     extra_meta_data = request.form["extra_meta_data"]
 
+
+    if len(title) > 250:
+        abort(400, description='Otsikkoteksti liian pitkä. Maksimi pituus on 250 merkkiä')
+    if len(source_path) > 250:
+         abort(400, description='Tiedoston nimi tai url liian pitkä. Maksimi pituus on 250 merkkiä' )
+    if len(genre) > 100:
+         abort(400, description='Lajityypin nimi liian pitkä. Maksimi pituus on 100 merkkiä' )
+    if len(record_date) > 30:
+         abort(400, description='Päivämäärä liian pitkä. Maksimi pituus on 30 merkkiä' )
+    if len(duration_sec) > 30:
+         abort(400, description='Pituus liian pitkä. Maksimi pituus on 30 merkkiä' )
+    if len(license) > 30:
+         abort(400, description='Lisenssi liian pitkä. Maksimi pituus on 100 merkkiä' )
+    if len(extra_meta_data) > 500:
+         abort(400, description='Metadata liian pitkä. Maksimi pituus on 500 merkkiä' )
+
     file = request.files['file']
  
     if file and help_functions.allowed_file(file.filename):

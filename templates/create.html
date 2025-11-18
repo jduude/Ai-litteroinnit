@@ -16,18 +16,15 @@
         <a href="/">Palaa etusivulle</a>
         {% if session.user_id %}
         <div>
-
-
-
             <h2>Luo uusi litterointi</h2>
 
             <form action="/new_transcription" method="post" enctype=multipart/form-data>
                 <p>
                     Otsikko:
-                    <input type="text" size="50" name="title" />
+                    <input type="text" size="50" maxlength="250" name="title" required />
                     <br />
                     Äänitiedoston nimi tai url:
-                    <input type="text" size="50" name="source_path" />
+                    <input type="text" size="50" maxlength="250" name="source_path" required />
                     <br />
                     Tekstityksen lähde/formaatti:
                     <select name="source" id="source">
@@ -38,22 +35,22 @@
 
                     <br />
                     Lajityyppi:
-                    <input type="text" name="genre" />
+                    <input type="text" maxlength="100" name="genre" />
                     <br />
                     Tallenteen päivämäärä:
-                    <input type="text" size="50" name="record_date" />
+                    <input type="text" size="50" maxlength="30" name="record_date" />
 
                     <br />
                     Pituus ( h:m:s / sec):
-                    <input type="text" size="50" name="duration_sec" />
+                    <input type="text" size="50" maxlength="30" name="duration_sec" />
 
                     <br />
                     Lisenssi:
-                    <input type="text" size="50" name="license" />
+                    <input type="text" size="50" maxlength="100" name="license" />
 
                     <br />
                     Metadata:
-                    <input type="text" size="50" name="extra_meta_data" />
+                    <input type="text" size="50" maxlength="500" name="extra_meta_data" />
                     <br />
                     Lisää äänitiedosto:
                     <input type="file" name="file">

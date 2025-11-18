@@ -11,10 +11,10 @@
   <form action="/edit/{{ transcription.id }}" method="post" enctype=multipart/form-data>
     <p>
       Otsikko:
-      <input type="text" name="title" value="{{transcription.title}}" />
+      <input type="text" maxlength="250" name="title" required value="{{transcription.title}}" />
       <br />
       Äänitiedoston nimi tai url:
-      <input type="text" size="60" name="source_path" value="{{transcription.source_path}}" />
+      <input type="text" size="60" maxlength="250" name="source_path" required value="{{transcription.source_path}}" />
       <br />
 
       Tekstityksen lähde:
@@ -28,22 +28,22 @@
 
       <br />
       Lajityyppi:
-      <input type="text" name="genre" value="{{transcription.genre}}" />
+      <input type="text" name="genre" maxlength="100" value="{{transcription.genre}}" />
 
       <br />
       Tallenteen päivämäärä:
-      <input type="text" size="50" name="record_date" value="{{transcription.record_date}}" />
+      <input type="text" size="50" maxlength="30" name="record_date" value="{{transcription.record_date}}" />
 
       <br />
       Pituus ( h:m:s / sec):
-      <input type="text" size="50" name="duration_sec" value="{{transcription.duration_sec}}" />
+      <input type="text" size="50" maxlength="30" name="duration_sec" value="{{transcription.duration_sec}}" />
 
       <br />
       Lisenssi:
-      <input type="text" size="50" name="license" value="{{transcription.license}}" />
+      <input type="text" size="50" name="license" maxlength="100" value="{{transcription.license}}" />
       <br />
       Metadata:
-      <input type="text" size="50" name="extra_meta_data" value="{{transcription.extra_meta_data}}" />
+      <input type="text" size="50" name="extra_meta_data" maxlength="500" value="{{transcription.extra_meta_data}}" />
       <br />
       Lisää äänitiedosto:
       <input type="file" name="file">
