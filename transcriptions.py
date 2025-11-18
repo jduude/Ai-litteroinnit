@@ -24,7 +24,8 @@ def get_transcription(transcription_id):
     sql = """SELECT id, title,  source_path, source, 
         genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec, extra_meta_data
         FROM transcriptions WHERE id = ?"""
-    return db.query(sql, [transcription_id])[0]
+    result =  db.query(sql, [transcription_id])
+    return result[0] if result else None
 
 
 def remove_transcription(transcription_id):
@@ -56,12 +57,14 @@ def get_text_fragments_paginated(transcription_id, page, page_size):
 
 def get_text_fragments_count(transcription_id):
     sql = "SELECT count(id) as count FROM text_fragments WHERE transcription_id = ?  AND trashed is NULL"
-    return db.query(sql, [transcription_id])[0]
+    result = db.query(sql, [transcription_id])
+    return result[0] if result else 0
 
 
 def get_text_fragment(text_fragment_id):
     sql = "SELECT id, start_ms, words, transcription_id FROM text_fragments WHERE id = ?"
-    return db.query(sql, [text_fragment_id])[0]
+    result = db.query(sql, [text_fragment_id])
+    return result[0] if result else None
 
 
 def add_text_fragment(start_ms, words, transcription_id):

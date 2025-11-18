@@ -25,6 +25,7 @@ def index():
         user_id = session["user_id"]
         user = users.get_user(user_id)
     transcription_array = transcriptions.get_transcriptions()
+    
     return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
@@ -93,7 +94,8 @@ def show_transcription(transcription_id, page=1):
         id, start_ms, words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
-
+    if not transcription:
+        abort(404)
     source_path=transcription['source_path']
     source_path_file_name = os.path.basename(source_path)
     local_audio_file_copy = os.path.join('static/audio', source_path_file_name)
@@ -136,7 +138,9 @@ def text_fragments(transcription_id):
     text_fragments = transcriptions.get_text_fragments(transcription_id)
     text_fragments_with_secs = [(id, int(start_ms / 1000), start_ms, words) for id, start_ms, words in text_fragments]
     transcription = transcriptions.get_transcription(transcription_id)
-    print(len(text_fragments))
+    if not transcription:
+        abort(404)
+    
     if len(text_fragments) > 0:
         return render_template("transcription.html", transcription=transcription,
                                text_fragments=text_fragments_with_secs)
@@ -201,6 +205,9 @@ def show_search_result_context(id):
 def edit_text_fragment(text_fragment_id):
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
+ 
+    if not text_fragment:
+        abort(404)
 
     if request.method == "GET":
         return render_template("edit_text_fragment.html", text_fragment=text_fragment, return_page=return_page)
@@ -218,6 +225,8 @@ def edit_text_fragment(text_fragment_id):
 def remove_text_fragment(text_fragment_id):
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
+    if not text_fragment:
+        abort(404)
     transcription_id = text_fragment["transcription_id"]
     if request.method == "GET":
         return render_template("remove_text.html", text_fragment=text_fragment, return_page=return_page)
@@ -236,7 +245,8 @@ def remove_text_fragment(text_fragment_id):
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
     transcription = transcriptions.get_transcription(transcription_id)
-
+    if not transcription:
+        abort(404)
     if transcription["user_id"] != session["user_id"]:
         abort(403)
 
@@ -252,7 +262,8 @@ def remove_transcription(transcription_id):
 @app.route("/remove_transcription_split_text/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription_split_text(transcription_id):
     transcription = transcriptions.get_transcription(transcription_id)
-
+    if not transcription:
+        abort(404)
     if request.method == "GET":
         return render_template("remove_transcription_split_text.html", transcription=transcription)
 
