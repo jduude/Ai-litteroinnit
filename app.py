@@ -3,8 +3,12 @@ import sqlite3
 import math
 from flask import Flask, redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 import db
 import users, config, transcriptions, text_splitter_help_functions, help_functions
+
+
+UPLOAD_FOLDER='./static/audio' 
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -12,7 +16,7 @@ app.secret_key = config.secret_key
 MEGABYTE = (2 ** 10) ** 2
 app.config['MAX_CONTENT_LENGTH'] = None
 app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def index():
@@ -41,6 +45,14 @@ def new_transcription():
     record_date = request.form["record_date"] 
     duration_sec = request.form["duration_sec"]
     extra_meta_data = request.form["extra_meta_data"]
+
+    file = request.files['sound_file']
+
+    if file and help_functions.allowed_file(file):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
     if ':' in duration_sec:
         duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
 

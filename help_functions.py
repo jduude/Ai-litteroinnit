@@ -1,4 +1,4 @@
-
+ALLOWED_SOUND_FILE_EXTENSIONS = {'mp3', 'wav', 'ogg' }
 
 def convert_seconds_to_hms(seconds):
     # Calculate hours, minutes, and remaining seconds
@@ -35,3 +35,7 @@ def convert_hms_to_seconds(hms):
     return total_seconds
 
  
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_SOUND_FILE_EXTENSIONS
