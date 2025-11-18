@@ -9,7 +9,9 @@
 <body>
 
   <div>
+    <a href="/">Palaa etusivulle</a>
     <h1>Tilastoja</h1>
+    {% if duplicates %}
     <h2>Duplikaatit tiedoston mukaan:</h2>
 
     <ul>
@@ -17,6 +19,7 @@
       <li> <a href="/transcription/{{ dup.id }}">{{dup.id}} </a> : {{dup.source_path}} </li>
       {% endfor %}
     </ul>
+    {% endif %}
     <hr />
     <h2>Lajityypit:</h2>
 
