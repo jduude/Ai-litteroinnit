@@ -2,7 +2,7 @@ ALLOWED_SOUND_FILE_EXTENSIONS = {'mp3', 'wav', 'ogg' }
 
 def convert_seconds_to_hms(seconds):
     # Calculate hours, minutes, and remaining seconds
-    if not seconds:
+    if not seconds or seconds == 'None':
         return ''
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
