@@ -8,7 +8,7 @@
 <body>
   <h1>Litteroinnin muokkaus</h1>
 
-  <form action="/edit/{{ transcription.id }}" method="post">
+  <form action="/edit/{{ transcription.id }}" method="post" enctype=multipart/form-data>
     <p>
       Otsikko:
       <input type="text" name="title" value="{{transcription.title}}" />
@@ -42,6 +42,9 @@
       <br />
       Metadata:
       <input type="text" size="50" name="extra_meta_data" value="{{transcription.extra_meta_data}}" />
+      <br />
+      Lisää äänitiedosto:
+      <input type="file" name="file">
     </p>
     <p>
       Aikaleimattu teksti<br />

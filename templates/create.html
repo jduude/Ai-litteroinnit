@@ -21,7 +21,7 @@
 
             <h2>Luo uusi litterointi</h2>
 
-            <form action="/new_transcription" method="post">
+            <form action="/new_transcription" method="post" enctype=multipart/form-data>
                 <p>
                     Otsikko:
                     <input type="text" size="50" name="title" />
@@ -56,7 +56,7 @@
                     <input type="text" size="50" name="extra_meta_data" />
                     <br />
                     Lisää äänitiedosto:
-                    <input type=file name="sound_file">
+                    <input type="file" name="file">
 
                 </p>
                 <p>

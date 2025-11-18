@@ -46,11 +46,20 @@ def new_transcription():
     duration_sec = request.form["duration_sec"]
     extra_meta_data = request.form["extra_meta_data"]
 
-    file = request.files['sound_file']
-
-    if file and help_functions.allowed_file(file):
+    file = request.files['file']
+ 
+    if file and help_functions.allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        new_filename = filename[:]
+        target_file_path= os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        counter = 1
+        while os.path.exists(target_file_path):
+            new_filename= str(counter) + "--" + filename 
+            target_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename) 
+            counter += 1
+
+        file.save(target_file_path)
+        source_path= new_filename
 
 
     if ':' in duration_sec:
@@ -272,6 +281,23 @@ def edit_transcription(transcription_id):
         extra_meta_data = request.form["extra_meta_data"]
         if ':' in duration_sec:
             duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
+
+        # file = request.files['sound_file']
+        file = request.files['file']
+
+        if file and help_functions.allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            new_filename = filename[:]
+            target_file_path= os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            counter = 1
+            while os.path.exists(target_file_path):
+                new_filename= str(counter) + "--" + filename 
+                target_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename) 
+                counter += 1
+
+            file.save(target_file_path)
+            source_path= new_filename
+
         transcriptions.update_transcription(transcription["id"], title, source_path, source, genre, license,
                                             raw_content, record_date, duration_sec, extra_meta_data)
         return redirect("/transcription/" + str(transcription["id"]))
