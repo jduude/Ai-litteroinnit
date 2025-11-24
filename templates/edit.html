@@ -47,6 +47,8 @@
       <br />
       Lisää äänitiedosto:
       <input type="file" name="file">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+
     </p>
     <p>
       Aikaleimattu teksti<br />

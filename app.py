@@ -3,7 +3,7 @@ import time
 import sqlite3
 import math
 from flask import Flask, redirect, render_template, request, session, abort, g
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, secrets
 from werkzeug.utils import secure_filename
 import db
 import users, config, transcriptions, text_splitter_help_functions, help_functions
@@ -29,6 +29,10 @@ def after_request(response):
     elapsed_time = round(time.time() - g.start_time, 2)
     print("elapsed time:", elapsed_time, "s")
     return response
+
+def check_csrf():
+    if "csrf_token" not in request.form or "csrf_token" not in session or request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 def require_login():
     if "user_id" not in session:
@@ -87,6 +91,7 @@ def create_transcription():
 @app.route("/new_transcription", methods=["POST"])
 def new_transcription():
     require_login()
+    check_csrf()
     title = request.form["title"]
     source_path = request.form["source_path"]
     source = request.form["source"]
@@ -192,6 +197,7 @@ def add_text_fragment(transcription_id):
     if request.method == "GET":
         return render_template("add_text_fragment.html", transcription_id=transcription_id, return_page=return_page)
     if request.method == "POST":
+        check_csrf()
         return_page = request.form["return_page"]
         start_time = request.form["start_time"]
         start_ms = help_functions.convert_hms_to_seconds(start_time)  * 1000
@@ -295,6 +301,7 @@ def edit_text_fragment(text_fragment_id):
         return render_template("edit_text_fragment.html", text_fragment=text_fragment, return_page=return_page)
 
     if request.method == "POST":
+        check_csrf()
         return_page = request.form["return_page"]
         words = request.form["words"]
         transcriptions.update_text(text_fragment["id"], words)
@@ -367,6 +374,7 @@ def edit_transcription(transcription_id):
         return render_template("edit.html", transcription=transcription)
 
     if request.method == "POST":
+        check_csrf()
         title = request.form["title"]
         source_path = request.form["source_path"]
         source = request.form["source"]
@@ -412,6 +420,7 @@ def login():
         user_id = users.check_login(username, password)
         if user_id:
             session["user_id"] = user_id
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             return "VIRHE: väärä tunnus tai salasana"
