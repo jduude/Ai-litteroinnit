@@ -37,7 +37,7 @@
       <h2>Tervetuloa!</h2>
       {% if user.username %}
       <p>Olet kirjautunut sisään käyttäjänä {{ user.username}}</p>
-
+      <p><a href="/user/{{ user.id}} "> {{ user.username}} käyttäjä sivut </a></p>
       {% endif %}
       <hr>
       <div>

@@ -480,3 +480,12 @@ def stats():
     user_stats = transcriptions.get_user_stats()
     return render_template("statistics.html", duplicates=duplicates, genre_stats=genre_stats, 
                            source_stats=source_stats, user_stats=user_stats)
+
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    transcriptions_array = transcriptions.get_transcriptions_of_user(user_id)
+    return render_template("user.html", user=user, transcriptions=transcriptions_array)

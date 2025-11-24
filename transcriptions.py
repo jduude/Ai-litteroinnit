@@ -174,3 +174,11 @@ def get_user_stats():
             group by t.user_id order by count desc;
             """
     return db.query(sql)
+
+
+def get_transcriptions_of_user(user_id):
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified
+             FROM transcriptions t 
+             WHERE t.user_id = ?
+             ORDER BY t.last_modified DESC"""
+    return db.query(sql, [user_id])

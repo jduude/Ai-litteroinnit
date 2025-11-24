@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f2f2f2;
+
+            color: #333;
+
+            font-weight: bold;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+
+        tr:hover {
+            background-color: #e6e6e6;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Käyttäjä {{ user.username }}</h1>
+
+    <p>
+        Käyttäjä {{ user.username }} on luonut {{ transcriptions | count }} litterointia
+    </p>
+
+    {% if transcriptions %}
+
+    <h3>
+        Litteroinnit:
+    </h3>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Otsikko</th>
+            <th>Lajityyppi</th>
+            <th>Tiedosto</th>
+            <th>Luotu</th>
+            <th>Muokattu</th>
+        </tr>
+
+
+        {% for t in transcriptions %}
+        <tr>
+            <td><a href="/transcription/{{ t.id }}"> {{ t.id }} </a></td>
+            <td> {{ t.title }} </td>
+            <td> {{ t.genre }} </td>
+            <td> {{ t.source_path }} </td>
+            <td> {{ t.created }} </td>
+            <td> {{ t.last_modified }} </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% endif %}
+</body>
+
+</html>
