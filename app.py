@@ -1,7 +1,8 @@
 import os
+import time
 import sqlite3
 import math
-from flask import Flask, redirect, render_template, request, session, abort
+from flask import Flask, redirect, render_template, request, session, abort, g
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 import db
@@ -18,6 +19,16 @@ app.config['MAX_CONTENT_LENGTH'] = None
 app.config['MAX_FORM_MEMORY_SIZE'] = 5 * MEGABYTE
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
+@app.before_request
+def before_request():
+    g.start_time = time.time()
+
+@app.after_request
+def after_request(response):
+    elapsed_time = round(time.time() - g.start_time, 2)
+    print("elapsed time:", elapsed_time, "s")
+    return response
 
 def require_login():
     if "user_id" not in session:
@@ -41,6 +52,7 @@ def index(page=1):
         return redirect("/" + str(page_count))
     
     transcription_array = transcriptions.get_transcriptions_paginated(page, page_size)
+    
     return render_template("index.html", transcriptions=transcription_array, user=user, page=page, page_count=page_count)
 
 
