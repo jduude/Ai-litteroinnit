@@ -143,16 +143,19 @@ def show_transcription(transcription_id, page=1):
     if not transcription:
         abort(404)
     source_path=transcription['source_path']
-    source_path_file_name = os.path.basename(source_path)
-    local_audio_file_copy = os.path.join('static/audio', source_path_file_name)
-    local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
-    audio_file_path = f"audio/{source_path_file_name}"
-    if not local_audio_file_copy_exists:
-        # filenames from the whole source_path string
-        source_path_fallback = source_path.replace("\\",'--')
-        local_audio_file_copy = os.path.join('static/audio', source_path_fallback)
+    local_audio_file_copy_exists = False
+    audio_file_path= None
+    if source_path:
+        source_path_file_name = os.path.basename(source_path)
+        local_audio_file_copy = os.path.join('static/audio', source_path_file_name)
         local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
-        audio_file_path = f"audio/{source_path_fallback}"
+        audio_file_path = f"audio/{source_path_file_name}"
+        if not local_audio_file_copy_exists:
+            # filenames from the whole source_path string
+            source_path_fallback = source_path.replace("\\",'--')
+            local_audio_file_copy = os.path.join('static/audio', source_path_fallback)
+            local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
+            audio_file_path = f"audio/{source_path_fallback}"
 
 
     return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
