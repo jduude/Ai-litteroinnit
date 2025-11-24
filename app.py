@@ -41,7 +41,7 @@ def index(page=1):
         return redirect("/" + str(page_count))
     
     transcription_array = transcriptions.get_transcriptions_paginated(page, page_size)
-    return render_template("index.html", transcriptions=transcription_array, user=user)
+    return render_template("index.html", transcriptions=transcription_array, user=user, page=page, page_count=page_count)
 
 
 # tobe implemented
