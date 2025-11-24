@@ -52,24 +52,7 @@
         Sivu {{ page }}/{{ page_count }}
         <a href="/{{ page + 1 }}">&gt;&gt;</a>
       </p>
-      {% for transcription in transcriptions %}
-      <div class="transcription">
-        <h3>
-          <a href="/transcription/{{ transcription.id }}">{{ transcription.title }}</a>
-        </h3>
-        <p>Tiedosto: {{ transcription.source_path }} </p>
-        <p>Lajityyppi: {{ transcription.genre }} </p>
-        <p>Käyttäjä: {{ transcription.username }} </p>
-        <p>Muokattu: {{ transcription.last_modified }} </p>
-        <p class="operations">
-          <a href="/edit/{{ transcription.id }}">Muokkaa</a>
-          {% if session.user_id == transcription.user_id %}
-          | <a href="/remove/{{ transcription.id }}">Poista</a>
-          {% endif %}
-        </p>
-
-      </div>
-      {% endfor %}
+      {% include 'transcriptions_table_listing.html' %}
       <p>
         <a href="/{{ page - 1 }}">&lt;&lt;</a>
         Sivu {{ page }}/{{ page_count }}
