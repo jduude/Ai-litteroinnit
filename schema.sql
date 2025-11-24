@@ -29,3 +29,5 @@ CREATE TABLE text_fragments (
     transcription_id INTEGER REFERENCES transcriptions,
     trashed BOOLEAN 
 );
+
+CREATE INDEX idx_transcriptions_text_fragments ON text_fragments (transcription_id);
