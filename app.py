@@ -169,6 +169,10 @@ def show_transcription(transcription_id, page=1):
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
+
+    if transcription['user_id']:
+        user_id = transcription['user_id']
+        user=users.get_user(user_id)
     source_path=transcription['source_path']
     local_audio_file_copy_exists = False
     audio_file_path= None
@@ -187,7 +191,8 @@ def show_transcription(transcription_id, page=1):
 
     return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
                            convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
-                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, audio_file_path=audio_file_path, audiotime=audiotime)
+                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, 
+                           audio_file_path=audio_file_path, audiotime=audiotime, user=user)
 
 
 @app.route("/add_text_fragment/<int:transcription_id>", methods=["GET", "POST"])
