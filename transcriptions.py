@@ -9,6 +9,23 @@ def get_transcriptions():
              ORDER BY t.id DESC"""
     return db.query(sql)
 
+def get_transcriptions_paginated(page, page_size):
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, 
+             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username  
+             FROM transcriptions t
+             JOIN users u ON u.id =  t.user_id 
+             ORDER BY t.id DESC
+             LIMIT ? OFFSET ?"""
+    
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [limit, offset])
+
+def get_transcriptions_count():
+    sql = "SELECT count(id) as count FROM transcriptions;"
+    result = db.query(sql)
+    return result[0]["count"] if result else 0
+
 
 def add_transcription(title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec, extra_meta_data):
     sql = """INSERT INTO transcriptions 

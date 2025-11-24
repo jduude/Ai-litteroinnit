@@ -24,13 +24,23 @@ def require_login():
         abort(403)
 
 @app.route("/")
-def index():
+@app.route("/<int:page>")
+def index(page=1):
     user = None
+    page_size = 10
     if "user_id" in session:
         user_id = session["user_id"]
         user = users.get_user(user_id)
-    transcription_array = transcriptions.get_transcriptions()
 
+    transcriptions_count = transcriptions.get_transcriptions_count()
+    page_count = math.ceil(transcriptions_count / page_size)
+    page_count = max(page_count, 1)
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+    
+    transcription_array = transcriptions.get_transcriptions_paginated(page, page_size)
     return render_template("index.html", transcriptions=transcription_array, user=user)
 
 
