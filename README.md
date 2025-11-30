@@ -9,11 +9,11 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 * Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan litterointeja.
-* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen, lajityyppi tiedosta ja tekstityksen lähteen muodosta (youtube, WebVTT ja ms word tuettu automaattista pilkontaa varten)
-* käyttäjä voi muokata ja korjata automaattisen litteroinnin tekstejä
-* Käyttäjä näkee sovellukseen lisätyt litteroinnit.
+* Litteroinnin tiedot koostuu alkuperäisen ääntiedoston tiedostonimestä  (tai netti urlista), tiedoston sisällön otsikosta sekä litteroidusta tekstistä aikakoodeineen, lajityyppitiedosta ja tekstityksen lähteen muodosta (youtube, WebVTT ja ms word tuettu automaattista pilkontaa varten)
+* käyttäjä voi muokata ja korjata litteroinnin tekstejä
+* Käyttäjä näkee sovellukseen lisätyt litteroinnit
 * Käyttäjä pystyy etsimään litteroitujen tekstien sisältöjä
-* Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät litteroinnit.
+* Sovelluksessa on käyttäjäsivut, jotka näyttävät käyttäjän lisäämät litteroinnit
 * Käyttäjä voi lisätä metatietoja litterointiin: äänitiedoston pituudes, äänitteen päivämäärä, vapaamuotoinen metatieto merkkijono 
 * käyttäjä voi lisätä litterointia vastaavan äänitiedoston
 * käyttäjä voi kuunnella litterointia vastaavaa äänitiedostoa ja tarkistaa litterointitekstejä samalla sivulla (ei vielä oikein toimi youtube formaatti valinnalla)
@@ -23,12 +23,13 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 
 ## TODO
 
-* Käyttäjä pystyy valitsemaan litteroinnille useamman luokittelun (esim litteroinnin kieli)
+* Käyttäjä pystyy valitsemaan litteroinnille lisää luokitteluita (esim litteroinnin kieli)
 * teksti fragmentin muokkaus päivämäärä
-* haku äänitiedoston nimellä ja otsikoista
-* tuki upotetulle youtube videolle
+* teksti fragmenttien versionti (kaikkien aikaisempien versioiden säilytys ja palautusmahdollisuus)
+* teksti fragmenttien muokkaus päivämäärät ja muokkaajan käyttäjänimien tallennus
+* upotettu youtube video
 * filtteröidyt listaukset lajityypin yms mukaan suoraan tilastot sivulta
-
+* litterointikohtainen tekstihaku
 
 
 ## Sovelluksen asennus
