@@ -1,15 +1,17 @@
 import random
 import sqlite3
 
+# using a separate test database to avoid messing with development data 
+# (switch manually to database_test.db in db.py for testing)
 db = sqlite3.connect("database_test.db")
 
 db.execute("DELETE FROM users")
 db.execute("DELETE FROM transcriptions")
 db.execute("DELETE FROM text_fragments")
 
-user_count = 1000
-transcriptions_count = 10**5
-text_fragments_count = 10**7
+user_count = 100
+transcriptions_count = 10**4
+text_fragments_count = 10**6
 
 for i in range(1, user_count + 1):
     db.execute("INSERT INTO users (username) VALUES (?)",
