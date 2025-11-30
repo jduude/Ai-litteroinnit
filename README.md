@@ -13,13 +13,22 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 * käyttäjä voi muokata ja korjata automaattisen litteroinnin tekstejä
 * Käyttäjä näkee sovellukseen lisätyt litteroinnit.
 * Käyttäjä pystyy etsimään litteroitujen tekstien sisältöjä
+* Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät litteroinnit.
+* Käyttäjä voi lisätä metatietoja litterointiin: äänitiedoston pituudes, äänitteen päivämäärä, vapaamuotoinen metatieto merkkijono 
+* käyttäjä voi lisätä litterointia vastaavan äänitiedoston
+* käyttäjä voi kuunnella litterointia vastaavaa äänitiedostoa ja tarkistaa litterointitekstejä samalla sivulla (ei vielä oikein toimi youtube formaatti valinnalla)
+* äänitiedoston soitto hyppää tektityksen aikakoodilinkin mukaiseen aloituskohtaan
+* haku tekstin sisällöillä, litteroinnin otsikoista, tiedostonimellä
+* tilastosivu näyttää litterointien lukumääriä lajityypin, käyttäjien ja litteroinnin lähdeformaatin mukaan
 
 ## TODO
-* Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät litteroinnit.
+
 * Käyttäjä pystyy valitsemaan litteroinnille useamman luokittelun (esim litteroinnin kieli)
-* lisää metatietoja litterointiin: äänitiedoston pituudesta, äänitteen päivämäärästä 
-* tekstin muokkaus päivämäärä
+* teksti fragmentin muokkaus päivämäärä
 * haku äänitiedoston nimellä ja otsikoista
+* tuki upotetulle youtube videolle
+* filtteröidyt listaukset lajityypin yms mukaan suoraan tilastot sivulta
+
 
 
 ## Sovelluksen asennus
