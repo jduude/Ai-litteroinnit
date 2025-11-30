@@ -1,3 +1,17 @@
+"""Flask application for managing ai transcriptions.
+
+This app provides a web application for adding, editing, and searching
+transcriptions. It supports various transcription formats (YouTube, Word, WebVTT)
+and allows users to view, edit, and organize transcription text fragments with timestamps.
+
+Key features:
+    - User authentication and registration
+    - Transcription upload with metadata
+    - Text fragment management with timestamps
+    - Search functionality for transcriptions and content
+    - Statistics and user profiles
+    - Audio file handling and playback
+"""
 
 import os
 import time
