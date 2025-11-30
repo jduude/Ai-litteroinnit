@@ -31,7 +31,9 @@
 <body>
   <div>
     <h1>Litteroinnit</h1>
+    {% if user.username %}
     <div><a href="/search">Hakusivu</a> | <a href="/stats">Tilastoja</a></div>
+    {% endif %}
     <div>
       {% if session.user_id %}
       <h2>Tervetuloa!</h2>
