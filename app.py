@@ -6,10 +6,14 @@ from flask import Flask, redirect, render_template, request, session, abort, g
 from werkzeug.security import generate_password_hash, secrets
 from werkzeug.utils import secure_filename
 import db
-import users, config, transcriptions, text_splitter_help_functions, help_functions
+import users
+import config
+import transcriptions
+import text_splitter_help_functions
+import help_functions
 
 
-UPLOAD_FOLDER='./static/audio' 
+UPLOAD_FOLDER = './static/audio'
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -24,19 +28,24 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def before_request():
     g.start_time = time.time()
 
+
 @app.after_request
 def after_request(response):
     elapsed_time = round(time.time() - g.start_time, 2)
     print("elapsed time:", elapsed_time, "s")
     return response
 
+
 def check_csrf():
-    if "csrf_token" not in request.form or "csrf_token" not in session or request.form["csrf_token"] != session["csrf_token"]:
+    if "csrf_token" not in request.form or "csrf_token" not in session or request.form[
+            "csrf_token"] != session["csrf_token"]:
         abort(403)
+
 
 def require_login():
     if "user_id" not in session:
         abort(403)
+
 
 @app.route("/")
 @app.route("/<int:page>")
@@ -54,10 +63,16 @@ def index(page=1):
         return redirect("/1")
     if page > page_count:
         return redirect("/" + str(page_count))
-    
-    transcription_array = transcriptions.get_transcriptions_paginated(page, page_size)
-    
-    return render_template("index.html", transcriptions=transcription_array, user=user, page=page, page_count=page_count)
+
+    transcription_array = transcriptions.get_transcriptions_paginated(
+        page, page_size)
+
+    return render_template(
+        "index.html",
+        transcriptions=transcription_array,
+        user=user,
+        page=page,
+        page_count=page_count)
 
 
 # tobe implemented
@@ -65,9 +80,11 @@ def index(page=1):
 def transcriptions_by_genre(genre):
     require_login()
     print(genre)
-    return redirect("/") 
- 
+    return redirect("/")
+
 # tobe implemented
+
+
 @app.route("/transcriptions_by_source/<string:source>")
 def transcriptions_by_source(source):
     require_login()
@@ -75,6 +92,8 @@ def transcriptions_by_source(source):
     return redirect("/")
 
 # tobe implemented
+
+
 @app.route("/transcriptions_by_user/<int:user_id>")
 def transcriptions_by_user(user_id):
     require_login()
@@ -99,47 +118,61 @@ def new_transcription():
     raw_content = request.form["raw_content"]
     user_id = session["user_id"]
     license = request.form["license"]
-    record_date = request.form["record_date"] 
+    record_date = request.form["record_date"]
     duration_sec = request.form["duration_sec"]
     extra_meta_data = request.form["extra_meta_data"]
 
-
     if len(title) > 250:
-        abort(400, description='Otsikkoteksti liian pitkä. Maksimi pituus on 250 merkkiä')
+        abort(
+            400,
+            description='Otsikkoteksti liian pitkä. Maksimi pituus on 250 merkkiä')
     if len(source_path) > 250:
-         abort(400, description='Tiedoston nimi tai url liian pitkä. Maksimi pituus on 250 merkkiä' )
+        abort(
+            400,
+            description='Tiedoston nimi tai url liian pitkä. Maksimi pituus on 250 merkkiä')
     if len(genre) > 100:
-         abort(400, description='Lajityypin nimi liian pitkä. Maksimi pituus on 100 merkkiä' )
+        abort(
+            400,
+            description='Lajityypin nimi liian pitkä. Maksimi pituus on 100 merkkiä')
     if len(record_date) > 30:
-         abort(400, description='Päivämäärä liian pitkä. Maksimi pituus on 30 merkkiä' )
+        abort(400, description='Päivämäärä liian pitkä. Maksimi pituus on 30 merkkiä')
     if len(duration_sec) > 30:
-         abort(400, description='Pituus liian pitkä. Maksimi pituus on 30 merkkiä' )
+        abort(400, description='Pituus liian pitkä. Maksimi pituus on 30 merkkiä')
     if len(license) > 30:
-         abort(400, description='Lisenssi liian pitkä. Maksimi pituus on 100 merkkiä' )
+        abort(400, description='Lisenssi liian pitkä. Maksimi pituus on 100 merkkiä')
     if len(extra_meta_data) > 500:
-         abort(400, description='Metadata liian pitkä. Maksimi pituus on 500 merkkiä' )
+        abort(400, description='Metadata liian pitkä. Maksimi pituus on 500 merkkiä')
 
     file = request.files['file']
- 
+
     if file and help_functions.allowed_file(file.filename):
         filename = secure_filename(file.filename)
         new_filename = filename[:]
-        target_file_path= os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        target_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         counter = 1
         while os.path.exists(target_file_path):
-            new_filename= str(counter) + "--" + filename 
-            target_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename) 
+            new_filename = str(counter) + "--" + filename
+            target_file_path = os.path.join(
+                app.config['UPLOAD_FOLDER'], new_filename)
             counter += 1
 
         file.save(target_file_path)
-        source_path= new_filename
-
+        source_path = new_filename
 
     if ':' in duration_sec:
-        duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
+        duration_sec = help_functions.convert_hms_to_seconds(duration_sec)
 
-    transcription_id = transcriptions.add_transcription(title, source_path, source, genre, raw_content, user_id,
-                                                        license, record_date, duration_sec, extra_meta_data)
+    transcription_id = transcriptions.add_transcription(
+        title,
+        source_path,
+        source,
+        genre,
+        raw_content,
+        user_id,
+        license,
+        record_date,
+        duration_sec,
+        extra_meta_data)
     return redirect("/transcription/" + str(transcription_id))
 
 
@@ -149,7 +182,8 @@ def show_transcription(transcription_id, page=1):
     require_login()
     page_size = 20
     audiotime = request.args.get('audiotime')
-    text_fragments_count = transcriptions.get_text_fragments_count(transcription_id)
+    text_fragments_count = transcriptions.get_text_fragments_count(
+        transcription_id)
     # text_fragments_count = len(text_fragments)
     text_fragments_count = text_fragments_count["count"]
     page_count = math.ceil(text_fragments_count / page_size)
@@ -158,13 +192,21 @@ def show_transcription(transcription_id, page=1):
     if page < 1:
         return redirect("/transcription/" + str(transcription_id) + "/1")
     if page > page_count:
-        return redirect("/transcription/" + str(transcription_id) + "/" + str(page_count))
-    
+        return redirect(
+            "/transcription/" +
+            str(transcription_id) +
+            "/" +
+            str(page_count))
 
-    text_fragments = transcriptions.get_text_fragments_paginated(transcription_id, page, page_size)
-    text_fragments_with_secs = [
-        (id, int(start_ms / 1000), help_functions.convert_seconds_to_hms(int(start_ms / 1000)), start_ms, words) for
-        id, start_ms, words in text_fragments]
+    text_fragments = transcriptions.get_text_fragments_paginated(
+        transcription_id, page, page_size)
+    text_fragments_with_secs = [(id,
+                                 int(start_ms / 1000),
+                                 help_functions.convert_seconds_to_hms(int(start_ms / 1000)),
+                                 start_ms,
+                                 words) for id,
+                                start_ms,
+                                words in text_fragments]
 
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
@@ -172,73 +214,98 @@ def show_transcription(transcription_id, page=1):
 
     if transcription['user_id']:
         user_id = transcription['user_id']
-        user=users.get_user(user_id)
-    source_path=transcription['source_path']
+        user = users.get_user(user_id)
+    source_path = transcription['source_path']
     local_audio_file_copy_exists = False
-    audio_file_path= None
+    audio_file_path = None
     if source_path:
         source_path_file_name = os.path.basename(source_path)
-        local_audio_file_copy = os.path.join('static/audio', source_path_file_name)
-        local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
+        local_audio_file_copy = os.path.join(
+            'static/audio', source_path_file_name)
+        local_audio_file_copy_exists = os.path.exists(local_audio_file_copy)
         audio_file_path = f"audio/{source_path_file_name}"
         if not local_audio_file_copy_exists:
             # filenames from the whole source_path string
-            source_path_fallback = source_path.replace("\\",'--')
-            local_audio_file_copy = os.path.join('static/audio', source_path_fallback)
-            local_audio_file_copy_exists= os.path.exists(local_audio_file_copy)
+            source_path_fallback = source_path.replace("\\", '--')
+            local_audio_file_copy = os.path.join(
+                'static/audio', source_path_fallback)
+            local_audio_file_copy_exists = os.path.exists(
+                local_audio_file_copy)
             audio_file_path = f"audio/{source_path_fallback}"
 
+    return render_template(
+        "transcription.html",
+        transcription=transcription,
+        text_fragments=text_fragments_with_secs,
+        convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
+        page=page,
+        page_count=page_count,
+        local_audio_file_copy_exists=local_audio_file_copy_exists,
+        audio_file_path=audio_file_path,
+        audiotime=audiotime,
+        user=user)
 
-    return render_template("transcription.html", transcription=transcription, text_fragments=text_fragments_with_secs, 
-                           convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
-                           page=page, page_count=page_count, local_audio_file_copy_exists=local_audio_file_copy_exists, 
-                           audio_file_path=audio_file_path, audiotime=audiotime, user=user)
 
-
-@app.route("/add_text_fragment/<int:transcription_id>", methods=["GET", "POST"])
+@app.route("/add_text_fragment/<int:transcription_id>",
+           methods=["GET", "POST"])
 def add_text_fragment(transcription_id):
     require_login()
     return_page = request.args.get("return_page")
     if request.method == "GET":
-        return render_template("add_text_fragment.html", transcription_id=transcription_id, return_page=return_page)
+        return render_template(
+            "add_text_fragment.html",
+            transcription_id=transcription_id,
+            return_page=return_page)
     if request.method == "POST":
         check_csrf()
         return_page = request.form["return_page"]
         start_time = request.form["start_time"]
-        start_ms = help_functions.convert_hms_to_seconds(start_time)  * 1000
-  
+        start_ms = help_functions.convert_hms_to_seconds(start_time) * 1000
+
         words = request.form["words"]
         try:
             transcriptions.add_text_fragment(start_ms, words, transcription_id)
         except sqlite3.IntegrityError:
             abort(400)
         page = '/' + str(return_page) if return_page else ''
-        #id_anchor = '#t-id-' + str(text_fragment_id)
-        return redirect("/transcription/" + str(transcription_id) + page) # + id_anchor)
-
+        # id_anchor = '#t-id-' + str(text_fragment_id)
+        return redirect(
+            "/transcription/" +
+            str(transcription_id) +
+            page)  # + id_anchor)
 
 
 @app.route("/text_fragments/<int:transcription_id>")
 def generate_text_fragments(transcription_id):
     require_login()
     text_fragments = transcriptions.get_text_fragments(transcription_id)
-    text_fragments_with_secs = [(id, int(start_ms / 1000), start_ms, words) for id, start_ms, words in text_fragments]
+    text_fragments_with_secs = [(id,
+                                 int(start_ms / 1000),
+                                 start_ms,
+                                 words) for id,
+                                start_ms,
+                                words in text_fragments]
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
-    
+
     if len(text_fragments) > 0:
-        return render_template("transcription.html", transcription=transcription,
-                               text_fragments=text_fragments_with_secs)
+        return render_template(
+            "transcription.html",
+            transcription=transcription,
+            text_fragments=text_fragments_with_secs)
 
     raw_content = transcription['raw_content']
     test_fragments_with_timestamps = []
     if transcription['source'] == 'youtube':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(raw_content)
+        test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(
+            raw_content)
     elif transcription['source'] == 'word':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_word_transcription(raw_content)
+        test_fragments_with_timestamps = text_splitter_help_functions.split_word_transcription(
+            raw_content)
     elif transcription['source'] == 'webvtt':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_web_vtt(raw_content)
+        test_fragments_with_timestamps = text_splitter_help_functions.split_web_vtt(
+            raw_content)
     else:
         print(transcription['source'], " text source not supported")
 
@@ -247,7 +314,7 @@ def generate_text_fragments(transcription_id):
         for start_ms, words in test_fragments_with_timestamps:
             transcriptions.add_text_fragment(start_ms, words, transcription_id)
     except sqlite3.IntegrityError:
-            abort(400)
+        abort(400)
     return redirect("/transcription/" + str(transcription["id"]))
 
 
@@ -258,7 +325,11 @@ def search():
     if not text_query:
         text_query = ""
     results = transcriptions.search(text_query) if text_query else []
-    return render_template("search.html", text_query=text_query, results=results)
+    return render_template(
+        "search.html",
+        text_query=text_query,
+        results=results)
+
 
 @app.route("/search_titles")
 def search_titles():
@@ -267,7 +338,11 @@ def search_titles():
     if not title_query:
         title_query = ""
     results = transcriptions.search_titles(title_query) if title_query else []
-    return render_template("search.html", title_query=title_query, title_search_results=results)
+    return render_template(
+        "search.html",
+        title_query=title_query,
+        title_search_results=results)
+
 
 @app.route("/search_file_name")
 def search_file_name():
@@ -275,8 +350,12 @@ def search_file_name():
     file_name_query = request.args.get("query")
     if not file_name_query:
         file_name_query = ""
-    results = transcriptions.search_file_name(file_name_query) if file_name_query else []
-    return render_template("search.html", file_name_query=file_name_query, title_search_results=results)
+    results = transcriptions.search_file_name(
+        file_name_query) if file_name_query else []
+    return render_template(
+        "search.html",
+        file_name_query=file_name_query,
+        title_search_results=results)
 
 
 @app.route("/show_search_result_context/<int:id>")
@@ -289,21 +368,29 @@ def show_search_result_context(id):
         title = text_context[0]['title']
         transcription_id = text_context[0]['transcription_id']
 
-    return render_template("show_search_result_context.html", text_context=text_context, title=title,
-                           transcription_id=transcription_id, id=id)
+    return render_template(
+        "show_search_result_context.html",
+        text_context=text_context,
+        title=title,
+        transcription_id=transcription_id,
+        id=id)
 
 
-@app.route("/edit_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
+@app.route("/edit_text_fragment/<int:text_fragment_id>",
+           methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
     require_login()
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
- 
+
     if not text_fragment:
         abort(404)
 
     if request.method == "GET":
-        return render_template("edit_text_fragment.html", text_fragment=text_fragment, return_page=return_page)
+        return render_template(
+            "edit_text_fragment.html",
+            text_fragment=text_fragment,
+            return_page=return_page)
 
     if request.method == "POST":
         check_csrf()
@@ -312,10 +399,14 @@ def edit_text_fragment(text_fragment_id):
         transcriptions.update_text(text_fragment["id"], words)
         page = '/' + str(return_page) if return_page else ''
         id_anchor = '#t-id-' + str(text_fragment_id)
-        return redirect("/transcription/" + str(text_fragment["transcription_id"]) + page + id_anchor)
+        return redirect("/transcription/" +
+                        str(text_fragment["transcription_id"]) +
+                        page +
+                        id_anchor)
 
 
-@app.route("/remove_text_fragment/<int:text_fragment_id>", methods=["GET", "POST"])
+@app.route("/remove_text_fragment/<int:text_fragment_id>",
+           methods=["GET", "POST"])
 def remove_text_fragment(text_fragment_id):
     require_login()
     return_page = request.args.get("return_page")
@@ -324,7 +415,10 @@ def remove_text_fragment(text_fragment_id):
         abort(404)
     transcription_id = text_fragment["transcription_id"]
     if request.method == "GET":
-        return render_template("remove_text.html", text_fragment=text_fragment, return_page=return_page)
+        return render_template(
+            "remove_text.html",
+            text_fragment=text_fragment,
+            return_page=return_page)
 
     if request.method == "POST":
         return_page = request.form["return_page"]
@@ -334,7 +428,11 @@ def remove_text_fragment(text_fragment_id):
             transcriptions.remove_text_fragment(text_fragment["id"])
         else:
             id_anchor = '#t-id-' + str(text_fragment_id)
-    return redirect("/transcription/" + str(transcription_id) + page + id_anchor)
+    return redirect(
+        "/transcription/" +
+        str(transcription_id) +
+        page +
+        id_anchor)
 
 
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
@@ -355,14 +453,17 @@ def remove_transcription(transcription_id):
     return redirect("/")
 
 
-@app.route("/remove_transcription_split_text/<int:transcription_id>", methods=["GET", "POST"])
+@app.route("/remove_transcription_split_text/<int:transcription_id>",
+           methods=["GET", "POST"])
 def remove_transcription_split_text(transcription_id):
     require_login()
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
     if request.method == "GET":
-        return render_template("remove_transcription_split_text.html", transcription=transcription)
+        return render_template(
+            "remove_transcription_split_text.html",
+            transcription=transcription)
 
     if request.method == "POST":
         if "continue" in request.form:
@@ -390,7 +491,7 @@ def edit_transcription(transcription_id):
         duration_sec = request.form["duration_sec"]
         extra_meta_data = request.form["extra_meta_data"]
         if ':' in duration_sec:
-            duration_sec=help_functions.convert_hms_to_seconds(duration_sec)
+            duration_sec = help_functions.convert_hms_to_seconds(duration_sec)
 
         # file = request.files['sound_file']
         file = request.files['file']
@@ -398,18 +499,29 @@ def edit_transcription(transcription_id):
         if file and help_functions.allowed_file(file.filename):
             filename = secure_filename(file.filename)
             new_filename = filename[:]
-            target_file_path= os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            target_file_path = os.path.join(
+                app.config['UPLOAD_FOLDER'], filename)
             counter = 1
             while os.path.exists(target_file_path):
-                new_filename= str(counter) + "--" + filename 
-                target_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename) 
+                new_filename = str(counter) + "--" + filename
+                target_file_path = os.path.join(
+                    app.config['UPLOAD_FOLDER'], new_filename)
                 counter += 1
 
             file.save(target_file_path)
-            source_path= new_filename
+            source_path = new_filename
 
-        transcriptions.update_transcription(transcription["id"], title, source_path, source, genre, license,
-                                            raw_content, record_date, duration_sec, extra_meta_data)
+        transcriptions.update_transcription(
+            transcription["id"],
+            title,
+            source_path,
+            source,
+            genre,
+            license,
+            raw_content,
+            record_date,
+            duration_sec,
+            extra_meta_data)
         return redirect("/transcription/" + str(transcription["id"]))
 
 
@@ -476,6 +588,7 @@ def logout():
     del session["user_id"]
     return redirect("/")
 
+
 @app.route("/stats")
 def stats():
     require_login()
@@ -483,8 +596,12 @@ def stats():
     genre_stats = transcriptions.get_genre_stats()
     source_stats = transcriptions.get_source_stats()
     user_stats = transcriptions.get_user_stats()
-    return render_template("statistics.html", duplicates=duplicates, genre_stats=genre_stats, 
-                           source_stats=source_stats, user_stats=user_stats)
+    return render_template(
+        "statistics.html",
+        duplicates=duplicates,
+        genre_stats=genre_stats,
+        source_stats=source_stats,
+        user_stats=user_stats)
 
 
 @app.route("/user/<int:user_id>")
@@ -493,4 +610,7 @@ def show_user(user_id):
     if not user:
         abort(404)
     transcriptions_array = transcriptions.get_transcriptions_of_user(user_id)
-    return render_template("user.html", user=user, transcriptions=transcriptions_array)
+    return render_template(
+        "user.html",
+        user=user,
+        transcriptions=transcriptions_array)
