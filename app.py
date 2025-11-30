@@ -779,39 +779,22 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["GET"])
 def register():
     """Handle user registration.
 
     GET: Display registration form.
-    POST: Create new user account.
 
     Returns:
         GET: Rendered registration form.
-        POST: Success message or error message.
     """
-    if request.method == "GET":
-        return render_template("register.html")
-
-    if request.method == "POST":
-        username = request.form["username"]
-        password1 = request.form["password1"]
-        password2 = request.form["password2"]
-
-        if password1 != password2:
-            return "VIRHE: salasanat eivät ole samat"
-
-        try:
-            users.create_user(username, password1)
-            return "Tunnus luotu"
-        except sqlite3.IntegrityError:
-            return "VIRHE: tunnus on jo varattu"
+  
     return render_template("register.html")
 
 
 @app.route("/create", methods=["POST"])
 def create():
-    """Create a new user account (alternative registration endpoint).
+    """Create a new user account.
 
     Returns:
         Rendered success template or error message.
