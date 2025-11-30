@@ -48,10 +48,10 @@ def before_request():
 @app.after_request
 def after_request(response):
     """Calculate and log the elapsed time for each request.
-    
+
     Args:
         response: The Flask response object.
-    
+
     Returns:
         The unmodified response object.
     """
@@ -62,7 +62,7 @@ def after_request(response):
 
 def check_csrf():
     """Validate CSRF token from form matches the session token.
-    
+
     Raises:
         403: If CSRF token is missing or doesn't match.
     """
@@ -73,7 +73,7 @@ def check_csrf():
 
 def require_login():
     """Ensure user is logged in before accessing protected routes.
-    
+
     Raises:
         403: If user is not authenticated.
     """
@@ -85,10 +85,10 @@ def require_login():
 @app.route("/<int:page>")
 def index(page=1):
     """Display paginated list of transcriptions on the home page.
-    
+
     Args:
         page: The page number to display (default: 1).
-    
+
     Returns:
         Rendered template with transcriptions list.
     """
@@ -121,10 +121,10 @@ def index(page=1):
 @app.route("/transcriptions_by_genre/<string:genre>")
 def transcriptions_by_genre(genre):
     """Filter transcriptions by genre (to be implemented).
-    
+
     Args:
         genre: The genre to filter by.
-    
+
     Returns:
         Redirect to home page.
     """
@@ -138,10 +138,10 @@ def transcriptions_by_genre(genre):
 @app.route("/transcriptions_by_source/<string:source>")
 def transcriptions_by_source(source):
     """Filter transcriptions by source (to be implemented).
-    
+
     Args:
         source: The source to filter by.
-    
+
     Returns:
         Redirect to home page.
     """
@@ -155,10 +155,10 @@ def transcriptions_by_source(source):
 @app.route("/transcriptions_by_user/<int:user_id>")
 def transcriptions_by_user(user_id):
     """Filter transcriptions by user (to be implemented).
-    
+
     Args:
         user_id: The user ID to filter by.
-    
+
     Returns:
         Redirect to home page.
     """
@@ -170,7 +170,7 @@ def transcriptions_by_user(user_id):
 @app.route("/create_transcription", methods=["GET"])
 def create_transcription():
     """Display the form for creating a new transcription.
-    
+
     Returns:
         Rendered template with transcription creation form.
     """
@@ -181,13 +181,13 @@ def create_transcription():
 @app.route("/new_transcription", methods=["POST"])
 def new_transcription():
     """Process form submission to create a new transcription.
-    
+
     Validates form data, handles file upload if present, and creates
     a new transcription record in the database.
-    
+
     Returns:
         Redirect to the newly created transcription page.
-    
+
     Raises:
         400: If form data exceeds maximum allowed lengths.
     """
@@ -262,14 +262,14 @@ def new_transcription():
 @app.route("/transcription/<int:transcription_id>/<int:page>")
 def show_transcription(transcription_id, page=1):
     """Display a transcription with its text fragments paginated.
-    
+
     Args:
         transcription_id: The ID of the transcription to display.
         page: The page number of text fragments (default: 1).
-    
+
     Returns:
         Rendered template with transcription details and text fragments.
-    
+
     Raises:
         404: If transcription is not found.
     """
@@ -306,6 +306,7 @@ def show_transcription(transcription_id, page=1):
     if not transcription:
         abort(404)
 
+    user = None
     if transcription['user_id']:
         user_id = transcription['user_id']
         user = users.get_user(user_id)
@@ -344,17 +345,17 @@ def show_transcription(transcription_id, page=1):
            methods=["GET", "POST"])
 def add_text_fragment(transcription_id):
     """Add a new text fragment to a transcription.
-    
+
     GET: Display form to add text fragment.
     POST: Process form and create new text fragment.
-    
+
     Args:
         transcription_id: The ID of the transcription.
-    
+
     Returns:
         GET: Rendered form template.
         POST: Redirect to transcription page.
-    
+
     Raises:
         400: If duplicate text fragment is detected.
     """
@@ -382,21 +383,22 @@ def add_text_fragment(transcription_id):
             "/transcription/" +
             str(transcription_id) +
             page)  # + id_anchor)
+    return redirect("/transcription/" + str(transcription_id))
 
 
 @app.route("/text_fragments/<int:transcription_id>")
 def generate_text_fragments(transcription_id):
     """Generate text fragments from raw transcription content.
-    
+
     Processes the raw content based on source type (YouTube, Word, WebVTT)
     and splits it into timestamped text fragments.
-    
+
     Args:
         transcription_id: The ID of the transcription.
-    
+
     Returns:
         Rendered transcription page with generated fragments or redirect.
-    
+
     Raises:
         400: If duplicate fragments are detected.
         404: If transcription is not found.
@@ -445,7 +447,7 @@ def generate_text_fragments(transcription_id):
 @app.route("/search")
 def search():
     """Search for text within transcription content.
-    
+
     Returns:
         Rendered search page with results.
     """
@@ -463,7 +465,7 @@ def search():
 @app.route("/search_titles")
 def search_titles():
     """Search for transcriptions by title.
-    
+
     Returns:
         Rendered search page with title search results.
     """
@@ -481,7 +483,7 @@ def search_titles():
 @app.route("/search_file_name")
 def search_file_name():
     """Search for transcriptions by file name.
-    
+
     Returns:
         Rendered search page with file name search results.
     """
@@ -500,10 +502,10 @@ def search_file_name():
 @app.route("/show_search_result_context/<int:id>")
 def show_search_result_context(id):
     """Display a text fragment with surrounding context from search results.
-    
+
     Args:
         id: The ID of the text fragment.
-    
+
     Returns:
         Rendered template with text fragment and context.
     """
@@ -527,17 +529,17 @@ def show_search_result_context(id):
            methods=["GET", "POST"])
 def edit_text_fragment(text_fragment_id):
     """Edit an existing text fragment.
-    
+
     GET: Display edit form.
     POST: Process form and update text fragment.
-    
+
     Args:
         text_fragment_id: The ID of the text fragment to edit.
-    
+
     Returns:
         GET: Rendered edit form.
         POST: Redirect to transcription page.
-    
+
     Raises:
         404: If text fragment is not found.
     """
@@ -554,6 +556,8 @@ def edit_text_fragment(text_fragment_id):
             text_fragment=text_fragment,
             return_page=return_page)
 
+    id_anchor = ''
+    page = ''
     if request.method == "POST":
         check_csrf()
         return_page = request.form["return_page"]
@@ -561,27 +565,27 @@ def edit_text_fragment(text_fragment_id):
         transcriptions.update_text(text_fragment["id"], words)
         page = '/' + str(return_page) if return_page else ''
         id_anchor = '#t-id-' + str(text_fragment_id)
-        return redirect("/transcription/" +
-                        str(text_fragment["transcription_id"]) +
-                        page +
-                        id_anchor)
+    return redirect("/transcription/" +
+                    str(text_fragment["transcription_id"]) +
+                    page +
+                    id_anchor)
 
 
 @app.route("/remove_text_fragment/<int:text_fragment_id>",
            methods=["GET", "POST"])
 def remove_text_fragment(text_fragment_id):
     """Remove a text fragment from a transcription.
-    
+
     GET: Display confirmation form.
     POST: Delete text fragment if confirmed.
-    
+
     Args:
         text_fragment_id: The ID of the text fragment to remove.
-    
+
     Returns:
         GET: Rendered confirmation template.
         POST: Redirect to transcription page.
-    
+
     Raises:
         404: If text fragment is not found.
     """
@@ -597,6 +601,8 @@ def remove_text_fragment(text_fragment_id):
             text_fragment=text_fragment,
             return_page=return_page)
 
+    page = ''
+    id_anchor = ''
     if request.method == "POST":
         return_page = request.form["return_page"]
         page = '/' + str(return_page) if return_page else ''
@@ -615,17 +621,17 @@ def remove_text_fragment(text_fragment_id):
 @app.route("/remove/<int:transcription_id>", methods=["GET", "POST"])
 def remove_transcription(transcription_id):
     """Remove an entire transcription and its associated data.
-    
+
     GET: Display confirmation form.
     POST: Delete transcription if confirmed.
-    
+
     Args:
         transcription_id: The ID of the transcription to remove.
-    
+
     Returns:
         GET: Rendered confirmation template.
         POST: Redirect to home page.
-    
+
     Raises:
         403: If user doesn't own the transcription.
         404: If transcription is not found.
@@ -650,17 +656,17 @@ def remove_transcription(transcription_id):
            methods=["GET", "POST"])
 def remove_transcription_split_text(transcription_id):
     """Remove all split text fragments from a transcription.
-    
+
     GET: Display confirmation form.
     POST: Delete all text fragments if confirmed.
-    
+
     Args:
         transcription_id: The ID of the transcription.
-    
+
     Returns:
         GET: Rendered confirmation template.
         POST: Redirect to transcription page.
-    
+
     Raises:
         404: If transcription is not found.
     """
@@ -682,13 +688,13 @@ def remove_transcription_split_text(transcription_id):
 @app.route("/edit/<int:transcription_id>", methods=["GET", "POST"])
 def edit_transcription(transcription_id):
     """Edit an existing transcription's metadata and content.
-    
+
     GET: Display edit form with current transcription data.
     POST: Process form and update transcription.
-    
+
     Args:
         transcription_id: The ID of the transcription to edit.
-    
+
     Returns:
         GET: Rendered edit form.
         POST: Redirect to transcription page.
@@ -742,16 +748,16 @@ def edit_transcription(transcription_id):
             record_date,
             duration_sec,
             extra_meta_data)
-        return redirect("/transcription/" + str(transcription["id"]))
+    return redirect("/transcription/" + str(transcription["id"]))
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Handle user login.
-    
+
     GET: Display login form.
     POST: Validate credentials and create session.
-    
+
     Returns:
         GET: Rendered login form.
         POST: Redirect to home page on success, error message on failure.
@@ -768,17 +774,18 @@ def login():
             session["user_id"] = user_id
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
-        else:
-            return "VIRHE: väärä tunnus tai salasana"
+
+        return "VIRHE: väärä tunnus tai salasana"
+    return render_template("login.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Handle user registration.
-    
+
     GET: Display registration form.
     POST: Create new user account.
-    
+
     Returns:
         GET: Rendered registration form.
         POST: Success message or error message.
@@ -799,12 +806,13 @@ def register():
             return "Tunnus luotu"
         except sqlite3.IntegrityError:
             return "VIRHE: tunnus on jo varattu"
+    return render_template("register.html")
 
 
 @app.route("/create", methods=["POST"])
 def create():
     """Create a new user account (alternative registration endpoint).
-    
+
     Returns:
         Rendered success template or error message.
     """
@@ -827,7 +835,7 @@ def create():
 @app.route("/logout")
 def logout():
     """Log out the current user by destroying their session.
-    
+
     Returns:
         Redirect to home page.
     """
@@ -840,10 +848,10 @@ def logout():
 @app.route("/stats")
 def stats():
     """Display statistics about transcriptions in the system.
-    
+
     Shows duplicate files, genre statistics, source statistics,
     and user statistics.
-    
+
     Returns:
         Rendered statistics template.
     """
@@ -863,13 +871,13 @@ def stats():
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
     """Display a user's profile and their transcriptions.
-    
+
     Args:
         user_id: The ID of the user to display.
-    
+
     Returns:
         Rendered user profile template.
-    
+
     Raises:
         404: If user is not found.
     """
