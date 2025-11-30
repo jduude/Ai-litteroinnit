@@ -259,7 +259,7 @@ def new_transcription():
 
 
 @app.route("/transcription/<int:transcription_id>")
-@app.route("/transcription/<int:transcription_id>/<int:page>")
+@app.route("/transcription/<int:transcription_id>/<int(signed=True):page>")
 def show_transcription(transcription_id, page=1):
     """Display a transcription with its text fragments paginated.
 
@@ -283,9 +283,9 @@ def show_transcription(transcription_id, page=1):
     page_count = math.ceil(text_fragments_count / page_size)
     page_count = max(page_count, 1)
     print(page_count, text_fragments_count)
-    if int(page) < 1:
+    if page < 1:
         return redirect("/transcription/" + str(transcription_id) + "/1")
-    if int(page) > page_count:
+    if page > page_count:
         return redirect(
             "/transcription/" +
             str(transcription_id) +
