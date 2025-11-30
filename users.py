@@ -19,6 +19,7 @@ def check_login(username, password):
 
     return None
 
+
 def get_user(user_id):
     sql = """SELECT id, username FROM users
              WHERE id = ?"""

@@ -23,9 +23,10 @@ for i in range(1, transcriptions_count + 1):
 for i in range(1, text_fragments_count + 1):
     user_id = random.randint(1, user_count)
     transcription_id = random.randint(1, transcriptions_count)
-    db.execute("""INSERT INTO text_fragments (start_ms, words, transcription_id)
-                  VALUES (?, ?, ?)""",
-               [i * 1000 + 2, "tekstitystä " + str(i),  transcription_id])
+    db.execute(
+        """INSERT INTO text_fragments (start_ms, words, transcription_id)
+                  VALUES (?, ?, ?)""", [
+            i * 1000 + 2, "tekstitystä " + str(i), transcription_id])
 
 db.commit()
 db.close()

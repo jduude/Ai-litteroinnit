@@ -2,24 +2,26 @@ import db
 
 
 def get_transcriptions():
-    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, 
-             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username  
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified,
+             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username
              FROM transcriptions t
-             JOIN users u ON u.id =  t.user_id 
+             JOIN users u ON u.id =  t.user_id
              ORDER BY t.id DESC"""
     return db.query(sql)
 
+
 def get_transcriptions_paginated(page, page_size):
-    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified, 
-             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username  
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified,
+             t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username
              FROM transcriptions t
-             JOIN users u ON u.id =  t.user_id 
+             JOIN users u ON u.id =  t.user_id
              ORDER BY t.id DESC
              LIMIT ? OFFSET ?"""
-    
+
     limit = page_size
     offset = page_size * (page - 1)
     return db.query(sql, [limit, offset])
+
 
 def get_transcriptions_count():
     sql = "SELECT count(id) as count FROM transcriptions;"
@@ -27,21 +29,41 @@ def get_transcriptions_count():
     return result[0]["count"] if result else 0
 
 
-def add_transcription(title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec, extra_meta_data):
-    sql = """INSERT INTO transcriptions 
-    (title, source_path, source, genre, raw_content, user_id, license, 
-     record_date, duration_sec, extra_meta_data, created, last_modified) 
+def add_transcription(
+        title,
+        source_path,
+        source,
+        genre,
+        raw_content,
+        user_id,
+        license,
+        record_date,
+        duration_sec,
+        extra_meta_data):
+    sql = """INSERT INTO transcriptions
+    (title, source_path, source, genre, raw_content, user_id, license,
+     record_date, duration_sec, extra_meta_data, created, last_modified)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
-    db.execute(sql, [title, source_path, source, genre, raw_content, user_id, license, record_date, duration_sec, extra_meta_data])
+    db.execute(sql,
+               [title,
+                source_path,
+                source,
+                genre,
+                raw_content,
+                user_id,
+                license,
+                record_date,
+                duration_sec,
+                extra_meta_data])
     transcription_id = db.last_insert_id()
     return transcription_id
 
 
 def get_transcription(transcription_id):
-    sql = """SELECT id, title,  source_path, source, 
+    sql = """SELECT id, title,  source_path, source,
         genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec, extra_meta_data
         FROM transcriptions WHERE id = ?"""
-    result =  db.query(sql, [transcription_id])
+    result = db.query(sql, [transcription_id])
     return result[0] if result else None
 
 
@@ -50,11 +72,31 @@ def remove_transcription(transcription_id):
     db.execute(sql, [transcription_id])
 
 
-def update_transcription(transcription_id, title, source_path, source, genre, license, raw_content, record_date, duration_sec, extra_meta_data):
-    sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?, 
-            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?,  record_date= ?, 
+def update_transcription(
+        transcription_id,
+        title,
+        source_path,
+        source,
+        genre,
+        license,
+        raw_content,
+        record_date,
+        duration_sec,
+        extra_meta_data):
+    sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?,
+            genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?,  record_date= ?,
             duration_sec= ?, extra_meta_data= ?  WHERE id = ?"""
-    db.execute(sql, [title, source_path, source, genre, license, raw_content,  record_date, duration_sec, extra_meta_data, transcription_id])
+    db.execute(sql,
+               [title,
+                source_path,
+                source,
+                genre,
+                license,
+                raw_content,
+                record_date,
+                duration_sec,
+                extra_meta_data,
+                transcription_id])
 
 
 def get_text_fragments(transcription_id):
@@ -63,8 +105,8 @@ def get_text_fragments(transcription_id):
 
 
 def get_text_fragments_paginated(transcription_id, page, page_size):
-    sql = """SELECT id, start_ms, words 
-          FROM text_fragments WHERE transcription_id = ? 
+    sql = """SELECT id, start_ms, words
+          FROM text_fragments WHERE transcription_id = ?
           AND trashed is NULL ORDER BY start_ms
           LIMIT ? OFFSET ?"""
     limit = page_size
@@ -112,20 +154,22 @@ def search(query):
             """
     return db.query(sql, ["%" + query + "%"])
 
+
 def search_titles(query):
-    sql = """SELECT id, title,  source_path, source, 
-                genre, raw_content, user_id, created, last_modified, license, 
+    sql = """SELECT id, title,  source_path, source,
+                genre, raw_content, user_id, created, last_modified, license,
                 record_date, duration_sec, extra_meta_data
-             FROM transcriptions  
+             FROM transcriptions
              WHERE  title LIKE ?
             """
     return db.query(sql, ["%" + query + "%"])
 
+
 def search_file_name(query):
-    sql = """SELECT id, title,  source_path, source, 
-                genre, raw_content, user_id, created, last_modified, license, 
+    sql = """SELECT id, title,  source_path, source,
+                genre, raw_content, user_id, created, last_modified, license,
                 record_date, duration_sec, extra_meta_data
-             FROM transcriptions  
+             FROM transcriptions
              WHERE  source_path LIKE ?
             """
     return db.query(sql, ["%" + query + "%"])
@@ -144,7 +188,7 @@ def get_text_fragment_context(id):
 
 
 def get_duplicate_files():
-    sql ="""SELECT t.id, t.source_path
+    sql = """SELECT t.id, t.source_path
             FROM transcriptions t
             JOIN (
                 SELECT source_path
@@ -156,20 +200,22 @@ def get_duplicate_files():
 
 
 def get_genre_stats():
-    sql = """select count(id) as count, genre 
+    sql = """select count(id) as count, genre
             from transcriptions
             group by genre order by count desc;"""
     return db.query(sql)
 
+
 def get_source_stats():
-    sql = """select count(id) as count, source 
+    sql = """select count(id) as count, source
             from transcriptions
             group by source order by count desc;"""
     return db.query(sql)
 
+
 def get_user_stats():
-    sql = """select count(t.id) as count, t.user_id, u.username  
-            from transcriptions t 
+    sql = """select count(t.id) as count, t.user_id, u.username
+            from transcriptions t
             JOIN users u ON u.id = user_id
             group by t.user_id order by count desc;
             """
@@ -178,7 +224,7 @@ def get_user_stats():
 
 def get_transcriptions_of_user(user_id):
     sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified
-             FROM transcriptions t 
+             FROM transcriptions t
              WHERE t.user_id = ?
              ORDER BY t.last_modified DESC"""
     return db.query(sql, [user_id])

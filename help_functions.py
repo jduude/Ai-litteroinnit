@@ -1,4 +1,5 @@
-ALLOWED_SOUND_FILE_EXTENSIONS = {'mp3', 'wav', 'ogg' }
+ALLOWED_SOUND_FILE_EXTENSIONS = {'mp3', 'wav', 'ogg'}
+
 
 def convert_seconds_to_hms(seconds):
     # Calculate hours, minutes, and remaining seconds
@@ -7,7 +8,7 @@ def convert_seconds_to_hms(seconds):
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
     secs = seconds % 60
-    
+
     # Format as h:m:s
     return f"{hours}:{minutes:02}:{secs:02}"
 
@@ -15,7 +16,7 @@ def convert_seconds_to_hms(seconds):
 def convert_hms_to_seconds(hms):
     # Split the input string into hours, minutes, and seconds
     parts = hms.split(':')
-    
+
     # Extract hours, minutes, and seconds from the parts
     if len(parts) == 3:
         hours = int(parts[0])
@@ -31,10 +32,9 @@ def convert_hms_to_seconds(hms):
         secs = int(parts[0])
     # Calculate total seconds
     total_seconds = hours * 3600 + minutes * 60 + secs
-    
+
     return total_seconds
 
- 
 
 def allowed_file(filename):
     return '.' in filename and \

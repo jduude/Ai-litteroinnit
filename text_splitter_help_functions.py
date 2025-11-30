@@ -61,15 +61,20 @@ def split_word_transcription(raw_contents):
     pattern = r'(\d{2}:\d{2}:\d{2})\r?\n((?:.|\r?\n)*?)(?=\r?\n\d{2}:\d{2}:\d{2}\r?\n|$)'
     matches = re.findall(pattern, raw_contents.strip())
     result_array = [[timestamp, part.strip()] for timestamp, part in matches]
-    test_fragments_with_timestamps = [(hhmmss_to_milliseconds(time_str), words.strip()) for time_str, words in result_array ]
+    test_fragments_with_timestamps = [
+        (hhmmss_to_milliseconds(time_str),
+         words.strip()) for time_str,
+        words in result_array]
     return test_fragments_with_timestamps
 
 
 def split_youtube_transcription(raw_content):
     timed_text_dict = json.loads(raw_content)
     events = timed_text_dict['events']
-    test_fragments_with_timestamps = [(e['tStartMs'], "".join([s['utf8'] for s in e['segs']])) for e in events if
-                                      'segs' in e]
-    test_fragments_with_timestamps = [(tStartMsm, text) for tStartMsm, text in test_fragments_with_timestamps if
-                                      text.strip() != '']
+    test_fragments_with_timestamps = [(e['tStartMs'], "".join(
+        [s['utf8'] for s in e['segs']])) for e in events if 'segs' in e]
+    test_fragments_with_timestamps = [
+        (tStartMsm,
+         text) for tStartMsm,
+        text in test_fragments_with_timestamps if text.strip() != '']
     return test_fragments_with_timestamps
