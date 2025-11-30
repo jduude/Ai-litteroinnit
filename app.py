@@ -31,7 +31,7 @@ import help_functions
 UPLOAD_FOLDER = './static/audio'
 
 app = Flask(__name__)
-app.secret_key = config.secret_key
+app.secret_key = config.SECRET_KEY
 
 MEGABYTE = (2 ** 10) ** 2
 app.config['MAX_CONTENT_LENGTH'] = None
@@ -283,9 +283,9 @@ def show_transcription(transcription_id, page=1):
     page_count = math.ceil(text_fragments_count / page_size)
     page_count = max(page_count, 1)
     print(page_count, text_fragments_count)
-    if page < 1:
+    if int(page) < 1:
         return redirect("/transcription/" + str(transcription_id) + "/1")
-    if page > page_count:
+    if int(page) > page_count:
         return redirect(
             "/transcription/" +
             str(transcription_id) +
