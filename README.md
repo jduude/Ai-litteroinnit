@@ -14,7 +14,7 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 * Käyttäjä näkee sovellukseen lisätyt litteroinnit
 * Käyttäjä pystyy etsimään litteroitujen tekstien sisältöjä
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät käyttäjän lisäämät litteroinnit
-* Käyttäjä voi lisätä metatietoja litterointiin: äänitiedoston pituudes, äänitteen päivämäärä, vapaamuotoinen metatieto merkkijono 
+* Käyttäjä voi lisätä metatietoja litterointiin: äänitiedoston pituus, äänitteen päivämäärä, vapaamuotoinen metatieto merkkijono 
 * käyttäjä voi lisätä litterointia vastaavan äänitiedoston
 * käyttäjä voi kuunnella litterointia vastaavaa äänitiedostoa ja tarkistaa litterointitekstejä samalla sivulla (ei vielä oikein toimi youtube formaatti valinnalla)
 * äänitiedoston soitto hyppää tektityksen aikakoodilinkin mukaiseen aloituskohtaan
