@@ -11,7 +11,7 @@
   <form action="/edit/{{ transcription.id }}" method="post" enctype=multipart/form-data>
     <p>
       Otsikko:
-      <input type="text" maxlength="250" name="title" required value="{{transcription.title}}" />
+      <input type="text" size="90" maxlength="250" name="title" required value="{{transcription.title}}" />
       <br />
       Äänitiedoston nimi tai url:
       <input type="text" size="60" maxlength="250" name="source_path" required value="{{transcription.source_path}}" />
