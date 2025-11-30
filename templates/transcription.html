@@ -50,6 +50,12 @@
             padding: 0.3rem 1rem;
             margin: 20px 0;
         }
+
+        .text-fragments .t-row>div:not(.transcript-row-words) {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
     </style>
 </head>
 
@@ -99,9 +105,11 @@
         <h3>Aikakoodi tekstit sivu {{page}}:</h3>
 
         <p>
+            <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
             <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
             Sivu {{ page }} / {{ page_count }}
             <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+            <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
         </p>
 
         <div class="rows-header-columns t-row"">
@@ -112,42 +120,45 @@
         <div>|Muokkaus | Poisto | <span class=" text_id">ID</span></div>
     </div>
 
-    {% for id, start_sec, time_str, start_ms, words in text_fragments %}
-    <div class="t-row" id="t-id-{{id}}">
-        <div class="time-stamps-div"><span class="time-stamps">
+    <div class="text-fragments">
+        {% for id, start_sec, time_str, start_ms, words in text_fragments %}
+        <div class="t-row" id="t-id-{{id}}">
+            <div class="time-stamps-div"><span class="time-stamps">
 
-                {% if transcription.source == 'youtube' %}
-                <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
-                    {{time_str}}</a>
-                {% else %}
-                {% if local_audio_file_copy_exists %}
-                <a href="/transcription/{{ transcription.id }}/{{ page }}?audiotime={{time_str}}#audio-player"> <span
-                        class="time-string">{{time_str}}</span></a>
-                {% else %}
-                <span class="time-string">{{time_str}}</span>
-                {% endif %}
-                | <span class="seconds">({{start_sec}})</span>
+                    {% if transcription.source == 'youtube' %}
+                    <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
+                        {{time_str}}</a>
+                    {% else %}
+                    {% if local_audio_file_copy_exists %}
+                    <a href="/transcription/{{ transcription.id }}/{{ page }}?audiotime={{time_str}}#audio-player">
+                        <span class="time-string">{{time_str}}</span></a>
+                    {% else %}
+                    <span class="time-string">{{time_str}}</span>
+                    {% endif %}
 
-                {% endif %}
-            </span>
+
+                    {% endif %}| <span class="seconds">({{start_sec}})</span>
+                </span>
+            </div>
+
+            <div class="transcript-row-words">{{words}}</div>
+            <div>|<a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
+                | <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a> | <span
+                    class="text_id">{{id}}</span>
+                | <a href="/add_text_fragment/{{ transcription.id }}?return_page={{page}}">Lisää</a>
+            </div>
         </div>
 
-        <div class="transcript-row-words">{{words}}</div> | <div><a
-                href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
-            | <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a> | <span
-                class="text_id">{{id}}</span>
-            | <a href="/add_text_fragment/{{ transcription.id }}?return_page={{page}}">Lisää</a>
-        </div>
+
+        {% endfor %}
     </div>
 
-
-    {% endfor %}
-
-
     <p>
+        <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
         <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
         Sivu {{ page }} / {{ page_count }}
         <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+        <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
     </p>
 
     {% else %}
