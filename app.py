@@ -363,11 +363,19 @@ def add_text_fragment(transcription_id):
     """
     require_login()
     return_page = request.args.get("return_page")
+    start_id = request.args.get("start_id")
+    
+    start_fragment=transcriptions.get_text_fragment(start_id)
+    print(start_fragment['start_ms'] if start_fragment else "no start fragment")
+    if start_fragment:
+        # fetch default start time from the selected fragment with +1 second offset
+        start_time_seconds = int(start_fragment['start_ms'] / 1000) + 1
+        start_time_hms = help_functions.convert_seconds_to_hms(start_time_seconds)
     if request.method == "GET":
         return render_template(
             "add_text_fragment.html",
             transcription_id=transcription_id,
-            return_page=return_page)
+            return_page=return_page, start_time_hms=start_time_hms if start_fragment else "")
     if request.method == "POST":
         check_csrf()
         return_page = request.form["return_page"]
