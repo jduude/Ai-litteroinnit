@@ -777,7 +777,7 @@ def login():
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
 
-        return "VIRHE: väärä tunnus tai salasana"
+        flash("VIRHE: väärä tunnus tai salasana")
     return render_template("login.html")
 
 

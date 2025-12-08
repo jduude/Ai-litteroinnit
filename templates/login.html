@@ -9,7 +9,11 @@
 <body>
 
   <h1>Kirjaudu</h1>
-
+  {% for message in get_flashed_messages() %}
+  <p class="flash-message">
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
   <form action="/login" method="post">
     <p>
       Käyttäjätunnus: <br />
