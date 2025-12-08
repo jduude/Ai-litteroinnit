@@ -9,12 +9,12 @@
   <h2>Litteroinnin muokkaus</h2>
   <p>Lisää uusi ajastettu tekstitys lause</p>
 
-  <form action="/add_text_fragment/{{ transcription_id }}" method="post">
+  <form onkeydown="return event.key != 'Enter';" action="/add_text_fragment/{{ transcription_id }}" method="post">
     <p>
       <span> {{transcription_id}} </span>
       <br>
       Aloitusaika (h:m:sec):
-      <input name="start_time" />
+      <input name="start_time" pattern="[0-9:]*" maxlength="12" required />
       <br>
       Uusi teksti:<br>
       <textarea name="words" rows="4" cols="90"> </textarea>
