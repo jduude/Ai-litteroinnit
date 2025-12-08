@@ -44,6 +44,7 @@
         <th>Id</th>
         <th>Otsikko</th>
         <th>Lajityyppi</th>
+        <th>Käyttäjä</th>
         <th>Tiedosto</th>
         <th>Luotu</th>
         <th>Muokattu</th>
@@ -55,6 +56,7 @@
         <td><a href="/transcription/{{ t.id }}"> {{ t.id }} </a></td>
         <td> {{ t.title }} </td>
         <td> {{ t.genre }} </td>
+        <td> {{ t.username }} </td>
         <td> {{ t.source_path }} </td>
         <td> {{ t.created }} </td>
         <td> {{ t.last_modified }} </td>
