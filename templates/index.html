@@ -76,10 +76,12 @@
 
     <div>
       <p>
-        <a href="/register">Luo tunnus</a> |
         {% if session.user_id %}
         <a href="/logout">Kirjaudu ulos</a>
         {% else %}
+
+        <a href="/register">Luo tunnus</a> |
+
         <a href="/login">Kirjaudu sisään</a>
         {% endif %}
       </p>
