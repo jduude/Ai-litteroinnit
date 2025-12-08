@@ -56,6 +56,11 @@
             -webkit-user-select: none;
             -moz-user-select: none;
         }
+
+        .flash-message {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -66,6 +71,13 @@
 
     <h2>Litterointi {{ transcription.id }}</h2>
     <h2>{{ transcription.title }}</h2>
+
+    {% for message in get_flashed_messages() %}
+    <p class="flash-message">
+        <b>{{ message }}</b>
+    </p>
+    {% endfor %}
+
     <ul>
 
         <li>Id: {{ transcription.id }}</li>

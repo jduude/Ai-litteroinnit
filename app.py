@@ -440,18 +440,21 @@ def generate_text_fragments(transcription_id):
         return redirect("/transcription/" + str(transcription["id"]))
    
     test_fragments_with_timestamps = []
-    if transcription['source'] == 'youtube':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(
-            raw_content)
-    elif transcription['source'] == 'word':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_word_transcription(
-            raw_content)
-    elif transcription['source'] == 'webvtt':
-        test_fragments_with_timestamps = text_splitter_help_functions.split_web_vtt(
-            raw_content)
-    else:
-        print(transcription['source'], " text source not supported")
-
+    try:
+        if transcription['source'] == 'youtube':
+            test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(
+                raw_content)
+        elif transcription['source'] == 'word':
+            test_fragments_with_timestamps = text_splitter_help_functions.split_word_transcription(
+                raw_content)
+        elif transcription['source'] == 'webvtt':
+            test_fragments_with_timestamps = text_splitter_help_functions.split_web_vtt(
+                raw_content)
+        else:
+            print(transcription['source'], " text source not supported")
+    except Exception:    
+        flash('Tekstinjako epäonnistui. Tarkista että aikaleimattu lähdeteksti on eheä ja valitun ' + transcription['source'] + ' lähteen formaation mukainen ') 
+        return redirect("/transcription/" + str(transcription["id"]))
     transcription_id = transcription['id']
     try:
         for start_ms, words in test_fragments_with_timestamps:
