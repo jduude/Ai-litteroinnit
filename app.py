@@ -432,6 +432,13 @@ def generate_text_fragments(transcription_id):
             text_fragments=text_fragments_with_secs)
 
     raw_content = transcription['raw_content']
+    if len(raw_content.strip()) == 0:
+        try:
+            transcriptions.add_text_fragment(0, 'Placeholder', transcription_id)
+        except sqlite3.IntegrityError:
+            abort(400)
+        return redirect("/transcription/" + str(transcription["id"]))
+   
     test_fragments_with_timestamps = []
     if transcription['source'] == 'youtube':
         test_fragments_with_timestamps = text_splitter_help_functions.split_youtube_transcription(
