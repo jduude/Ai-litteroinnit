@@ -13,11 +13,13 @@ Key features:
     - Audio file handling and playback
 """
 
+ 
 import os
+import re
 import time
 import sqlite3
 import math
-from flask import Flask, redirect, render_template, request, session, abort, g
+from flask import Flask, redirect, render_template, request, session, abort, g, flash
 from werkzeug.security import generate_password_hash, secrets
 from werkzeug.utils import secure_filename
 import db
@@ -779,40 +781,54 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/register", methods=["GET"])
+ 
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    """Handle user registration.
-
-    GET: Display registration form.
-
-    Returns:
-        GET: Rendered registration form.
-    """
-  
-    return render_template("register.html")
-
-
-@app.route("/create", methods=["POST"])
-def create():
     """Create a new user account.
 
     Returns:
         Rendered success template or error message.
     """
+    if request.method == "GET":
+        return render_template("register.html", filled={})
+
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+    if len(username) < 3:
+        flash("VIRHE: tunnuksen pituuden tulee olla vähintään 3 merkkiä")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
+    
+    # Check for invalid characters in username
+    if not re.match("^[A-Za-z0-9_]+$", username):
+        flash("VIRHE: tunnus saa sisältää vain kirjaimia, numeroita ja alaviivoja")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
+   
+    
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
+        flash("VIRHE: salasanat eivät ole samat")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
+    # at least 8 characters, one uppercase, one lowercase, one digit
+    if len(password1) < 8 or not re.search("[a-z]", password1   ) or not re.search("[A-Z]", password1) or not re.search("[0-9]", password1):
+        flash("VIRHE: salasanan tulee olla vähintään 8 merkkiä pitkä ja sisältää ainakin yhden ison kirjaimen, yhden pienen kirjaimen ja yhden numeron")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
+           
     try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
+        users.create_user(username, password1)
+        flash("Tunnuksen luominen onnistui, voit nyt kirjautua sisään")
+        return redirect("/")
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+        flash("VIRHE: Valitsemasi tunnus on jo varattu")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
-    return render_template("registered.html")
+ 
 
 
 @app.route("/logout")

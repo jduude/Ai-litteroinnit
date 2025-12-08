@@ -31,6 +31,13 @@
 <body>
   <div>
     <h1>Litteroinnit</h1>
+
+    {% for message in get_flashed_messages() %}
+    <p class="flash-message">
+      <b>{{ message }}</b>
+    </p>
+    {% endfor %}
+
     {% if user.username %}
     <div><a href="/search">Hakusivu</a> | <a href="/stats">Tilastoja</a></div>
     {% endif %}
