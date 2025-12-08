@@ -37,7 +37,8 @@
 
       <br />
       Pituus ( h:m:s / sec):
-      <input type="text" size="50" maxlength="30" name="duration_sec" value="{{transcription.duration_sec}}" />
+      <input type="text" size="50" pattern="[0-9:]*" maxlength="30" name="duration_sec"
+        value="{{transcription.duration_sec}}" />
 
       <br />
       Lisenssi:
