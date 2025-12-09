@@ -228,3 +228,11 @@ def get_transcriptions_of_user(user_id):
              WHERE t.user_id = ?
              ORDER BY t.last_modified DESC"""
     return db.query(sql, [user_id])
+
+
+def get_transcriptions_by_genre(genre):
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified
+             FROM transcriptions t
+             WHERE t.genre = ?
+             ORDER BY t.last_modified DESC"""
+    return db.query(sql, [genre])

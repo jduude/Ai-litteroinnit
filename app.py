@@ -132,7 +132,8 @@ def transcriptions_by_genre(genre):
     """
     require_login()
     print(genre)
-    return redirect("/")
+    transcriptions_list = transcriptions.get_transcriptions_by_genre(genre)
+    return render_template("transcriptions_by_filter.html", filter_key=genre, transcriptions=transcriptions_list)
 
 # tobe implemented
 
