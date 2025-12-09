@@ -153,22 +153,6 @@ def transcriptions_by_source(source):
     transcriptions_list = transcriptions.get_transcriptions_by_source(source)
     return render_template("transcriptions_by_filter.html", filter_key=source, transcriptions=transcriptions_list)
 
-   
-
- 
-@app.route("/transcriptions_by_user/<int:user_id>")
-def transcriptions_by_user(user_id):
-    """Filter transcriptions by user (to be implemented).
-
-    Args:
-        user_id: The user ID to filter by.
-
-    Returns:
-        Redirect to home page.
-    """
-    require_login()
-    print(user_id)
-    return redirect("/")
 
 
 @app.route("/create_transcription", methods=["GET"])
