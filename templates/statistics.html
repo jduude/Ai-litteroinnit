@@ -47,7 +47,7 @@
 
     <ul>
       {% for user_stat in user_stats %}
-      <li> <a href="/transcriptions_by_user/{{user_stat.user_id}}">{{user_stat.username}} </a> : {{user_stat.count}}
+      <li> <a href="/user/{{user_stat.user_id}}">{{user_stat.username}} </a> : {{user_stat.count}}
       </li>
       {% endfor %}
     </ul>
