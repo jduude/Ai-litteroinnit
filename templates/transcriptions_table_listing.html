@@ -10,15 +10,17 @@
         color: #333;
 
         font-weight: bold;
-        padding: 12px;
+        padding: 0.5rem;
         border: 1px solid #ddd;
+        min-width: 4.5rem;
     }
 
 
     td {
-        padding: 12px;
+        padding: 0.2rem;
         border: 1px solid #ddd;
         text-align: left;
+        max-width: 50rem;
     }
 
 
@@ -57,9 +59,9 @@
         <td> {{ t.title }} </td>
         <td> {{ t.genre }} </td>
         <td> {{ t.username }} </td>
-        <td> {{ t.source_path }} </td>
-        <td> {{ t.created }} </td>
-        <td> {{ t.last_modified }} </td>
+        <td> {{ t.source_path.replace('https://www.', '') }} </td>
+        <td> {{ t.created.split(' ')[0] if t.created else '' }} </td>
+        <td> {{ t.last_modified.split(' ')[0] if t.last_modified else '' }} </td>
 
     </tr>
     {% endfor %}
