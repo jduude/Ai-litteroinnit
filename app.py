@@ -119,42 +119,43 @@ def index(page=1):
         page_count=page_count)
 
 
-# tobe implemented
+
 @app.route("/transcriptions_by_genre/<string:genre>")
 def transcriptions_by_genre(genre):
-    """Filter transcriptions by genre (to be implemented).
+    """Filter transcriptions by genre.
 
     Args:
         genre: The genre to filter by.
 
     Returns:
-        Redirect to home page.
+        Redirect to transcriptions_by_filter template.
     """
     require_login()
-    print(genre)
+
     transcriptions_list = transcriptions.get_transcriptions_by_genre(genre)
     return render_template("transcriptions_by_filter.html", filter_key=genre, transcriptions=transcriptions_list)
 
-# tobe implemented
 
 
 @app.route("/transcriptions_by_source/<string:source>")
 def transcriptions_by_source(source):
-    """Filter transcriptions by source (to be implemented).
+    """Filter transcriptions by source.
 
     Args:
         source: The source to filter by.
 
     Returns:
-        Redirect to home page.
+        Redirect to transcriptions_by_filter template.
     """
     require_login()
     print(source)
-    return redirect("/")
 
-# tobe implemented
+    transcriptions_list = transcriptions.get_transcriptions_by_source(source)
+    return render_template("transcriptions_by_filter.html", filter_key=source, transcriptions=transcriptions_list)
 
+   
 
+ 
 @app.route("/transcriptions_by_user/<int:user_id>")
 def transcriptions_by_user(user_id):
     """Filter transcriptions by user (to be implemented).

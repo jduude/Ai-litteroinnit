@@ -236,3 +236,10 @@ def get_transcriptions_by_genre(genre):
              WHERE t.genre = ?
              ORDER BY t.last_modified DESC"""
     return db.query(sql, [genre])
+
+def get_transcriptions_by_source(source):
+    sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified
+             FROM transcriptions t
+             WHERE t.source = ?
+             ORDER BY t.last_modified DESC"""
+    return db.query(sql, [source])
