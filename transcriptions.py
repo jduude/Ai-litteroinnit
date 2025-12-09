@@ -39,11 +39,11 @@ def add_transcription(
         license,
         record_date,
         duration_sec,
-        extra_meta_data):
+        extra_meta_data, allow_collaboration):
     sql = """INSERT INTO transcriptions
     (title, source_path, source, genre, raw_content, user_id, license,
-     record_date, duration_sec, extra_meta_data, created, last_modified)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
+     record_date, duration_sec, extra_meta_data, allow_collaboration, created, last_modified)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"""
     db.execute(sql,
                [title,
                 source_path,
@@ -54,14 +54,14 @@ def add_transcription(
                 license,
                 record_date,
                 duration_sec,
-                extra_meta_data])
+                extra_meta_data, allow_collaboration])
     transcription_id = db.last_insert_id()
     return transcription_id
 
 
 def get_transcription(transcription_id):
     sql = """SELECT id, title,  source_path, source,
-        genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec, extra_meta_data
+        genre, raw_content, user_id, created, last_modified, license, record_date, duration_sec, extra_meta_data, allow_collaboration
         FROM transcriptions WHERE id = ?"""
     result = db.query(sql, [transcription_id])
     return result[0] if result else None
@@ -82,10 +82,10 @@ def update_transcription(
         raw_content,
         record_date,
         duration_sec,
-        extra_meta_data):
+        extra_meta_data, allow_collaboration):
     sql = """UPDATE transcriptions SET title = ?, source_path = ?, source = ?,
             genre = ?, last_modified=CURRENT_TIMESTAMP, license = ?, raw_content= ?,  record_date= ?,
-            duration_sec= ?, extra_meta_data= ?  WHERE id = ?"""
+            duration_sec= ?, extra_meta_data= ?, allow_collaboration = ? WHERE id = ?"""
     db.execute(sql,
                [title,
                 source_path,
@@ -95,7 +95,7 @@ def update_transcription(
                 raw_content,
                 record_date,
                 duration_sec,
-                extra_meta_data,
+                extra_meta_data, allow_collaboration,
                 transcription_id])
 
 

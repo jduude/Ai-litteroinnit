@@ -53,6 +53,9 @@
                     Metadata:
                     <input type="text" size="50" maxlength="500" name="extra_meta_data" />
                     <br />
+                    Salli muiden käyttäjien muokata tätä litterointia:
+                    <input type="checkbox" name="allow_collaboration" />
+                    <br />
                     Lisää äänitiedosto:
                     <input type="file" name="file">
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />

@@ -47,6 +47,12 @@
       Metadata:
       <input type="text" size="50" name="extra_meta_data" maxlength="500" value="{{transcription.extra_meta_data}}" />
       <br />
+      {% if transcription.user_id == session.user_id %}
+      Salli muiden käyttäjien muokata tätä litterointia:
+      <input type="checkbox" name="allow_collaboration" {% if transcription.allow_collaboration %} checked {% endif
+        %} />
+      <br />
+      {% endif %}
       Lisää äänitiedosto:
       <input type="file" name="file">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />

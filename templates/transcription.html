@@ -98,9 +98,14 @@
             {% endif %}
         </li>
         <li>Käyttäjä: {{ user.username }}</li>
+
+        <li>Salli muiden käyttäjien muokata: {{ "Kyllä" if transcription.allow_collaboration else "Ei" }}</li>
     </ul>
+    {% if transcription.allow_collaboration or transcription.user_id == session.user_id%}
     <p><a href="/edit/{{ transcription.id }}">Muokkaa</a> </p>
     <hr>
+    {% endif %}
+
     {% if local_audio_file_copy_exists %}
 
     <div id="audio-player">
@@ -154,11 +159,13 @@
             </div>
 
             <div class="transcript-row-words">{{words}}</div>
+            {% if transcription.allow_collaboration %}
             <div>|<a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
                 | <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a> | <span
                     class="text_id">{{id}}</span>
                 | <a href="/add_text_fragment/{{ transcription.id }}?return_page={{page}}&start_id={{id}}">Lisää</a>
             </div>
+            {% endif %}
         </div>
 
 

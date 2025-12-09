@@ -19,7 +19,8 @@ CREATE TABLE transcriptions (
     license TEXT,
     record_date DATE NULL,
     duration_sec INTEGER NULL,
-    extra_meta_data TEXT
+    extra_meta_data TEXT,
+    allow_collaboration BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE text_fragments (

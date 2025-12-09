@@ -205,7 +205,10 @@ def new_transcription():
     record_date = request.form["record_date"]
     duration_sec = request.form["duration_sec"]
     extra_meta_data = request.form["extra_meta_data"]
-
+    if 'allow_collaboration' in request.form:
+        allow_collaboration = True
+    else:
+        allow_collaboration = False
     if len(title) > 250:
         abort(
             400,
@@ -256,7 +259,7 @@ def new_transcription():
         license,
         record_date,
         duration_sec,
-        extra_meta_data)
+        extra_meta_data, allow_collaboration)
     return redirect("/transcription/" + str(transcription_id))
 
 
@@ -570,6 +573,13 @@ def edit_text_fragment(text_fragment_id):
     if not text_fragment:
         abort(404)
 
+    transcription_id = text_fragment['transcription_id']
+    transcription = transcriptions.get_transcription(transcription_id)
+    allow_collaboration = transcription['allow_collaboration']  
+    if not allow_collaboration and transcription["user_id"] != session["user_id"]:
+        abort(403)
+
+
     if request.method == "GET":
         return render_template(
             "edit_text_fragment.html",
@@ -722,6 +732,11 @@ def edit_transcription(transcription_id):
     require_login()
     transcription = transcriptions.get_transcription(transcription_id)
 
+    allow_collaboration = transcription["allow_collaboration"]
+    if not allow_collaboration and transcription["user_id"] != session["user_id"]:
+        abort(403)
+ 
+
     if request.method == "GET":
         return render_template("edit.html", transcription=transcription)
 
@@ -736,6 +751,10 @@ def edit_transcription(transcription_id):
         record_date = request.form["record_date"]
         duration_sec = request.form["duration_sec"]
         extra_meta_data = request.form["extra_meta_data"]
+        if 'allow_collaboration' in request.form:
+            allow_collaboration = True
+        else:
+            allow_collaboration = False
         if ':' in duration_sec:
             duration_sec = help_functions.convert_hms_to_seconds(duration_sec)
 
@@ -767,7 +786,7 @@ def edit_transcription(transcription_id):
             raw_content,
             record_date,
             duration_sec,
-            extra_meta_data)
+            extra_meta_data, allow_collaboration)
     return redirect("/transcription/" + str(transcription["id"]))
 
 
