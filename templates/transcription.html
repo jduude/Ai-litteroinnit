@@ -159,7 +159,7 @@
             </div>
 
             <div class="transcript-row-words">{{words}}</div>
-            {% if transcription.allow_collaboration %}
+            {% if transcription.allow_collaboration or transcription.user_id == session.user_id %}
             <div>|<a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
                 | <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a> | <span
                     class="text_id">{{id}}</span>
@@ -187,11 +187,13 @@
 
     {% endif %}
     </div>
-    {% if transcription.user_id == session.user_id %}
+    {% if transcription.allow_collaboration or transcription.user_id == session.user_id %}
     <div>
 
-        <a href="/edit/{{ transcription.id }}">Muokkaa litterointia</a> |
-        <a href="/remove/{{ transcription.id }}">Poista koko litterointi</a>
+        <a href="/edit/{{ transcription.id }}">Muokkaa litterointia</a>
+        {% if transcription.user_id == session.user_id %}
+        | <a href="/remove/{{ transcription.id }}">Poista koko litterointi</a>
+        {% endif %}
         <br>
         <br>
         <a href="/remove_transcription_split_text/{{ transcription.id }}">Poista vain aikakoodi rivitetyt

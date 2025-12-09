@@ -624,6 +624,14 @@ def remove_text_fragment(text_fragment_id):
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
     if not text_fragment:
         abort(404)
+
+    
+    transcription_id = text_fragment['transcription_id']
+    transcription = transcriptions.get_transcription(transcription_id)
+    allow_collaboration = transcription['allow_collaboration']  
+    if not allow_collaboration and transcription["user_id"] != session["user_id"]:
+        abort(403)
+
     transcription_id = text_fragment["transcription_id"]
     if request.method == "GET":
         return render_template(
@@ -670,6 +678,8 @@ def remove_transcription(transcription_id):
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
+
+    # Only the owner can delete the transcription regardless of transcription collaboration setting
     if transcription["user_id"] != session["user_id"]:
         abort(403)
 
@@ -702,6 +712,12 @@ def remove_transcription_split_text(transcription_id):
     """
     require_login()
     transcription = transcriptions.get_transcription(transcription_id)
+
+   
+    allow_collaboration = transcription['allow_collaboration']  
+    if not allow_collaboration and transcription["user_id"] != session["user_id"]:
+        abort(403)
+
     if not transcription:
         abort(404)
     if request.method == "GET":
