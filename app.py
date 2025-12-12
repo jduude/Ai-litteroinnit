@@ -752,6 +752,7 @@ def edit_transcription(transcription_id):
         POST: Redirect to transcription page.
     """
     require_login()
+    user = get_user()
     transcription = transcriptions.get_transcription(transcription_id)
 
     allow_collaboration = transcription["allow_collaboration"]
@@ -760,7 +761,7 @@ def edit_transcription(transcription_id):
  
 
     if request.method == "GET":
-        return render_template("edit.html", transcription=transcription)
+        return render_template("edit.html", transcription=transcription,user=user)
 
     if request.method == "POST":
         check_csrf()

@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0.1rem;
     background-color: #f9f9f9;
     color: #333;
@@ -194,4 +194,46 @@ audio {
 .search-section {
     border-bottom: #777 solid 2px;
     padding-bottom: 1rem;
+}
+
+
+
+h1 {
+    color: rgb(99, 89, 110);
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+
+}
+
+.transcription-form-page form {
+    background: rgb(237, 237, 237);
+    width: 80%;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+
+}
+
+.transcription-form-page label,
+.transcription-form-page form p {
+    color: #333;
+    font-size: 1rem;
+    line-height: 2;
+    font-weight: bold;
+    margin: 0;
+}
+
+.transcription-form-page input[type="text"],
+.transcription-form-page input[type="file"],
+.transcription-form-page select,
+.transcription-form-page textarea {
+    width: 96%;
+    padding: 0.4rem 0.7rem;
+    font-size: 100%;
+}
+
+.transcription-form-page select {
+    margin-top: 1rem;
+    width: 50%;
 }
