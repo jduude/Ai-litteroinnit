@@ -6,13 +6,14 @@
     <title>{{ transcription.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
+
 </head>
 
 <body>
     <div class="main-wrapper">
-        <p>
-            <a href="/">Etusivulle</a>
-        </p>
+        <div class="header">
+            {% include 'navigation.html' %}
+        </div>
 
         <h2>Litterointi {{ transcription.id }}</h2>
         <h2>{{ transcription.title }}</h2>
@@ -60,7 +61,7 @@
             </audio>
         </div>
         {% endif %}
-        <hr>
+
 
         <div>
             {% if text_fragments %}
