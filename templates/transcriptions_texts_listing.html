@@ -1,0 +1,111 @@
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: #f2f2f2;
+
+        color: #333;
+
+        font-weight: bold;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        min-width: 4.5rem;
+    }
+
+
+    td {
+        padding: 0.1rem 0.6rem;
+        border: 1px solid #ddd;
+        text-align: left;
+        max-width: 50rem;
+    }
+
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+
+    tr:hover {
+        background-color: #e6e6e6;
+    }
+
+    .time-stamp {
+        min-width: 2rem;
+        max-width: 2rem;
+    }
+
+    .id {
+        min-width: 1rem;
+        max-width: 1rem;
+        font-size: 70%;
+    }
+
+    .version {
+        width: 1rem;
+    }
+
+    tr td.version {
+        text-align: center;
+        font-size: 70%;
+    }
+
+    .edit,
+    .remove,
+    .add {
+        min-width: 2rem;
+        max-width: 3rem;
+
+    }
+</style>
+
+<h3>
+    Tekstitykset:
+</h3>
+<table>
+    <tr>
+        <th class="time-stamp">Aika</th>
+        <th class="id">Id</th>
+        <th class="words">Sanat</th>
+        <th class="version">Versio</th>
+        <th class="edit">Muokkaus</th>
+        <th class="remove">Poisto</th>
+        <th class="add">Lisää</th>
+
+    </tr>
+
+
+    {% for id, start_sec, time_str, start_ms, words, version in text_fragments %}
+    <tr id="t-id-{{id}}">
+
+        <td class="time-stamp">
+            {% if transcription.source == 'youtube' %}
+            <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
+                {{time_str}}</a>
+            {% else %}
+            {% if local_audio_file_copy_exists %}
+            <a href="/transcription/{{ transcription.id }}/{{ page }}?audiotime={{time_str}}#audio-player">
+                <span class="time-string">{{time_str}}</span></a>
+            {% else %}
+            <span class="time-string">{{time_str}}</span>
+            {% endif %}
+            {% endif %} </span>
+        </td>
+        <td class="id"> {{ id }} </td>
+        <td class="words"> {{ words }} </td>
+        <td class="version"> {{ version }} </td>
+        <td class="edit"> <a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a> </td>
+        <td class="remove"> <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a></td>
+        <td class="add"> <a
+                href="/add_text_fragment/{{ transcription.id }}?return_page={{page}}&start_id={{id}}">Lisää</a> </td>
+
+    </tr>
+    {% endfor %}
+</table>

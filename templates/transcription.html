@@ -129,47 +129,13 @@
             <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
         </p>
 
-        <div class="rows-header-columns t-row"">
-            <div class=" time-stamps-div"><span class="time-stamps">
-                <span class="time-string">Aika &nbsp;&nbsp;&nbsp;</span> | <span class="seconds">(sek)</span></span>
-        </div>
-        <div class="transcript-row-words">Sanat</div>
-        <div>|Muokkaus | Poisto | <span class=" text_id">ID</span></div>
+
     </div>
 
     <div class="text-fragments">
-        {% for id, start_sec, time_str, start_ms, words, version in text_fragments %}
-        <div class="t-row" id="t-id-{{id}}">
-            <div class="time-stamps-div"><span class="time-stamps">
 
-                    {% if transcription.source == 'youtube' %}
-                    <a rel="noreferrer noopener" target="_blank" href="{{transcription.source_path }}&t={{start_sec}}">
-                        {{time_str}}</a>
-                    {% else %}
-                    {% if local_audio_file_copy_exists %}
-                    <a href="/transcription/{{ transcription.id }}/{{ page }}?audiotime={{time_str}}#audio-player">
-                        <span class="time-string">{{time_str}}</span></a>
-                    {% else %}
-                    <span class="time-string">{{time_str}}</span>
-                    {% endif %}
+        {% include 'transcriptions_texts_listing.html' %}
 
-
-                    {% endif %}| <span class="seconds">({{start_sec}})</span>
-                </span>
-            </div>
-
-            <div class="transcript-row-words">{{words}}</div>
-            {% if transcription.allow_collaboration or transcription.user_id == session.user_id %}
-            <div>|<a href="/edit_text_fragment/{{ id }}?return_page={{page}}">Muokkaa</a>
-                | <a href="/remove_text_fragment/{{ id }}?return_page={{page}}">Poista</a> | <span
-                    class="text_id">{{id}}</span>
-                | <a href="/add_text_fragment/{{ transcription.id }}?return_page={{page}}&start_id={{id}}">Lisää</a>
-            </div>
-            {% endif %}
-        </div>
-
-
-        {% endfor %}
     </div>
 
     <p>
