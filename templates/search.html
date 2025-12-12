@@ -7,27 +7,15 @@
     <title>Haku</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <style>
-        .result_text {
-            margin: 0 0.5em;
-        }
 
-        .result_media_title {
-            color: #777;
-            font-size: 80%;
-        }
-
-        .search-section {
-            border-bottom: #777 solid 2px;
-            padding-bottom: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
-    <div>
-        <a href="/">Palaa etusivulle</a>
+    <div class="main-wrapper">
+        <div class="header">
+            {% include 'navigation.html' %}
+        </div>
         <h2>Haku</h2>
         <div class="search-section">
             <form action="/search" method="get">
@@ -104,6 +92,7 @@
         {% endif %}
     </div>
     </div>
+
 </body>
 
 </html>

@@ -467,6 +467,7 @@ def search():
         Rendered search page with results.
     """
     require_login()
+    user = get_user()
     text_query = request.args.get("query")
     if not text_query:
         text_query = ""
@@ -474,7 +475,7 @@ def search():
     return render_template(
         "search.html",
         text_query=text_query,
-        results=results)
+        results=results, user=user)
 
 
 @app.route("/search_titles")
@@ -822,6 +823,7 @@ def stats():
         Rendered statistics template.
     """
     require_login()
+    user = get_user()
     duplicates = transcriptions.get_duplicate_files()
     genre_stats = transcriptions.get_genre_stats()
     source_stats = transcriptions.get_source_stats()
@@ -831,7 +833,7 @@ def stats():
         duplicates=duplicates,
         genre_stats=genre_stats,
         source_stats=source_stats,
-        user_stats=user_stats)
+        user_stats=user_stats, user=user)
 
 
 

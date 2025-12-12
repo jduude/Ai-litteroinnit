@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Tilastoja</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
-
-  <div>
+  <div class="main-wrapper">
+    <div class="header">
+      {% include 'navigation.html' %}
+    </div>
     <a href="/">Palaa etusivulle</a>
     <h1>Tilastoja</h1>
     {% if duplicates %}

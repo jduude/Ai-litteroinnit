@@ -181,3 +181,17 @@ audio {
     font-size: 120%;
     padding: 0 1rem;
 }
+
+.result_text {
+    margin: 0 0.5em;
+}
+
+.result_media_title {
+    color: #777;
+    font-size: 80%;
+}
+
+.search-section {
+    border-bottom: #777 solid 2px;
+    padding-bottom: 1rem;
+}

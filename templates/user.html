@@ -8,24 +8,27 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
+    <div class="main-wrapper">
+        <div class="header">
+            {% include 'navigation.html' %}
+        </div>
 
-    <a href="/">Palaa etusivulle</a>
-    <h1>Käyttäjä {{ user.username }}</h1>
+        <h1>Käyttäjä {{ user.username }}</h1>
 
-    <p>
-        Käyttäjä {{ user.username }} on luonut {{ transcriptions | count }} litterointia
-    </p>
+        <p>
+            Käyttäjä {{ user.username }} on luonut {{ transcriptions | count }} litterointia
+        </p>
 
-    {% if transcriptions %}
+        {% if transcriptions %}
 
-    {% include 'transcriptions_table_listing.html' %}
+        {% include 'transcriptions_table_listing.html' %}
 
-    {% endif %}
+        {% endif %}
+    </div>
 </body>
 
 </html>
