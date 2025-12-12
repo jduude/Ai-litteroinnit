@@ -1,0 +1,42 @@
+<div class="menu">
+    <ul class="navbar">
+        {% if session.user_id %}
+        <li class="nav-item">
+            <a class="nav-link click-scroll active" href="/">Home</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link click-scroll inactive" href="/search">Haku</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link click-scroll inactive" href="/stats">Tilastoja</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link custom-btn btn d-none d-lg-block inactive" href="/create_transcription">Luo
+                litterointi</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+
+            {% if user.username %}
+
+            <a class="nav-link click-scroll inactive" href="/user/{{ user.id}} ">{{ user.username}}</a>
+            {% else %}
+            <a class="nav-link click-scroll inactive" href="/login">Kirjaudu</a>
+            {% endif %}
+
+        </li>
+
+        <li class="nav-item">
+            {% if session.user_id %}
+            <a class="nav-link click-scroll inactive" href="/logout">Kirjaudu ulos</a>
+            {% else %}
+            <a class="nav-link click-scroll inactive" href="/register">Luo tunnus</a>
+            {% endif %}
+        </li>
+
+
+    </ul>
+</div>

@@ -14,7 +14,7 @@
 <body>
   <div class="main-wrapper">
     <div class="header">
-      <h1>Litteroinnit</h1>
+      {% include 'navigation.html' %}
     </div>
     {% for message in get_flashed_messages() %}
     <p class="flash-message">
@@ -22,23 +22,10 @@
     </p>
     {% endfor %}
 
-    {% if user.username %}
-    <div><a href="/search">Hakusivu</a> | <a href="/stats">Tilastoja</a></div>
-    {% endif %}
+
     <div>
       {% if session.user_id %}
-      <h2>Tervetuloa!</h2>
-      {% if user.username %}
-      <p>Olet kirjautunut sisään käyttäjänä {{ user.username}}</p>
-      <p><a href="/user/{{ user.id}} "> {{ user.username}} käyttäjä sivut </a></p>
-      {% endif %}
-      <hr>
-      <div>
-        <p><a href="/create_transcription">Luo uusi litterointi</a></p>
-      </div>
-
-      <hr>
-      <h2>Tallennetut litteroinnit</h2>
+      <h2>Litteroinnit</h2>
       <hr>
       <p>
         <a href="/{{ page - 1 }}">&lt;&lt;</a>
@@ -65,7 +52,6 @@
         {% else %}
       <div class="login-operations-box">
         <a href="/register">Luo tunnus</a>
-
         <a href="/login">Kirjaudu sisään</a>
       </div>
       {% endif %}

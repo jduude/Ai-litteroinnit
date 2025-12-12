@@ -162,3 +162,22 @@ audio {
     padding: 0;
     margin: 0;
 }
+
+.menu {
+
+    display: flex;
+}
+
+.menu ul {
+    margin: 0;
+    display: flex;
+    margin-left: auto;
+}
+
+.menu ul li {
+    list-style: none;
+    margin-right: 2rem;
+    font-weight: bold;
+    font-size: 120%;
+    padding: 0 1rem;
+}
