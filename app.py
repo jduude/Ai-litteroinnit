@@ -72,6 +72,17 @@ def check_csrf():
             "csrf_token"] != session["csrf_token"]:
         abort(403)
 
+def get_user():
+    """Retrieve the currently logged-in user from the session.
+
+    Returns:
+        The user object or None if not logged in.
+    """
+    if "user_id" in session:
+        user_id = session["user_id"]
+        return users.get_user(user_id)
+    return None
+
 @app.route("/")
 @app.route("/<int:page>")
 def index(page=1):
@@ -85,9 +96,7 @@ def index(page=1):
     """
     user = None
     page_size = 10
-    if "user_id" in session:
-        user_id = session["user_id"]
-        user = users.get_user(user_id)
+    user = get_user()
 
     transcriptions_count = transcriptions.get_transcriptions_count()
     page_count = math.ceil(transcriptions_count / page_size)
@@ -152,7 +161,8 @@ def create_transcription():
         Rendered template with transcription creation form.
     """
     require_login()
-    return render_template("create.html")
+    user = get_user()
+    return render_template("create.html", user=user)
 
 
 @app.route("/new_transcription", methods=["POST"])
