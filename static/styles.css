@@ -101,12 +101,34 @@ tr td.version {
     margin-bottom: 2rem;
 }
 
-.login-page-view {
+.login-buttons {
     display: flex;
     max-width: 400px;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     margin: 3rem auto;
     padding: 2rem 3rem;
+    background: linear-gradient(135deg, #979dbb 0%, #7d6d8d 100%);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-buttons a {
+    color: rgb(217, 217, 217);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 7px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+
+.login-buttons a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
