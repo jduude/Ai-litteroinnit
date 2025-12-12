@@ -117,9 +117,14 @@ def get_text_fragments_paginated(transcription_id, page, page_size):
 
     text_ids = [row['id'] for row in result]
     id_placeholders = ','.join('?' for _ in text_ids)
-    edits_sql =f"""SELECT tfe.text_fragment_id as id, tfe.start_ms, tfe.words, tfe.version 
-                FROM text_fragment_edits tfe
-                WHERE text_fragment_id   IN ({id_placeholders})   """
+    edits_sql = f"""SELECT tfe.text_fragment_id as id, tfe.start_ms, tfe.words, tfe.version
+                            FROM text_fragment_edits tfe
+                            WHERE tfe.text_fragment_id IN ({id_placeholders})
+                              AND tfe.version = (
+                                  SELECT MAX(tfe2.version)
+                                  FROM text_fragment_edits tfe2
+                                  WHERE tfe2.text_fragment_id = tfe.text_fragment_id
+                              )"""
     edits = db.query(edits_sql, text_ids)
     edits_ids = [row['id'] for row in edits]
     results_with_edits = []
