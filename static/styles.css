@@ -1,9 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0.2rem;
+    margin: 0.1rem;
     background-color: #f9f9f9;
     color: #333;
-
 }
 
 .transcription {
@@ -91,11 +90,11 @@ tr td.version {
 .main-wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 1800px;
+    max-width: 98%;
     margin: 0 auto;
     justify-content: center;
     border: #d2d2d1 1px solid;
-    padding: 0.3rem;
+    padding: 1rem;
 }
 
 .header {
@@ -145,4 +144,21 @@ tr td.version {
     text-align: center;
     color: rgb(155, 84, 140);
     font-weight: bold;
+}
+
+
+audio {
+    width: 90%;
+}
+
+.text_id {
+    font-size: 60%;
+    color: rgb(99, 91, 80);
+}
+
+.seconds {
+    font-size: 50%;
+    color: rgb(182, 177, 169);
+    padding: 0;
+    margin: 0;
 }

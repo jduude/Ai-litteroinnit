@@ -4,178 +4,124 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ transcription.title }}</title>
-    <style>
-        audio {
-            width: 90%;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
-        .text_id {
-            font-size: 60%;
-            color: rgb(99, 91, 80);
-        }
-
-        .seconds {
-            font-size: 50%;
-            color: rgb(182, 177, 169);
-            padding: 0;
-            margin: 0;
-        }
-
-        .rows-header-columns {
-            background-color: rgb(230, 223, 212);
-            padding: 0.2rem 0;
-            border-bottom: solid black 1px;
-        }
-
-        .rows-header-columns span {}
-
-        .t-row {
-            display: flex;
-            margin-top: 0.2rem;
-        }
-
-        .time-stamps-div {
-            margin-right: 0.4rem;
-            min-width: 5rem;
-        }
-
-        .transcript-row-words {
-            width: 70%;
-            padding: 0 0.6rem;
-        }
-
-        .create-timed-texts {
-            background-color: rgb(217, 198, 215);
-            width: 9rem;
-            padding: 0.3rem 1rem;
-            margin: 20px 0;
-        }
-
-        .text-fragments .t-row>div:not(.transcript-row-words) {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-        }
-
-        .flash-message {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
-    <p>
-        <a href="/">Etusivulle</a>
-    </p>
+    <div class="main-wrapper">
+        <p>
+            <a href="/">Etusivulle</a>
+        </p>
 
-    <h2>Litterointi {{ transcription.id }}</h2>
-    <h2>{{ transcription.title }}</h2>
+        <h2>Litterointi {{ transcription.id }}</h2>
+        <h2>{{ transcription.title }}</h2>
 
-    {% for message in get_flashed_messages() %}
-    <p class="flash-message">
-        <b>{{ message }}</b>
-    </p>
-    {% endfor %}
+        {% for message in get_flashed_messages() %}
+        <p class="flash-message">
+            <b>{{ message }}</b>
+        </p>
+        {% endfor %}
 
-    <ul>
+        <ul>
 
-        <li>Id: {{ transcription.id }}</li>
-        <li>Tiedosto tai url: <a href="{{ transcription.source_path }}">{{ transcription.source_path }}</a></li>
-        <li>Lähde: {{ transcription.source }}</li>
-        <li>Lajityyppi: {{ transcription.genre }}</li>
-        <li>Tallenteen päivämäärä: {{ transcription.record_date }}</li>
-        <li>Pituus: {{ convert_seconds_to_hms(transcription.duration_sec) }}</li>
-        <li>Lisenssi: {{ transcription.license }}</li>
-        <li>Metadata: {{ transcription.extra_meta_data }}</li>
-        <li>Luotu: {{ transcription.created }}</li>
-        <li>Muokattu: {{ transcription.last_modified }}</li>
-        <li>Raaka sisältö:
-            {% if transcription.raw_content %}
-            {{ transcription.raw_content[:50] }} ...
-            {% else %}
-            <span>TYHJÄ</span>
-            {% endif %}
-        </li>
-        <li>Käyttäjä: {{ user.username }}</li>
+            <li>Id: {{ transcription.id }}</li>
+            <li>Tiedosto tai url: <a href="{{ transcription.source_path }}">{{ transcription.source_path }}</a></li>
+            <li>Lähde: {{ transcription.source }}</li>
+            <li>Lajityyppi: {{ transcription.genre }}</li>
+            <li>Tallenteen päivämäärä: {{ transcription.record_date }}</li>
+            <li>Pituus: {{ convert_seconds_to_hms(transcription.duration_sec) }}</li>
+            <li>Lisenssi: {{ transcription.license }}</li>
+            <li>Metadata: {{ transcription.extra_meta_data }}</li>
+            <li>Luotu: {{ transcription.created }}</li>
+            <li>Muokattu: {{ transcription.last_modified }}</li>
+            <li>Raaka sisältö:
+                {% if transcription.raw_content %}
+                {{ transcription.raw_content[:50] }} ...
+                {% else %}
+                <span>TYHJÄ</span>
+                {% endif %}
+            </li>
+            <li>Käyttäjä: {{ user.username }}</li>
 
-        <li>Salli muiden käyttäjien muokata: {{ "Kyllä" if transcription.allow_collaboration else "Ei" }}</li>
-    </ul>
-    {% if transcription.allow_collaboration or transcription.user_id == session.user_id%}
-    <p><a href="/edit/{{ transcription.id }}">Muokkaa</a> </p>
-    <hr>
-    {% endif %}
+            <li>Salli muiden käyttäjien muokata: {{ "Kyllä" if transcription.allow_collaboration else "Ei" }}</li>
+        </ul>
+        {% if transcription.allow_collaboration or transcription.user_id == session.user_id%}
+        <p><a href="/edit/{{ transcription.id }}">Muokkaa</a> </p>
+        <hr>
+        {% endif %}
 
-    {% if local_audio_file_copy_exists %}
+        {% if local_audio_file_copy_exists %}
 
-    <div id="audio-player">
-        <audio controls autoplay>
-            <source src="{{url_for('static', filename=audio_file_path)}}#t={{audiotime}}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
-    {% endif %}
-    <hr>
+        <div id="audio-player">
+            <audio controls autoplay>
+                <source src="{{url_for('static', filename=audio_file_path)}}#t={{audiotime}}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endif %}
+        <hr>
 
-    <div>
-        {% if text_fragments %}
-        <h3>Aikakoodi tekstit sivu {{page}}:</h3>
+        <div>
+            {% if text_fragments %}
+            <h3>Aikakoodi tekstit sivu {{page}}:</h3>
+
+            <p>
+                <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
+                <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
+                Sivu {{ page }} / {{ page_count }}
+                <a
+                    href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">&gt;&gt;</a>
+                <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
+            </p>
+
+
+        </div>
+
+        <div class="text-fragments">
+
+            {% include 'transcriptions_texts_listing.html' %}
+
+        </div>
 
         <p>
             <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
             <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
-            Sivu {{ page }} / {{ page_count }}
-            <a
-                href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">&gt;&gt;</a>
+            Sivu {{ page }} / {{ page_count }}<a
+                href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">
+                &gt;&gt;</a>
             <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
         </p>
 
-
-    </div>
-
-    <div class="text-fragments">
-
-        {% include 'transcriptions_texts_listing.html' %}
-
-    </div>
-
-    <p>
-        <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
-        <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
-        Sivu {{ page }} / {{ page_count }}<a
-            href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">
-            &gt;&gt;</a>
-        <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
-    </p>
-
-    {% else %}
-    <div class="create-timed-texts">
-        <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a>
-    </div>
-
-    {% endif %}
-    </div>
-    {% if transcription.allow_collaboration or transcription.user_id == session.user_id %}
-    <div>
-
-        <a href="/edit/{{ transcription.id }}">Muokkaa litterointia</a>
-        {% if transcription.user_id == session.user_id %}
-        | <a href="/remove/{{ transcription.id }}">Poista koko litterointi</a>
-        {% endif %}
-        <br>
-        <br>
-        <a href="/remove_transcription_split_text/{{ transcription.id }}">Poista vain aikakoodi rivitetyt
-            tekstit</a>
-
+        {% else %}
+        <div class="create-timed-texts">
+            <a href="/text_fragments/{{ transcription.id }}">Luo teksti fragmentit</a>
+        </div>
 
         {% endif %}
-        <hr />
 
+        {% if transcription.allow_collaboration or transcription.user_id == session.user_id %}
+        <div>
+
+            <a href="/edit/{{ transcription.id }}">Muokkaa litterointia</a>
+            {% if transcription.user_id == session.user_id %}
+            | <a href="/remove/{{ transcription.id }}">Poista koko litterointi</a>
+            {% endif %}
+            <br>
+            <br>
+            <a href="/remove_transcription_split_text/{{ transcription.id }}">Poista vain aikakoodi rivitetyt
+                tekstit</a>
+
+
+            {% endif %}
+            <hr />
+
+        </div>
+
+        <p>
+            <a href="/">Etusivulle</a>
+        </p>
     </div>
-
-    <p>
-        <a href="/">Etusivulle</a>
-    </p>
 </body>
 
 </html>
