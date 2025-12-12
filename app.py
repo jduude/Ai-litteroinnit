@@ -278,10 +278,9 @@ def show_transcription(transcription_id, page=1):
                                  int(start_ms / 1000),
                                  help_functions.convert_seconds_to_hms(int(start_ms / 1000)),
                                  start_ms,
-                                 words) for id,
+                                 words, version) for id,
                                 start_ms,
-                                words in text_fragments]
-
+                                words,  version in text_fragments]
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
@@ -544,6 +543,9 @@ def edit_text_fragment(text_fragment_id):
     require_login()
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
+    version=None
+    if 'version' in text_fragment:
+        version =  text_fragment['version']
 
     if not text_fragment:
         abort(404)
@@ -567,13 +569,23 @@ def edit_text_fragment(text_fragment_id):
         check_csrf()
         return_page = request.form["return_page"]
         words = request.form["words"]
-        transcriptions.update_text(text_fragment["id"], words)
+        start_ms = text_fragment["start_ms"]
+        if version:
+            version = version + 1
+        else:
+            version = 1
+        text_fragment_id = text_fragment["id"]
+        print(words)
+
+        transcriptions.add_versioned_text_fragment(text_fragment_id, start_ms, version, words, session["user_id"])
         page = '/' + str(return_page) if return_page else ''
         id_anchor = '#t-id-' + str(text_fragment_id)
+
+
     return redirect("/transcription/" +
-                    str(text_fragment["transcription_id"]) +
-                    page +
-                    id_anchor)
+                   str(text_fragment["transcription_id"]) +
+                   page +
+                   id_anchor)
 
 
 @app.route("/remove_text_fragment/<int:text_fragment_id>",

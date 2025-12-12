@@ -105,13 +105,33 @@ def get_text_fragments(transcription_id):
 
 
 def get_text_fragments_paginated(transcription_id, page, page_size):
-    sql = """SELECT id, start_ms, words
+    sql = """SELECT id, start_ms, words, 0 as version
           FROM text_fragments WHERE transcription_id = ?
           AND trashed is NULL ORDER BY start_ms
           LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
-    return db.query(sql, [transcription_id, limit, offset])
+    result =  db.query(sql, [transcription_id, limit, offset])
+    if result is None:
+        return []
+
+    text_ids = [row['id'] for row in result]
+    id_placeholders = ','.join('?' for _ in text_ids)
+    edits_sql =f"""SELECT tfe.text_fragment_id as id, tfe.start_ms, tfe.words, tfe.version 
+                FROM text_fragment_edits tfe
+                WHERE text_fragment_id   IN ({id_placeholders})   """
+    edits = db.query(edits_sql, text_ids)
+    edits_ids = [row['id'] for row in edits]
+    results_with_edits = []
+    for row in  result:
+        if row['id'] in edits_ids:
+            edited_row = [edit for edit in edits if edit['id'] == row['id']][0]
+            results_with_edits.append(edited_row)
+        else:
+            results_with_edits.append(row)
+    return results_with_edits
+
+
 
 
 def get_text_fragments_count(transcription_id):
@@ -121,6 +141,14 @@ def get_text_fragments_count(transcription_id):
 
 
 def get_text_fragment(text_fragment_id):
+
+    sql = """SELECT tfe.start_ms, tfe.words, tfe.version, tfe.text_fragment_id as id, tfe.created_at, tfe.user_id, tf.transcription_id
+            FROM text_fragment_edits tfe, text_fragments tf 
+            WHERE text_fragment_id = ? and tf.id = tfe.text_fragment_id
+            ORDER BY version DESC LIMIT 1"""
+    result = db.query(sql, [text_fragment_id])
+    if result:
+        return result[0]
     sql = "SELECT id, start_ms, words, transcription_id FROM text_fragments WHERE id = ?"
     result = db.query(sql, [text_fragment_id])
     return result[0] if result else None
@@ -145,6 +173,13 @@ def remove_transcription_split_text(transcription_id):
 def update_text(id, words):
     sql = "UPDATE text_fragments SET words = ? WHERE id = ?"
     db.execute(sql, [words, id])
+
+
+def add_versioned_text_fragment(original_id, start_ms, version, words, user_id):
+    sql = """INSERT INTO text_fragment_edits 
+        (start_ms, version, words, text_fragment_id, created_at, user_id) 
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)"""
+    db.execute(sql, [start_ms, version, words, original_id, user_id])
 
 
 def search(query):

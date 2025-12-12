@@ -31,4 +31,14 @@ CREATE TABLE text_fragments (
     trashed BOOLEAN 
 );
 
+CREATE TABLE text_fragment_edits (
+    id INTEGER PRIMARY KEY,
+    start_ms INTEGER,
+    words TEXT,
+    version INTEGER,
+    text_fragment_id INTEGER REFERENCES text_fragments DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER REFERENCES users
+);
+
 CREATE INDEX idx_transcriptions_text_fragments ON text_fragments (transcription_id);
