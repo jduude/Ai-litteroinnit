@@ -4,27 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Litteroinnit</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <style>
-    .transcription {
-      border-bottom: dashed gray 2px;
-      margin: 0 0 0 0;
-      padding: 0 0 0.4rem 0;
-    }
 
-    .transcription p {
-      margin: 0;
-    }
-
-    .transcription h3 {
-      margin: 0.5rem 0;
-    }
-
-    .transcription .operations {
-      background-color: antiquewhite;
-      width: 8rem;
-      margin: 0.4rem 0;
-      padding: 0.1rem 1rem;
-    }
   </style>
 </head>
 
@@ -79,11 +62,12 @@
         {% if session.user_id %}
         <a href="/logout">Kirjaudu ulos</a>
         {% else %}
-
-        <a href="/register">Luo tunnus</a> |
+      <div class="login-page-view">
+        <a href="/register">Luo tunnus</a>
 
         <a href="/login">Kirjaudu sisään</a>
-        {% endif %}
+      </div>
+      {% endif %}
       </p>
     </div>
 

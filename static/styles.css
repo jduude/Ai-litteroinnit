@@ -1,3 +1,25 @@
+ .transcription {
+      border-bottom: dashed gray 2px;
+      margin: 0 0 0 0;
+      padding: 0 0 0.4rem 0;
+    }
+
+    .transcription p {
+      margin: 0;
+    }
+
+    .transcription h3 {
+      margin: 0.5rem 0;
+    }
+
+    .transcription .operations {
+      background-color: antiquewhite;
+      width: 8rem;
+      margin: 0.4rem 0;
+      padding: 0.1rem 1rem;
+    }
+
+
 table {
     width: 100%;
     border-collapse: collapse;
