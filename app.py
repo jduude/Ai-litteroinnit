@@ -281,6 +281,13 @@ def show_transcription(transcription_id, page=1):
                                  words, version) for id,
                                 start_ms,
                                 words,  version in text_fragments]
+    
+    # Get the time string of the last fragment for next page navigation
+    next_page_time_str = None
+    if text_fragments_with_secs:
+        last_fragment = text_fragments_with_secs[-1]
+        next_page_time_str = last_fragment[2]  # time_str is at index 2
+    
     transcription = transcriptions.get_transcription(transcription_id)
     if not transcription:
         abort(404)
@@ -317,6 +324,7 @@ def show_transcription(transcription_id, page=1):
         local_audio_file_copy_exists=local_audio_file_copy_exists,
         audio_file_path=audio_file_path,
         audiotime=audiotime,
+        next_page_time_str=next_page_time_str,
         user=user)
 
 

@@ -125,7 +125,8 @@
             <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
             <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
             Sivu {{ page }} / {{ page_count }}
-            <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+            <a
+                href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">&gt;&gt;</a>
             <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
         </p>
 
@@ -141,8 +142,9 @@
     <p>
         <a href="/transcription/{{ transcription.id }}/{{ page - 10 }}">&lt;&lt;&lt;</a>
         <a href="/transcription/{{ transcription.id }}/{{ page - 1 }}">&lt;&lt;</a>
-        Sivu {{ page }} / {{ page_count }}
-        <a href="/transcription/{{ transcription.id }}/{{ page + 1 }}">&gt;&gt;</a>
+        Sivu {{ page }} / {{ page_count }}<a
+            href="/transcription/{{ transcription.id }}/{{ page + 1 }}?audiotime={{next_page_time_str}}#audio-player">
+            &gt;&gt;</a>
         <a href="/transcription/{{ transcription.id }}/{{ page + 10 }}">&gt;&gt;&gt;</a>
     </p>
 
