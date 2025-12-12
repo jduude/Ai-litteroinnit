@@ -8,24 +8,28 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
+    <div class="main-wrapper transcription-form-page">
+        <div class="header">
+            {% include 'navigation.html' %}
+            <h1>{{ filter_key }} litteroinnit </h1>
 
-    <a href="/">Palaa etusivulle</a>
-    <h1>{{ filter_key }} litteroinnit </h1>
+        </div>
 
-    <p>
-        "{{filter_key }}" rajaukselle löytyy {{ transcriptions | count }} litterointia
-    </p>
 
-    {% if transcriptions %}
+        <p>
+            "{{filter_key }}" rajaukselle löytyy {{ transcriptions | count }} litterointia
+        </p>
 
-    {% include 'transcriptions_table_listing.html' %}
+        {% if transcriptions %}
 
-    {% endif %}
+        {% include 'transcriptions_table_listing.html' %}
+
+        {% endif %}
+    </div>
 </body>
 
 </html>

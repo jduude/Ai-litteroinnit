@@ -129,9 +129,9 @@ def transcriptions_by_genre(genre):
         Redirect to transcriptions_by_filter template.
     """
     require_login()
-
+    user = get_user()
     transcriptions_list = transcriptions.get_transcriptions_by_genre(genre)
-    return render_template("transcriptions_by_filter.html", filter_key=genre, transcriptions=transcriptions_list)
+    return render_template("transcriptions_by_filter.html", filter_key=genre, user=user,transcriptions=transcriptions_list)
 
 
 
@@ -146,10 +146,10 @@ def transcriptions_by_source(source):
         Redirect to transcriptions_by_filter template.
     """
     require_login()
-    print(source)
+    user = get_user()
 
     transcriptions_list = transcriptions.get_transcriptions_by_source(source)
-    return render_template("transcriptions_by_filter.html", filter_key=source, transcriptions=transcriptions_list)
+    return render_template("transcriptions_by_filter.html", filter_key=source, user=user,transcriptions=transcriptions_list)
 
 
 
