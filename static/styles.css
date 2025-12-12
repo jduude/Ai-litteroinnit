@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 2rem;
+    margin: 0.2rem;
     background-color: #f9f9f9;
     color: #333;
+
 }
 
 .transcription {
@@ -94,27 +95,28 @@ tr td.version {
     margin: 0 auto;
     justify-content: center;
     border: #d2d2d1 1px solid;
+    padding: 0.3rem;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 2rem;
+
 }
 
-.login-buttons {
+.login-operations-box {
     display: flex;
     max-width: 400px;
     gap: 1rem;
     justify-content: center;
     align-items: center;
     margin: 3rem auto;
-    padding: 2rem 3rem;
+    padding: 1rem 3rem;
     background: linear-gradient(135deg, #979dbb 0%, #7d6d8d 100%);
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.login-buttons a {
+.login-operations-box a {
     color: rgb(217, 217, 217);
     text-decoration: none;
     font-size: 1.2rem;
@@ -127,8 +129,20 @@ tr td.version {
 }
 
 
-.login-buttons a:hover {
+.login-operations-box a:hover {
     background-color: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.login-operations-box.register-box {
+
+    background: linear-gradient(185deg, #d6d8e3 0%, #b8aac7 100%);
+}
+
+
+.flash-message {
+    text-align: center;
+    color: rgb(155, 84, 140);
+    font-weight: bold;
 }

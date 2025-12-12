@@ -4,38 +4,41 @@
 <head>
   <meta charset="UTF-8">
   <title>Kirjautuminen</title>
-  <style>
-    .flash-message {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 
 <body>
-
-  <h1>Kirjaudu</h1>
-  {% for message in get_flashed_messages() %}
-  <p class="flash-message">
-    <b>{{ message }}</b>
-  </p>
-  {% endfor %}
-  <form action="/login" method="post">
-    <p>
-      Käyttäjätunnus: <br />
-      <input type="text" name="username" />
+  <div class="main-wrapper">
+    <div class="header">
+      <h1>Kirjaudu</h1>
+    </div>
+    {% for message in get_flashed_messages() %}
+    <p class="flash-message">
+      <b>{{ message }}</b>
     </p>
-    <p>
-      Salasana: <br />
-      <input type="password" name="password" />
-    </p>
-    <input type="submit" value="Kirjaudu" />
-  </form>
+    {% endfor %}
 
-  <hr />
-  <p>
-    <a href="/">Etusivulle</a>
-  </p>
+    <div class="login-operations-box">
+      <form action="/login" method="post">
+        <p>
+          Käyttäjätunnus: <br />
+          <input type="text" name="username" />
+        </p>
+        <p>
+          Salasana: <br />
+          <input type="password" name="password" />
+        </p>
+        <input type="submit" value="Kirjaudu" />
+      </form>
+
+      <hr />
+
+    </div>
+    <p class="login-operations-box">
+      <a href="/">Etusivulle</a>
+    </p>
+  </div>
 </body>
 
 </html>
