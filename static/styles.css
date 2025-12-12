@@ -86,3 +86,27 @@ tr td.version {
     min-width: 2rem;
     max-width: 3rem;
 }
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 1800px;
+    margin: 0 auto;
+    justify-content: center;
+    border: #d2d2d1 1px solid;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-page-view {
+    display: flex;
+    max-width: 400px;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+}

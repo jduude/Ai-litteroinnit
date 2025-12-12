@@ -12,9 +12,10 @@
 </head>
 
 <body>
-  <div>
-    <h1>Litteroinnit</h1>
-
+  <div class="main-wrapper">
+    <div class="header">
+      <h1>Litteroinnit</h1>
+    </div>
     {% for message in get_flashed_messages() %}
     <p class="flash-message">
       <b>{{ message }}</b>
