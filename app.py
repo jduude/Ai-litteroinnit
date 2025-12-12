@@ -544,7 +544,7 @@ def edit_text_fragment(text_fragment_id):
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
     version=None
-    if 'version' in text_fragment:
+    if text_fragment['version']:
         version =  text_fragment['version']
 
     if not text_fragment:
