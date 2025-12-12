@@ -543,10 +543,10 @@ def edit_text_fragment(text_fragment_id):
     require_login()
     return_page = request.args.get("return_page")
     text_fragment = transcriptions.get_text_fragment(text_fragment_id)
-    version=None
-    if text_fragment['version']:
+    try:
         version =  text_fragment['version']
-
+    except:
+        version=None
     if not text_fragment:
         abort(404)
 
