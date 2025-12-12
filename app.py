@@ -486,13 +486,14 @@ def search_titles():
         Rendered search page with title search results.
     """
     require_login()
+    user = get_user()
     title_query = request.args.get("query")
     if not title_query:
         title_query = ""
     results = transcriptions.search_titles(title_query) if title_query else []
     return render_template(
         "search.html",
-        title_query=title_query,
+        title_query=title_query,user=user,
         title_search_results=results)
 
 
@@ -504,6 +505,7 @@ def search_file_name():
         Rendered search page with file name search results.
     """
     require_login()
+    user = get_user()
     file_name_query = request.args.get("query")
     if not file_name_query:
         file_name_query = ""
@@ -512,7 +514,7 @@ def search_file_name():
     return render_template(
         "search.html",
         file_name_query=file_name_query,
-        title_search_results=results)
+        title_search_results=results, user=user)
 
 
 @app.route("/show_search_result_context/<int:id>")
@@ -526,6 +528,7 @@ def show_search_result_context(id):
         Rendered template with text fragment and context.
     """
     require_login()
+    user = get_user()
     text_context = transcriptions.get_text_fragment_context(id)
     title = ""
     transcription_id = None
@@ -536,7 +539,7 @@ def show_search_result_context(id):
     return render_template(
         "show_search_result_context.html",
         text_context=text_context,
-        title=title,
+        title=title,user=user,
         transcription_id=transcription_id,
         id=id)
 
