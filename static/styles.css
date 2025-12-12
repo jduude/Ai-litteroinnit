@@ -1,0 +1,59 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    min-width: 4.5rem;
+}
+
+td {
+    padding: 0.1rem 0.6rem;
+    border: 1px solid #ddd;
+    text-align: left;
+    max-width: 50rem;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tr:hover {
+    background-color: #e6e6e6;
+}
+
+.time-stamp {
+    min-width: 2rem;
+    max-width: 2rem;
+}
+
+.id {
+    min-width: 1rem;
+    max-width: 1rem;
+    font-size: 70%;
+}
+
+.version {
+    width: 1rem;
+}
+
+tr td.version {
+    text-align: center;
+    font-size: 70%;
+}
+
+.edit,
+.remove,
+.add {
+    min-width: 2rem;
+    max-width: 3rem;
+}
