@@ -109,8 +109,8 @@ def get_text_fragments_paginated(transcription_id, page, page_size):
           FROM text_fragments WHERE transcription_id = ?
           AND trashed is NULL ORDER BY start_ms
           LIMIT ? OFFSET ?"""
-    limit = page_size
-    offset = page_size * (page - 1)
+    limit = page_size + 1
+    offset = page_size * (page - 1) - 1
     result =  db.query(sql, [transcription_id, limit, offset])
     if result is None:
         return []
