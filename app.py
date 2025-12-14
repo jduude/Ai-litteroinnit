@@ -248,22 +248,17 @@ def new_transcription():
     return redirect("/transcription/" + str(transcription_id))
 
 
-@app.route("/transcription/<int:transcription_id>")
-@app.route("/transcription/<int:transcription_id>/<int(signed=True):page>")
-def show_transcription(transcription_id, page=1):
-    """Display a transcription with its text fragments paginated.
+def fetch_and_show_transcription(transcription_id, page=1, highlight_id=None):
+    """Fetch and display a transcription with paginated text fragments.
 
     Args:
         transcription_id: The ID of the transcription to display.
-        page: The page number of text fragments (default: 1).
-
-    Returns:
-        Rendered template with transcription details and text fragments.
-
-    Raises:
+        page: The page number of text fragments (default: 1).       
+    Returns:        
+        Rendered template with transcription details and text fragments.    
+    Raises: 
         404: If transcription is not found.
     """
-    require_login()
     page_size = 20
     audiotime = request.args.get('audiotime')
     text_fragments_count = transcriptions.get_text_fragments_count(
@@ -335,8 +330,29 @@ def show_transcription(transcription_id, page=1):
         audio_file_path=audio_file_path,
         audiotime=audiotime,
         next_page_time_str=next_page_time_str,
+        highlight_id=highlight_id,
         user=user)
 
+
+@app.route("/transcription/<int:transcription_id>")
+@app.route("/transcription/<int:transcription_id>/<int(signed=True):page>")
+def show_transcription(transcription_id, page=1):
+    """Display a transcription with its text fragments paginated.
+
+    Args:
+        transcription_id: The ID of the transcription to display.
+        page: The page number of text fragments (default: 1).
+
+    Returns:
+        Rendered template with transcription details and text fragments.
+
+    Raises:
+        404: If transcription is not found.
+    """
+    require_login()
+
+    return fetch_and_show_transcription(transcription_id, page)
+    
 
 @app.route("/add_text_fragment/<int:transcription_id>",
            methods=["GET", "POST"])
@@ -538,19 +554,13 @@ def show_search_result_context(id):
     """
     require_login()
     user = get_user()
-    text_context = transcriptions.get_text_fragment_context(id)
-    title = ""
-    transcription_id = None
-    if len(text_context) > 0:
-        title = text_context[0]['title']
-        transcription_id = text_context[0]['transcription_id']
+    page, transcription_id   = transcriptions.get_the_page_of_text_fragment(id)
+    #text_context = transcriptions.get_text_fragment_context(id)
+    if not transcription_id:
+        abort(404)
+    return fetch_and_show_transcription(transcription_id, page, highlight_id=id)
+    
 
-    return render_template(
-        "show_search_result_context.html",
-        text_context=text_context,
-        title=title,user=user,
-        transcription_id=transcription_id,
-        id=id)
 
 
 @app.route("/edit_text_fragment/<int:text_fragment_id>",

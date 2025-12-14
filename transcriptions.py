@@ -115,6 +115,7 @@ def get_text_fragments_paginated(transcription_id, page, page_size):
     if result is None:
         return []
 
+    # add the latest edits if any
     text_ids = [row['id'] for row in result]
     id_placeholders = ','.join('?' for _ in text_ids)
     edits_sql = f"""SELECT tfe.text_fragment_id as id, tfe.start_ms, tfe.words, tfe.version
@@ -137,6 +138,25 @@ def get_text_fragments_paginated(transcription_id, page, page_size):
     return results_with_edits
 
 
+def get_the_page_of_text_fragment(text_fragment_id, page_size=20):   
+    sql = """SELECT transcription_id
+          FROM text_fragments
+          WHERE id = ?
+          """
+    result = db.query(sql, [text_fragment_id])
+    if not result:
+        return 1, None
+    transcription_id = result[0]['transcription_id']
+    sql = """SELECT COUNT(*) as count
+          FROM text_fragments
+          WHERE transcription_id = ?
+           AND trashed is NULL AND id <= ?"""
+    result = db.query(sql, [transcription_id, text_fragment_id])
+    if result:
+        count = result[0]['count']
+        page = (count - 1) // page_size + 1
+        return page, transcription_id
+    return 1, transcription_id
 
 
 def get_text_fragments_count(transcription_id):

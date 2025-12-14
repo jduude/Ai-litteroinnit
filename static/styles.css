@@ -280,3 +280,7 @@ input[type="submit"][name="cancel"] {
     margin-left: 1rem;
     background-color: white;
 }
+
+table tr.highlighted-text-fragment {
+    background-color: #f8ea9f;
+}

@@ -17,7 +17,13 @@
 
 
     {% for id, start_sec, time_str, start_ms, words, version in text_fragments %}
+
+    {% if highlight_id and highlight_id==id %}
+    <tr id="t-id-{{id}}" class="highlighted-text-fragment">
+
+        {% else %}
     <tr id="t-id-{{id}}">
+        {% endif %}
 
         <td class="time-stamp">
             {% if transcription.source == 'youtube' %}
