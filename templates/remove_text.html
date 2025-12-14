@@ -2,24 +2,31 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>Tekstin poisto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 
 <body>
-    <h1>Tekstin poisto</h1>
+    <div class="main-wrapper transcription-form-page">
+        <div class="edit-text-row-wrapper">
+            <h1>Tekstin poisto</h1>
 
-    <form action="/remove_text_fragment/{{ text_fragment.id }}" method="post">
-        <p>
-            Haluatko varmasti poistaa tekstin id: {{ text_fragment.id }} <br>
-            kohdassa
-            {{ text_fragment.start_ms }} ms ?
-            <br>
-            poistettava teksti: "{{ text_fragment.words }}"
-        </p>
-        <input type="submit" name="continue" value="Jatka" />
-        <input type="submit" name="cancel" value="Peruuta" />
-        <input type="text" hidden name="return_page" value="{{return_page}}">
-    </form>
+            <form action="/remove_text_fragment/{{ text_fragment.id }}" method="post">
+                <p>
+                    Haluatko varmasti poistaa tekstin id: {{ text_fragment.id }} <br>
+                    kohdassa
+                    {{ text_fragment.start_ms }} ms ?
+                    <br>
+                    Poistettava teksti: <span class="text-to-be-removed">"{{ text_fragment.words }}" </span>
+                </p>
+                <input type="submit" name="continue" value="Poista" />
+                <input type="submit" name="cancel" value="Peruuta" />
+                <input type="text" hidden name="return_page" value="{{return_page}}">
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

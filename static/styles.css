@@ -254,3 +254,29 @@ h1 {
     background-color: rgb(240, 240, 240);
     border-radius: 10px;
 }
+
+input[type="submit"] {
+    background-color: #5aa05d;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-right: 4rem;
+}
+
+input[type="submit"][name="cancel"] {
+    background-color: #ab8b89;
+    margin-right: 0;
+}
+
+.text-to-be-removed {
+    font-weight: bold;
+    color: rgb(71, 56, 56);
+    font-size: 110%;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    background-color: white;
+}
