@@ -373,11 +373,20 @@ def add_text_fragment(transcription_id):
             return_page=return_page, start_time_hms=start_time_hms if start_fragment else "")
     if request.method == "POST":
         check_csrf()
+        if 'cancel' in request.form:
+            return redirect("/transcription/" + str(transcription_id))
         return_page = request.form["return_page"]
         start_time = request.form["start_time"]
+ 
         start_ms = help_functions.convert_hms_to_seconds(start_time) * 1000
 
         words = request.form["words"]
+        if not words or words.strip() == '':
+            flash('Tekstikenttä ei voi olla tyhjä')
+            return render_template(
+            "add_text_fragment.html",
+            transcription_id=transcription_id,
+            return_page=return_page, start_time_hms=start_time_hms if start_fragment else "")
         try:
             transcriptions.add_text_fragment(start_ms, words, transcription_id)
         except sqlite3.IntegrityError:

@@ -2,28 +2,42 @@
 <html>
 
 <head>
+  <meta charset="UTF-8">
   <title>Litteroinnin muokkaus</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 
 <body>
-  <h2>Litteroinnin muokkaus</h2>
-  <p>Lisää uusi ajastettu tekstitys lause</p>
+  <div class="main-wrapper transcription-form-page">
+    <div class="edit-text-row-wrapper">
+      <h2>Litteroinnin muokkaus</h2>
+      <p>Lisää uusi aikaleismattu tekstitysrivi</p>
+      {% for message in get_flashed_messages() %}
+      <p class="flash-message">
+        <b>{{ message }}</b>
+      </p>
+      {% endfor %}
+      <form onkeydown="return event.key != 'Enter';" action="/add_text_fragment/{{ transcription_id }}" method="post">
+        <p>
+          <span> {{transcription_id}} </span>
+          <br>
+          Aloitusaika (h:m:sec):
+          <input name="start_time" pattern="[0-9:]*" maxlength="12" required value="{{start_time_hms}}" />
+          <br>
+          Uusi teksti:<br>
+          <textarea name="words" rows="4" cols="90"> </textarea>
+          <input hidden name="return_page" value="{{return_page}}" />
+          <input hidden name="start_time_hms" value="{{start_time_hms}}" />
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        </p>
 
-  <form onkeydown="return event.key != 'Enter';" action="/add_text_fragment/{{ transcription_id }}" method="post">
-    <p>
-      <span> {{transcription_id}} </span>
-      <br>
-      Aloitusaika (h:m:sec):
-      <input name="start_time" pattern="[0-9:]*" maxlength="12" required value="{{start_time_hms}}" />
-      <br>
-      Uusi teksti:<br>
-      <textarea name="words" rows="4" cols="90"> </textarea>
-      <input hidden name="return_page" value="{{return_page}}" />
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    </p>
+        <input type="submit" value="Lähetä" />
+        <input type="submit" name="cancel" value="Peruuta" />
+      </form>
 
-    <input type="submit" value="Lähetä" />
-  </form>
+    </div>
+  </div>
 </body>
 
 </html>
