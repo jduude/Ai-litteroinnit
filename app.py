@@ -553,9 +553,7 @@ def show_search_result_context(id):
         Rendered template with text fragment and context.
     """
     require_login()
-    user = get_user()
     page, transcription_id   = transcriptions.get_the_page_of_text_fragment(id)
-    #text_context = transcriptions.get_text_fragment_context(id)
     if not transcription_id:
         abort(404)
     return fetch_and_show_transcription(transcription_id, page, highlight_id=id)
