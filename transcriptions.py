@@ -14,7 +14,7 @@ def get_transcriptions_paginated(page, page_size):
     sql = """SELECT t.id, t.title, t.genre, t.source_path, t.created, t.last_modified,
              t.license, t.record_date, t.duration_sec, t.extra_meta_data, u.id as user_id, u.username
              FROM transcriptions t
-             JOIN users u ON u.id =  t.user_id
+             LEFT JOIN users u ON u.id =  t.user_id
              ORDER BY t.id DESC
              LIMIT ? OFFSET ?"""
 
