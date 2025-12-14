@@ -192,7 +192,23 @@ def search(query):
              FROM text_fragments t, transcriptions tr
              WHERE  tr.id= t.transcription_id AND t.words LIKE ?
             """
-    return db.query(sql, ["%" + query + "%"])
+    result = db.query(sql, ["%" + query + "%"])
+    sql2 = """SELECT t.id, te.start_ms, te.words, t.transcription_id, tr.title
+             FROM text_fragment_edits te, text_fragments t, transcriptions tr
+             WHERE te.text_fragment_id = t.id and tr.id= t.transcription_id AND
+             te.version = (
+                            SELECT MAX(tfe2.version)
+                            FROM text_fragment_edits tfe2
+                            WHERE tfe2.text_fragment_id = te.text_fragment_id
+                            )
+             AND te.words LIKE ?
+            """
+    result2 = db.query(sql2, ["%" + query + "%"])
+    text_ids2 = [row['id'] for row in result2]   
+    result_filtered = [row for row in result if row['id'] not in text_ids2]
+    result2.extend(result_filtered)
+    result2.sort(key=lambda x: x['id'])
+    return result2
 
 
 def search_titles(query):
