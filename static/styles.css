@@ -237,3 +237,10 @@ h1 {
     margin-top: 1rem;
     width: 50%;
 }
+
+.create-timed-texts {
+    background-color: rgb(217, 198, 215);
+    width: 11rem;
+    padding: 0.3rem 1rem;
+    margin: 0 0 20px 0;
+}
