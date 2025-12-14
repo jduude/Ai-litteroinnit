@@ -17,18 +17,23 @@ Mahdollistaa ai-avusteisten litteroinnin tarkastuksen ja korjauksen.
 * Käyttäjä voi lisätä metatietoja litterointiin: äänitiedoston pituus, äänitteen päivämäärä, vapaamuotoinen metatieto merkkijono 
 * käyttäjä voi lisätä litterointia vastaavan äänitiedoston
 * käyttäjä voi kuunnella litterointia vastaavaa äänitiedostoa ja tarkistaa litterointitekstejä samalla sivulla (ei vielä oikein toimi youtube formaatti valinnalla)
-* äänitiedoston soitto hyppää tektityksen aikakoodilinkin mukaiseen aloituskohtaan
+* äänitiedoston soitto hyppää tekstityksen aikakoodilinkin mukaiseen aloituskohtaan
+* sivutetut tekstisrivit sivun vaihto seuraavaan hypyttää myös äänitiedoston alkukohdan halutun sivun alkuun
 * haku tekstin sisällöillä, litteroinnin otsikoista, tiedostonimellä
+* tekstinsisältö haun tuloksista linkitys tulosriviä vastaavaan litteroinnin sivutettuun sivuun
 * tilastosivu näyttää litterointien lukumääriä lajityypin, käyttäjien ja litteroinnin lähdeformaatin mukaan
+* tekstirivi muokkaukset versiodaan (mahdollistaa kaikkien aikaisempien versioiden säilytyksen tietokannassa ja tarvittaessa palautusmahdollisuuden (suoraan tiedokannassa))
+* teksti fragmenttien muokkaus päivämäärät ja muokkaajan käyttäjänimet tallentuu tietokantaan
+* filtteröidyt listaussivut lajityypin, lähdeformaatin ja käyttäjien mukaan suoraan tilastot sivulta
+* mahdollisuus luoda litteroinnin tekstirivit suoraan manuaalisesti tyhjästä
+* mahdollisuus antaa litterointikohtaisesti muokkaukseen mahdollisuus myös muille sovellukseen kirjautuneille (oletuksena että vain litteroinnin luoja voi muokata)
 
 ## TODO
 
 * Käyttäjä pystyy valitsemaan litteroinnille lisää luokitteluita (esim litteroinnin kieli)
-* teksti fragmentin muokkaus päivämäärä
-* teksti fragmenttien versionti (kaikkien aikaisempien versioiden säilytys ja palautusmahdollisuus)
-* teksti fragmenttien muokkaus päivämäärät ja muokkaajan käyttäjänimien tallennus
+* näytä tekstirivin muokkaus päivämäärä
+* aikaisemman tekstirivin muokkaus version palautus käyttöliittymästä
 * upotettu youtube video
-* filtteröidyt listaukset lajityypin yms mukaan suoraan tilastot sivulta
 * litterointikohtainen tekstihaku
 
 
