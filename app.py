@@ -583,6 +583,7 @@ def edit_text_fragment(text_fragment_id):
         return render_template(
             "edit_text_fragment.html",
             text_fragment=text_fragment,
+            convert_seconds_to_hms=help_functions.convert_seconds_to_hms,
             return_page=return_page)
 
     id_anchor = ''

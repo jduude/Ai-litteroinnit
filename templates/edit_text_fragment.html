@@ -3,24 +3,39 @@
 
 <head>
   <title>Litteroinnin muokkaus</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8">
 </head>
 
 <body>
-  <h2>Litteroinnin muokkaus</h2>
-  <p>Muokkaa yksittäistä lausetta</p>
+  <div class="main-wrapper transcription-form-page">
+    <div class="edit-text-row-wrapper">
+      <h2>Litteroinnin muokkaus</h2>
+      <p>Muokkaa yksittäistä tekstiriviä</p>
 
-  <form action="/edit_text_fragment/{{ text_fragment.id }}" method="post">
-    <p>
-      <span> {{text_fragment.id}} </span>
-      <span> {{text_fragment.start_ms}} </span>
-      <!-- <input type="text" name="words" size="120" value="{{text_fragment.words}}" /> -->
-      <textarea name="words" rows="4" cols="90">{{text_fragment.words}}</textarea>
-      <input hidden name="return_page" value="{{return_page}}" />
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    </p>
+      <form action="/edit_text_fragment/{{ text_fragment.id }}" method="post">
+        <p>
+          <span>Tekstirivi Id: {{text_fragment.id}} </span><br />
+          <span>Tekstirivin aloitusaika (ms): <br />
+            <input type="text" name="start_ms" value="{{text_fragment.start_ms}}" />
+          </span><br />
+          <span>Aloitusaika (h:m:s): <br />
 
-    <input type="submit" value="Lähetä" />
-  </form>
+            <input type="text" name="start_hms" value="{{convert_seconds_to_hms(text_fragment.start_ms / 1000)}}" />
+          </span>
+          <br />
+
+          tekstirivi:<br />
+          <textarea name="words" rows="4" cols="90">{{text_fragment.words}}</textarea>
+          <input hidden name="return_page" value="{{return_page}}" />
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        </p>
+
+        <input type="submit" value="Lähetä" />
+        <input type="submit" name="cancel" value="Peruuta" />
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

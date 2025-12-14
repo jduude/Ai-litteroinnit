@@ -212,6 +212,7 @@ h1 {
     margin: 0 auto;
     padding: 1rem 2rem;
     border-radius: 10px;
+    text-align: left;
 
 }
 
@@ -229,7 +230,7 @@ h1 {
 .transcription-form-page select,
 .transcription-form-page textarea {
     width: 96%;
-    padding: 0.4rem 0.7rem;
+    padding: 0.4rem 0.3rem;
     font-size: 100%;
 }
 
@@ -243,4 +244,13 @@ h1 {
     width: 11rem;
     padding: 0.3rem 1rem;
     margin: 0 0 20px 0;
+}
+
+.edit-text-row-wrapper {
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
 }
