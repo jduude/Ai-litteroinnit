@@ -4,3 +4,6 @@ __pycache__/
 *.db
 audio/
 *.mp3
+node_modules/
+app_console.py
+bundle.js
